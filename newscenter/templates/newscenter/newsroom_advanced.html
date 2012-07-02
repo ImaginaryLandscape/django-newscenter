@@ -1,0 +1,94 @@
+{% extends 'newscenter/base.html' %}
+{% load thumbnail %}
+
+{% block title %}{{ newsroom }}{% endblock %}
+
+{% block appcontent %}
+  <h1>{{ newsroom }}</h1>
+  {% if article_list %}
+  {% with article_list|first as article %}
+    <div id="main-article">
+      {% if article.images.all %}
+      <div id="main-article-image">
+        {% with article.images.all|first as image %}        
+          <img src="{% thumbnail image.image 220x220 crop %}" 
+             alt="{{ image.name }}" />
+        {% endwith %}
+      </div>
+      {% endif %}
+      <h2><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h2>
+      <h3 id="main-article-date">{{ article.release_date|date:"F j, Y" }}</h3>
+      {% if article.location %}
+        <div id="article-location">
+        <span class="article-list-label">Location:</span>
+          {{ article.location }}
+        </div>
+      {% endif %}
+      <div id="main-article-body">{{ article.body|truncatewords_html:"60"|safe }}</div>
+      <span id="full-story-link"><a class="more-link" href="{{ article.get_absolute_url }}">read the full story</a></span>
+      {% if article.categories.all %}
+        <div id="article-categories">
+          <span class="article-list-label">Categor{{ article.categories.count|pluralize:"y,ies" }}:</span>
+          <ul class="article-list">
+          {% for category in article.categories.all %}
+            <li><a href="{{ category.get_absolute_url }}">{{ category.title }}</a></li>
+          {% endfor %}
+          </ul>
+          <p>Posted at {{ article.release_date|time:"P" }}</p>
+        </div>
+      {% endif %}      
+<div class="share-links">
+<a href="http://www.addthis.com/bookmark.php?v=250" 
+onmouseover="return addthis_open(this, '', 'http://{{ site.domain }}{{ article.get_absolute_url }}', '{{ article.title }}')" 
+onmouseout="addthis_close()" onclick="return addthis_sendto()">
+<img src="http://s7.addthis.com/static/btn/sm-share-en.gif" width="83" height="16" alt="Bookmark and Share" 
+style="border:0"/></a><script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js?pub=xa-4a2d2d60629e9de8">
+</script>
+</div>
+    </div>
+  {% endwith %}
+{% else %}
+<p>There are currently no articles</p>
+{% endif %}
+{% endblock %}
+
+{% block appsidebar %}
+<div id="news-column">
+  <div id="index-article-lists">
+  {% if featured_list %}
+    <div id="featured-articles" class="index-article-list">
+      <div class="news-rss-icon"><a href="feeds/featured/"><img src="{{ STATIC_URL }}newscenter/img/feed-icon-14x14.png" 
+        alt="rss-icon" /></a></div>
+      <h2>Featured Releases</h2>
+      {% for article in featured_list|slice:":4" %}
+        <div class="index-article">
+        {% if article.random_thumbnail %}
+          <a href="{{ article.get_absolute_url }}">
+          <img src="{% thumbnail article.random_thumbnail.image 80x80 crop %}"
+             alt="{{ article.random_thumbnail.image.alt }}" /></a>
+        {% endif %}
+          <h3><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h3>
+          <p>{{ article.teaser|truncatewords_html:"20"|safe }}</p>
+          <p><a class="more-link" href="{{ article.get_absolute_url }}">read more</a></p>
+        </div>
+      {% endfor %}
+      <br class="clear" />
+    </div>
+  {% endif %}
+
+    <div id="latest-articles" class="index-article-list">
+      <div class="news-rss-icon"><a href="feeds/all/"><img src="{{ STATIC_URL }}newscenter/img/feed-icon-14x14.png"
+        alt="rss-icon" /></a></div>
+      <h2>Latest Releases</h2>
+      {% for article in article_list|slice:":8" %}
+        <div class="index-article">
+          <h3><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h3>
+        </div>
+      {% endfor %}
+      <p id="article-view-all"><a class="more-link" href="articles/">view all</a></p>
+      <br class="clear" />
+    </div>
+  </div>
+</div>
+{% endblock %}
+

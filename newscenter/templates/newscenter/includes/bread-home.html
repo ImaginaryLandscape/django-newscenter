@@ -1,0 +1,5 @@
+{% if newsroom %}
+<a href="{{ newsroom.get_absolute_url }}">{{ newsroom }}</a>
+{% else %}
+<a href="{% url newscenter_index %}">Newscenter</a>
+{% endif %}

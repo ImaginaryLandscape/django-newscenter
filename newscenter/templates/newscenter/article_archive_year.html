@@ -1,0 +1,24 @@
+{% extends 'newscenter/base.html' %}
+{% block title %}Articles for {{ year }}{% endblock %}
+
+{% block appcontent %}
+<div id="breadcrumbs">
+  {% include "newscenter/includes/bread-home.html" %} | {{ year }}
+</div>
+<h1>{{ newsroom }} {{ year }}</h1>
+
+{% for article in object_list %}
+  {% include "newscenter/includes/list_article.html" %}
+  {% empty %}
+  <p>There are currently no articles available.</p>
+{% endfor %}
+
+<div id="date-list">
+<p>View articles for the month of:</p>
+{% for date in date_list %}
+  <span><a href="{{ date|date:"b" }}">{{ date|date:"F" }}</a></span>
+{% endfor %}
+</div>
+
+{% endblock %}
+

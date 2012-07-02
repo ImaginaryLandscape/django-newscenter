@@ -1,0 +1,16 @@
+{% extends "newscenter/base.html" %}
+
+{% block title %}{{ category }} Articles{% endblock %}
+
+{% block appcontent %}
+<div id="breadcrumbs">
+  {% include "newscenter/includes/bread-home.html" %} | <a href="../">Categories</a> | {{ category }}
+</div>
+<h1>Articles in category "{{ category }}"</h1>
+
+{% for article in article_list %}
+  {% include "newscenter/includes/list_article.html" %}
+  {% empty %}
+  <p>There are no matching articles for this category.</p>
+{% endfor %}
+{% endblock %}

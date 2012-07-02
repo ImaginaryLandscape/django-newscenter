@@ -1,0 +1,19 @@
+{% extends "newscenter/base.html" %}
+
+{% block title %}Categories{% endblock %}
+
+{% block appcontent %}
+<div id="breadcrumbs">
+  {% include "newscenter/includes/bread-home.html" %} | Categories
+</div>
+<h1>Category Index</h1>
+{% if object_list %}
+
+{% for object in object_list %}
+<a href="{{ object.get_absolute_url }}">{{ object.title }}</a> 
+{% endfor %}
+
+{% else %}
+<p>There are currently no categories</p>
+{% endif %}
+{% endblock %}

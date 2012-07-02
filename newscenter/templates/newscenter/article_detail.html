@@ -1,0 +1,93 @@
+{% extends 'newscenter/base.html' %}
+{% load thumbnail %}
+
+{% block title %}{{ article.title }}{% endblock %}
+{% block extra_head %}
+{{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}newscenter/js/popeye/jquery.popeye.css" media="screen" />
+  <script src="{{ STATIC_URL }}newscenter/js/popeye/jquery.popeye-2.0.4.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('.ppy').popeye({}); 
+    }); 
+  </script>
+{% endblock %}
+
+{% block appcontent %}
+<div id="breadcrumbs">
+{% include 'newscenter/includes/bread-home.html' %} |
+<a href="../../">{{ article.release_date|date:"Y" }}</a> |
+<a href="../">{{ article.release_date|date:"M" }}</a> |
+{{ article.title|truncatewords:"4" }}
+</div>
+  <h1>{{ article.title }}</h1>
+  <p id="article-teaser">{{ article.teaser }}</p>
+  {% if article.images.all %}
+  <div id="ppy1" class="ppy">
+    <ul class="ppy-imglist">
+    {% for image in article.images.all %}
+      <li><a href="{{ image.image.url }}"><img src="{% thumbnail image.image 240x180 crop %}" alt="{{ image.name }}" /></a>
+          <span class="ppy-extcaption">{{ image.caption }}</span>
+      </li>
+    {% endfor %}
+    </ul>
+            <div class="ppy-outer">
+                <div class="ppy-stage">
+                    <div class="ppy-nav">
+                        <div class="nav-wrap">
+                            <a class="ppy-prev" title="Previous image">Previous image</a>
+                            <a class="ppy-switch-enlarge" title="Enlarge">Enlarge</a>
+                            <a class="ppy-switch-compact" title="Close">Close</a>
+                            <a class="ppy-next" title="Next image">Next image</a>
+                        </div>
+                    </div>
+                    <div class="ppy-counter">
+                        <strong class="ppy-current"></strong> / <strong class="ppy-total"></strong> 
+                    </div>
+
+                </div>
+                <div class="ppy-caption">
+                    <span class="ppy-text"></span>
+                </div>
+            </div>
+  </div>
+  {% endif %}
+
+  <h2 class="date">{{ article.release_date|date:"F j, Y P" }}</h2>
+
+  {% if article.location %}
+    <div id="article-location">
+      <span class="article-list-label">Location:</span>
+      {{ article.location }}
+    </div>
+  {% endif %}
+
+  <div id="article-body">{{ article.body|safe }}</div>
+
+{% include "newscenter/includes/add-this.html" %}
+
+{% if article.categories.all %}
+  <div id="article-categories">
+  <span class="article-list-label">Categor{{ article.categories.count|pluralize:"y,ies" }}:</span>
+  <ul class="article-list">
+  {% for category in article.categories.all %}
+    <li><a href="{{ category.get_absolute_url }}">{{ category.title }}</a></li>
+  {% endfor %}
+  </ul>
+  </div>
+{% endif %}
+
+<div id="next-previous">
+{% if article.get_next_published %}
+<p><strong>Next:</strong>
+<a href="{{ article.get_next_published.get_absolute_url }}">{{ article.get_next_published.title }}</a></p>
+{% endif %}
+<p id="currently-reading"><strong>Currently Reading:</strong> {{ article.title }}</p>
+{% if article.get_previous_published %}
+<p><strong>Previous:</strong>
+<a href="{{ article.get_previous_published.get_absolute_url }}">{{ article.get_previous_published.title }}</a></p>
+{% endif %}
+</div>
+
+{% endblock %}
+

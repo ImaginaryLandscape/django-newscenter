@@ -1,0 +1,5 @@
+  <div class="article-list-item">
+    <div class="article-list-release-date">{{ article.release_date|date:"m/d/Y" }}</div>
+    <h2><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></h2>
+    {{ article.teaser|truncatewords_html:"18"|safe }}
+  </div>

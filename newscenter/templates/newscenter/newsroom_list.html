@@ -1,0 +1,12 @@
+{% extends "newscenter/base.html" %}
+
+{% block title %}News Center{% endblock %}
+{% block appcontent %}
+
+<h1>News Center</h1>
+{% for object in object_list %}
+<h2><a href="{{ object.get_absolute_url }}">{{ object.name }}</a></h2>
+{% empty %}
+<p>There are currently no newsrooms.</p>
+{% endfor %}
+{% endblock %}

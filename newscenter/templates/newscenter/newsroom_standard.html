@@ -1,0 +1,16 @@
+{% extends "newscenter/base.html" %}
+
+{% block title %}{{ newsroom }}{% endblock %}
+
+{% block appcontent %}
+<div id="article-index">
+<h1>{{ newsroom }}</h1>
+{% for article in article_list.object_list %}
+  {% include "newscenter/includes/list_article.html" %}
+  {% empty %}
+  <p>There are no matching articles in {{ newsroom }}.</p>
+{% endfor %}
+{% include "newscenter/includes/pagination.html" %}
+</div>
+{% endblock %}
+

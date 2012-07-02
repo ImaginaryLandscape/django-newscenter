@@ -1,0 +1,13 @@
+{% ifnotequal article_list.paginator.num_pages 1 %}
+<div class="pagination">
+  <span class="step-links">
+    {% if article_list.has_previous %}
+    <a href="?page={{ article_list.previous_page_number }}" class="prev-link">prev</a>
+    {% endif %}
+    Page {{ article_list.number }} of {{ article_list.paginator.num_pages }}
+    {% if article_list.has_next %}
+    <a href="?page={{ article_list.next_page_number }}" class="next-link">next</a>
+    {% endif %}
+  </span>
+</div>
+{% endifnotequal %}
