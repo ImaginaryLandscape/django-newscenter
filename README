@@ -7,4 +7,4 @@ Installation Instructions
    (r'^news/', include('newscenter.urls')),
 4. Run syncdb
 5. Run collectstatic
-6. Load the initial newsroom object from the newscenter fixtures directory, "django-admin loaddata newscenter/fixtures/newsroom.json". This has not been called initial_data.json because we want it to be editable and not reset every time syncdb is run.
+6. Load the initial newsroom object from the newscenter fixtures directory, "loaddata newscenter/fixtures/newsroom.json". This has not been called initial_data.json because we want it to be editable and not reset every time syncdb is run.
