@@ -1,6 +1,6 @@
 from datetime import datetime
 from django.db import models
-from django.contrib.syndication.feeds import Feed
+from django.contrib.syndication.views import Feed
 from random import choice
 from newscenter import managers
 import PIL
