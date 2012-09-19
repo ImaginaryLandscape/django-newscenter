@@ -33,7 +33,7 @@ feed_args = {
     'all': AllEntries
 }
 urlpatterns += patterns('',
-    (r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.feed', 
+    (r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.Feed', 
         {'feed_dict': feed_args}),
 )
 
