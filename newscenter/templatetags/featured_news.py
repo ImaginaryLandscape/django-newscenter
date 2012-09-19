@@ -17,12 +17,11 @@ class FeaturedNode(Node):
             raise template.TemplateSyntaxError, "Failed to retrieve model"
         try:
             newsroom = model.objects.get(slug=self.newsroom)
+            context['newsroom'] = newsroom
+            context['featured_list'] = newsroom.articles.get_featured()
         except:
             pass
-#            raise template.TemplateSyntaxError, "Newsroom Not Found"
 
-        context['featured_list'] = newsroom.articles.get_featured()
-        context['newsroom'] = newsroom
         return ''
 
     def get_news(parser, token):
