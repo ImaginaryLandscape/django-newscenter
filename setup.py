@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='newscenter',
-    version='0.1.9',
+    version='0.1.9.1',
     description='A News Release Application for Django',
 
     author='Imaginary Landscape',
