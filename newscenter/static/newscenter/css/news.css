@@ -200,6 +200,7 @@ a.more-link:hover {
 }
 
 .share-links {
+  display: inline-block;
   margin: 10px 0 6px 0;
 }
 
@@ -278,7 +279,7 @@ a.more-link:hover {
     border-radius:          0 10px 10px 10px;
     -moz-border-radius:     0 10px 10px 10px;
     -webkit-border-radius:  0 10px 10px 10px;
-    background:     #d4d4e2;
+    background:     #EAEAEA;
 }
 
 #ppy1 .ppy-stage {
@@ -328,7 +329,7 @@ a.more-link:hover {
 }
 
 #ppy1 .ppy-stagewrap {
-    background:     #0c3b3d;
+    background:     #D4D4D5;
     border-radius:          0 5px 5px 5px;
     -moz-border-radius:     0 5px 5px 5px;
     -webkit-border-radius:  0 5px 5px 5px;
@@ -339,12 +340,7 @@ a.more-link:hover {
 }
 
 #ppy1 .ppy-nav {
-    background:     #0c3b3d;
-    background:     -moz-linear-gradient(
-        center bottom,
-        rgb(12,59,61) 0%,
-        rgb(58,131,133) 100%
-    );
+    background:     #1F7DAF;
     width:          104px;
     height:         32px;
     padding:        5px;
@@ -390,7 +386,7 @@ a.more-link:hover {
 }
 
 #ppy1 .ppy-nav a:hover {
-    background-color:   #a1c436;
+    background-color:   #00AEED;
     cursor:         pointer;
 }
 
