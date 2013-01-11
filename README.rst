@@ -9,15 +9,14 @@ A Django CMS apphook is included as well as a templatetag for rendering news rel
 Installation
 ============
 
-#. Add newscenter to your python path::
-  'pip install newscenter',
-#. Add the following to the INSTALLED_APPS of your project's settings.py::
-	'newscenter',
-#. In your urls.py, add::
-  (r'^news/', include('newscenter.urls')),
-#. Run::
-	./manage.py syncdb
-	./manage.py collectstatic
+Add newscenter to your python path:
+    $ pip install newscenter
+Add the following to the INSTALLED_APPS of your project's settings.py:
+    'newscenter',
+In your urls.py, add:
+    (r'^news/', include('newscenter.urls')),
+Run:
+	syncdb and collectstatic
 
 Template Tag
 ============
