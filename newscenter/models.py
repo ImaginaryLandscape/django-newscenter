@@ -30,7 +30,7 @@ class Category(models.Model):
 
 class Newsroom(models.Model):
     name = models.CharField(max_length=50)
-    slug = models.SlugField('ID')
+    slug = models.SlugField()
     theme = models.CharField(max_length=8, choices=THEME_CHOICES, default='standard')
     
     class Meta:
@@ -46,7 +46,7 @@ class Newsroom(models.Model):
 
 class Location(models.Model):
     name = models.CharField(max_length=100)
-    slug = models.SlugField('ID')
+    slug = models.SlugField()
     
     class Meta:
         ordering = ('name',)

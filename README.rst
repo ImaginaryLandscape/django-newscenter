@@ -9,14 +9,29 @@ A Django CMS apphook is included as well as a templatetag for rendering news rel
 Installation
 ============
 
-#. Add newscenter to your python path
+#. Add newscenter to your python path::
+  'pip install newscenter',
 #. Add the following to the INSTALLED_APPS of your project's settings.py::
 	'newscenter',
-#. In your urls.py, add
-	(r'^news/', include('newscenter.urls')),
+#. In your urls.py, add::
+  (r'^news/', include('newscenter.urls')),
 #. Run::
-	manage.py syncdb
-	manage.py collectstatic
-#. Load the initial newsroom object from the newscenter fixtures directory:
-	manage.py loaddata newscenter/fixtures/newsroom.json. 
-   This has not been called initial_data.json because we want it to be editable and not reset every time syncdb is run.
+	./manage.py syncdb
+	./manage.py collectstatic
+
+Template Tag
+============
+
+The template tag can be used like this::
+
+    {% load newscenter_tags %}
+    {% get_news "newsroom-name" %}
+    <h1><a href="{{ newsroom.get_absolute_url }}">{{ newsroom.name }}</a></h1>
+    {% for release in featured_list %}
+    <article>
+    <h2>{{ release.title }}</h2>
+    <p class="teaser">{{ release.teaser }}</p>
+    <p><a href="{{ release.get_absolute_url }}">Read more</a></p>
+    </article>
+    {% endfor %}
+   
