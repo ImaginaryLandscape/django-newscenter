@@ -4,6 +4,7 @@ setup(
     name='newscenter',
     version='0.1.9.1',
     description='A News Release Application for Django',
+    long_description=open('README.rst').read(),
 
     author='Imaginary Landscape',
     author_email='dbertrand@imagescape.com',
@@ -15,5 +16,5 @@ setup(
 
     zip_safe=False,
     include_package_data=True,
-    packages=find_packages(exclude=('ez_setup', 'examples', 'tests')),
+    packages=find_packages(),
 )
