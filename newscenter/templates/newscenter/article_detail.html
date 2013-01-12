@@ -64,8 +64,6 @@
 
   <div id="article-body">{{ article.body|safe }}</div>
 
-{% include "newscenter/includes/add-this.html" %}
-
 {% if article.categories.all %}
   <div id="article-categories">
   <span class="article-list-label">Categor{{ article.categories.count|pluralize:"y,ies" }}:</span>
