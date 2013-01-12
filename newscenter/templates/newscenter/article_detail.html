@@ -75,7 +75,7 @@
   </div>
 {% endif %}
 
-<div id="next-previous">
+<div id="next-previous" style="display: none">
 {% if article.get_next_published %}
 <p><strong>Next:</strong>
 <a href="{{ article.get_next_published.get_absolute_url }}">{{ article.get_next_published.title }}</a></p>
