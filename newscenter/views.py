@@ -12,7 +12,6 @@ def article_detail(request, newsroom, year, month, slug):
     month = month,
     article = get_object_or_404(models.Article.objects.get_published(), slug__exact=slug)
     newsroom = article.newsroom
-    theme = newsroom.theme
     return shortcuts.render_to_response(
         'newscenter/article_detail.html', locals(),
         context_instance=template.RequestContext(request))
@@ -51,14 +50,11 @@ def category_detail(request, slug):
 def newsroom_detail(request, slug):
     site = Site.objects.get_current()
     newsroom = get_object_or_404(models.Newsroom, slug__exact=slug)
-    theme = newsroom.theme
-    featured_list = newsroom.articles.get_featured()
     article_list = newsroom.articles.get_published()
-    if theme == 'standard':
-        paginator = Paginator(article_list, 10)
-        page = int(request.GET.get('page', '1'))
-        article_list = paginator.page(page)
+    paginator = Paginator(article_list, 10)
+    page = int(request.GET.get('page', '1'))
+    article_list = paginator.page(page)
 
     return shortcuts.render_to_response(
-        'newscenter/newsroom_'+theme+'.html', locals(),
+        'newscenter/newsroom.html', locals(),
         context_instance=template.RequestContext(request))

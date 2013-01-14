@@ -1,18 +1,19 @@
 from django.contrib.syndication.views import Feed
-from newscenter.models import Article
+from django.shortcuts import get_object_or_404
+from newscenter.models import Article, Newsroom
 
-class FeaturedEntries(Feed):
-    title = "Featured Articles"
-    link = "/news/"
-    description = "Featured Articles"
+class NewsroomFeed(Feed):
+    def get_object(self, request, newsroom):
+        return get_object_or_404(Newsroom, slug=newsroom)
 
-    def items(self):
-        return Article.objects.get_featured()
+    def title(self, obj):
+        return "%s Entries" % obj.name
 
-class AllEntries(Feed):
-    title = "All News"
-    link = "/news/"
-    description = "All News"
+    def link(self, obj):
+        return obj.get_absolute_url()
 
-    def items(self):
-        return Article.objects.get_published()
+    def description(self, obj):
+        return "Latest entries posted in %s" % obj.name
+
+    def items(self, obj):
+        return Article.objects.get_published().filter(newsroom__slug=obj.slug)

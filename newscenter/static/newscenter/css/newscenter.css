@@ -8,6 +8,7 @@
   border-bottom: none;
   font-size: 1.2em;
   font-weight: bold;
+  line-height: normal;
 }
 #news-content h2.subhead {
   color: #444;
@@ -67,11 +68,9 @@
   display: inline;
   margin-left: 0;
 }
-.news-rss {
-  clear: left;
-}
-.news-rss-icon {
-  float: right;
+#newsroom-rss-link,
+#newsroom-rss-link img {
+  display: inline-block;
 }
 #main-article {
   float: left;
@@ -183,7 +182,7 @@ a.more-link:hover {
 }
 
 .article-list-item {
-  margin-bottom: 10px;
+  margin: 10px 0;
   padding-left: 100px;
   position: relative;
 }
@@ -195,7 +194,6 @@ a.more-link:hover {
 .article-list-release-date {
   left: 0;
   top: 0;
-  margin-top: 2px;
   position: absolute;
 }
 

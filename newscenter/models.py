@@ -6,11 +6,6 @@ from newscenter import managers
 import PIL
 from django.conf import settings
 
-THEME_CHOICES = (
-    ('standard', 'Standard'),
-    ('advanced', 'Advanced'),
-)
-
 class Category(models.Model):
     title = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(
@@ -31,7 +26,6 @@ class Category(models.Model):
 class Newsroom(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField()
-    theme = models.CharField(max_length=8, choices=THEME_CHOICES, default='standard')
     
     class Meta:
         ordering = ('name',)

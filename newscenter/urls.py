@@ -1,6 +1,6 @@
 from datetime import datetime
 from django.conf.urls.defaults import *
-from newscenter.feeds import FeaturedEntries, AllEntries
+from newscenter.feeds import NewsroomFeed
 
 from newscenter import models 
 
@@ -13,8 +13,7 @@ urlpatterns = patterns('django.views.generic.list_detail',
 )
 
 ##Custom 
-urlpatterns += patterns(
-    'newscenter.views',
+urlpatterns += patterns('newscenter.views',
     (r'^(?P<slug>[\-\d\w]+)/$',
         'newsroom_detail', None, 'news_newsroom_detail'),
     (r'^categories/(?P<slug>[\-\d\w]+)/$',
@@ -28,12 +27,6 @@ urlpatterns += patterns(
 )
 
 ##Feeds
-feed_args = {
-    'featured': FeaturedEntries,
-    'all': AllEntries
-}
 urlpatterns += patterns('',
-    (r'^feeds/(?P<url>.*)/$', 'django.contrib.syndication.views.Feed', 
-        {'feed_dict': feed_args}),
+    (r'^(?P<newsroom>[\-\d\w]+)/rss/$', NewsroomFeed(), None, 'newsroom_feed'),
 )
-
