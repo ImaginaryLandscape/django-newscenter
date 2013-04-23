@@ -13,7 +13,7 @@ urlpatterns = patterns('',
     (r'^$', ListView.as_view(
         queryset=models.Newsroom.objects.all(), 
         allow_empty=True,
-    ), 'newscenter_index'),
+    ), name='newscenter_index'),
     (r'^categories/$', ListView.as_view(
         queryset=models.Newsroom.objects.all(), 
         allow_empty=True,
