@@ -1,6 +1,6 @@
 from django import http, shortcuts, template
 from django.conf import settings
-from django.views.generic.date_based import YearArchiveView, MonthArchiveView
+from django.views.generic import YearArchiveView, MonthArchiveView
 from django.contrib.sites.models import Site
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.shortcuts import get_object_or_404
