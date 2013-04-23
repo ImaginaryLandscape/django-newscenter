@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.conf.urls import url
 from django.conf.urls.defaults import *
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -10,11 +11,11 @@ from newscenter import models
 
 ##Object List
 urlpatterns = patterns('',
-    (r'^$', ListView.as_view(
+    url(r'^$', ListView.as_view(
         queryset=models.Newsroom.objects.all(), 
         allow_empty=True,
     ), name='newscenter_index'),
-    (r'^categories/$', ListView.as_view(
+    url(r'^categories/$', ListView.as_view(
         queryset=models.Newsroom.objects.all(), 
         allow_empty=True,
     )),
@@ -22,16 +23,16 @@ urlpatterns = patterns('',
 
 ##Custom 
 urlpatterns += patterns('newscenter.views',
-    (r'^(?P<slug>[\-\d\w]+)/$',
-        'newsroom_detail', None, 'news_newsroom_detail'),
-    (r'^categories/(?P<slug>[\-\d\w]+)/$',
-        'category_detail', None, 'news_category_detail'),
-    (r'^(?P<newsroom>[\-\d\w]+)/(?P<year>\d{4})/(?P<month>[a-z]{3})/(?P<slug>[\-\d\w]+)/$',
-        'article_detail', None, 'news_article_detail'),
-    (r'^(?P<newsroom>[\-\d\w]+)/(?P<year>\d{4})/(?P<month>[a-z]{3})/$',
-        ArchiveMonth.as_view(), None, 'news_archive_month',),
-    (r'^(?P<newsroom>[\-\d\w]+)/(?P<year>\d{4})/$', 
-        ArchiveYear.as_view(), None, 'news_archive_year',)
+    url(r'^(?P<slug>[\-\d\w]+)/$',
+        'newsroom_detail', name='news_newsroom_detail'),
+    url(r'^categories/(?P<slug>[\-\d\w]+)/$',
+        'category_detail', name='news_category_detail'),
+    url(r'^(?P<newsroom>[\-\d\w]+)/(?P<year>\d{4})/(?P<month>[a-z]{3})/(?P<slug>[\-\d\w]+)/$',
+        'article_detail', name='news_article_detail'),
+    url(r'^(?P<newsroom>[\-\d\w]+)/(?P<year>\d{4})/(?P<month>[a-z]{3})/$',
+        ArchiveMonth.as_view(), name='news_archive_month',),
+    url(r'^(?P<newsroom>[\-\d\w]+)/(?P<year>\d{4})/$', 
+        ArchiveYear.as_view(), name='news_archive_year',)
 )
 
 ##Feeds
