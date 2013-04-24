@@ -18,7 +18,7 @@ def article_detail(request, newsroom, year, month, slug):
         context_instance=template.RequestContext(request))
 
 class ArchiveYear(YearArchiveView):
-    model = models.Newsroom
+    model = models.Article
     date_field = 'release_date'
     make_object_list = True
 
@@ -34,7 +34,7 @@ class ArchiveYear(YearArchiveView):
 
 
 class ArchiveMonth(YearArchiveView):
-    model = models.Newsroom
+    model = models.Article
     date_field = 'release_date'
     make_object_list = True
 
