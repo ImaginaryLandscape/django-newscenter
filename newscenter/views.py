@@ -44,7 +44,7 @@ class ArchiveMonth(YearArchiveView):
         )
 
     def get_context_data(self, *args, **kwargs):
-        ctx = super(ArchiveYear, self).get_context_data(*args, **kwargs)
+        ctx = super(ArchiveMonth, self).get_context_data(*args, **kwargs)
         ctx['newsroom'] = self.kwargs['newsroom']
         return ctx        
 
