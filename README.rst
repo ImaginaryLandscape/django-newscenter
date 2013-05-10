@@ -21,7 +21,19 @@ In your urls.py, add:
     (r'^news/', include('newscenter.urls')),
 
 Run:
-    syncdb and collectstatic
+    ``manage.py syncdb`` or ``manage.py migrate`` if you're using south,
+    ``manage.py collectstatic``
+
+Dependencies
+============
+The following will be installed automatically if you use pip to install newscenter:
+
+    PIL (http://www.pythonware.com/products/pil/)
+    easy-thumbnails (https://github.com/SmileyChris/easy-thumbnails)
+    feedparser (http://pythonhosted.org/feedparser/)
+
+For easy-thumbnails, you'll also need to syncdb or migrate, then add it to INSTALLED_APPS:
+    'easy_thumbnails',
 
 Template Tag
 ============
@@ -39,3 +51,4 @@ The template tag can be used like this::
     </article>
     {% endfor %}
    
+

@@ -10,6 +10,7 @@ setup(
     author_email='dbertrand@imagescape.com',
 
     install_requires=(
+        'PIL',
         'easy-thumbnails',
         'feedparser',
     ),
