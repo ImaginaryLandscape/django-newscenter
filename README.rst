@@ -1,22 +1,27 @@
-==========
-Newscenter
-==========
+==============
+Newscenter 1.1
+==============
 
 A Django application for creating news releases which can be associated with unique newsroom objects.
 
 A Django CMS apphook is included as well as a templatetag for rendering news release headlines in non-application templates.
+
+Now compatible with Django 1.5.
 
 Installation
 ============
 
 Add newscenter to your python path:
     $ pip install newscenter
+
 Add the following to the INSTALLED_APPS of your project's settings.py:
     'newscenter',
+
 In your urls.py, add:
     (r'^news/', include('newscenter.urls')),
+
 Run:
-	syncdb and collectstatic
+    syncdb and collectstatic
 
 Template Tag
 ============
