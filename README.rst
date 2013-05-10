@@ -1,6 +1,6 @@
-==============
-Newscenter 1.1
-==============
+=================
+Django Newscenter
+=================
 
 A Django application for creating news releases which can be associated with unique newsroom objects.
 
