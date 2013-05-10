@@ -18,7 +18,7 @@ Add the following to the INSTALLED_APPS of your project's settings.py:
     'newscenter',
 
 In your urls.py, add:
-    (r'^news/', include('newscenter.urls')),
+    url(r'^newscenter/', include('newscenter.urls')),
 
 Run:
     ``manage.py syncdb`` (or ``manage.py migrate`` if you're using south) and ``manage.py collectstatic``
