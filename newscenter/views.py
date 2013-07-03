@@ -11,7 +11,8 @@ def article_detail(request, newsroom, year, month, slug):
     request,
     year = year,
     month = month,
-    article = get_object_or_404(models.Article.objects.get_published(), slug__exact=slug)
+    article = get_object_or_404(models.Article.objects.get_published(), 
+        slug__exact=slug, newsroom__slug__exact=newsroom)
     newsroom = article.newsroom
     return shortcuts.render_to_response(
         'newscenter/article_detail.html', locals(),
@@ -33,7 +34,7 @@ class ArchiveYear(YearArchiveView):
         return ctx        
 
 
-class ArchiveMonth(YearArchiveView):
+class ArchiveMonth(MonthArchiveView):
     model = models.Article
     date_field = 'release_date'
     make_object_list = True
