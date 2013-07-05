@@ -6,14 +6,10 @@ class NewsroomSitemap(Sitemap):
     def items(self):
         return Newsroom.objects.all()
 
-    def lastmod(self, obj):
-        return obj.modified
-
-
 class ArticleSitemap(Sitemap):
     def items(self):
         return Article.objects.get_published()
 
     def lastmod(self, obj):
-        return obj.modified
+        return obj.release_date
 
