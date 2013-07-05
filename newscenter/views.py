@@ -30,7 +30,9 @@ class ArchiveYear(YearArchiveView):
 
     def get_context_data(self, *args, **kwargs):
         ctx = super(ArchiveYear, self).get_context_data(*args, **kwargs)
-        ctx['newsroom'] = self.kwargs['newsroom']
+        newsroom = get_object_or_404(models.Newsroom, 
+            slug__exact=self.kwargs['newsroom'])
+        ctx['newsroom'] = newsroom
         return ctx        
 
 
@@ -46,7 +48,9 @@ class ArchiveMonth(MonthArchiveView):
 
     def get_context_data(self, *args, **kwargs):
         ctx = super(ArchiveMonth, self).get_context_data(*args, **kwargs)
-        ctx['newsroom'] = self.kwargs['newsroom']
+        newsroom = get_object_or_404(models.Newsroom, 
+            slug__exact=self.kwargs['newsroom'])        
+        ctx['newsroom'] = newsroom
         return ctx        
 
 def category_detail(request, slug):

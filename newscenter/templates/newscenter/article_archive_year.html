@@ -6,7 +6,7 @@
 
 {% block appcontent %}
 <div id="breadcrumbs">
-  {% include "newscenter/includes/bread-home.html" %} | {{ year }}
+  {% include "newscenter/includes/bread-home.html" %} | {{ year|date:"Y" }}
 </div>
 <h1>{{ newsroom }} {{ year }}</h1>
 
