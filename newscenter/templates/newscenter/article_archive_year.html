@@ -1,4 +1,7 @@
 {% extends 'newscenter/base.html' %}
+
+{% load tz %}
+
 {% block title %}Articles for {{ year }}{% endblock %}
 
 {% block appcontent %}
@@ -16,7 +19,7 @@
 <div id="date-list">
 <p>View articles for the month of:</p>
 {% for date in date_list %}
-  <span><a href="{{ date|date:"b" }}">{{ date|date:"F" }}</a></span>
+  <span><a href="{{ date|utc|date:"b" }}">{{ date|utc|date:"F" }}</a></span>
 {% endfor %}
 </div>
 
