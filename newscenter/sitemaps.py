@@ -10,7 +10,7 @@ class NewsroomSitemap(Sitemap):
         return obj.modified
 
 
-class ArticleSiteMap(Sitemap):
+class ArticleSitemap(Sitemap):
     def items(self):
         return Article.objects.get_published()
 
