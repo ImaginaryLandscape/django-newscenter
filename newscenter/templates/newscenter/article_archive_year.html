@@ -2,13 +2,13 @@
 
 {% load tz %}
 
-{% block title %}Articles for {{ year }}{% endblock %}
+{% block title %}{{ newsroom }} {{ year|date:"Y" }}{% endblock %}
 
 {% block appcontent %}
 <div id="breadcrumbs">
   {% include "newscenter/includes/bread-home.html" %} | {{ year|date:"Y" }}
 </div>
-<h1>{{ newsroom }} {{ year }}</h1>
+<h1>{{ newsroom }} {{ year|date:"Y" }}</h1>
 
 {% for article in object_list %}
   {% include "newscenter/includes/list_article.html" %}
