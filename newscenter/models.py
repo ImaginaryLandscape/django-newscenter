@@ -56,7 +56,7 @@ class Location(models.Model):
 class Article(models.Model):
     title = models.CharField(max_length=400)
     location = models.ForeignKey(Location, blank=True, null=True)
-    slug = models.SlugField('ID',
+    slug = models.SlugField('ID', unique=True,
         unique_for_date='release_date',
         help_text='Automatically generated from the title.'
     )
