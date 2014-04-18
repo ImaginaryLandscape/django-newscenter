@@ -22,6 +22,9 @@ class Category(models.Model):
     def get_absolute_url(self):
         return ('news_category_detail', [str(self.slug)])
 
+    def get_article_count(self):
+        return Category.objects.filter(slug=self.slug).annotate(
+            article_count=models.Count('articles'))[0].article_count
 
 class Newsroom(models.Model):
     name = models.CharField(max_length=50)
