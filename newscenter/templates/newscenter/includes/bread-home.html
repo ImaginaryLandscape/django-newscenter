@@ -1,3 +1,5 @@
+{% load url from future %}
+
 {% if newsroom %}
 <a href="{{ newsroom.get_absolute_url }}">{{ newsroom }}</a>
 {% else %}
