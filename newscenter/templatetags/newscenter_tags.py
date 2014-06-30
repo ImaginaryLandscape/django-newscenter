@@ -14,7 +14,7 @@ class FeaturedNode(Node):
         try:
             model = get_model('newscenter', 'Newsroom')
         except:
-            raise template.TemplateSyntaxError, "Failed to retrieve model"
+            raise template.TemplateSyntaxError("Failed to retrieve model")
         try:
             newsroom = model.objects.get(slug=self.newsroom)
             context['newsroom'] = newsroom
@@ -39,7 +39,7 @@ class CategoryNode(Node):
         try:
             context['category_list'] = Category.objects.all()
         except:
-            raise template.TemplateSyntaxError, ""
+            raise template.TemplateSyntaxError("")
 
         return ''
 
