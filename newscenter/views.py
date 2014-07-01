@@ -72,3 +72,20 @@ def newsroom_detail(request, slug):
     return shortcuts.render_to_response(
         'newscenter/newsroom.html', locals(),
         context_instance=template.RequestContext(request))
+
+def dual_newsrooms(request, slug1, slug2):
+    site = Site.objects.get_current()
+    newsroom1 = get_object_or_404(models.Newsroom, slug__exact=slug1)
+    newsroom2 = get_object_or_404(models.Newsroom, slug__exact=slug2)
+    article1 = newsroom1.articles.get_published().order_by('release_date')
+    article2 = newsroom2.articles.get_published().order_by('release_date')
+    paginator1 = Paginator(article1, 1)
+    paginator2 = Paginator(article2, 1)
+    page = int(request.GET.get('page', '1'))
+    article1 = paginator1.page(page)
+    article2 = paginator2.page(page)
+
+    return shortcuts.render_to_response(
+        'newscenter/dual_newsrooms.html', locals(),
+        context_instance=template.RequestContext(request))
+    
