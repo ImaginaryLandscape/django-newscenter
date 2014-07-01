@@ -1,7 +1,7 @@
 from django import template
 from django.template import Library, Node
 from django.db.models import get_model
-
+from newscenter.models import Category
 
 register = Library()
 
@@ -14,7 +14,7 @@ class FeaturedNode(Node):
         try:
             model = get_model('newscenter', 'Newsroom')
         except:
-            raise template.TemplateSyntaxError, "Failed to retrieve model"
+            raise template.TemplateSyntaxError("Failed to retrieve model")
         try:
             newsroom = model.objects.get(slug=self.newsroom)
             context['newsroom'] = newsroom
@@ -34,3 +34,16 @@ class FeaturedNode(Node):
 
     get_news = register.tag(get_news)
 
+class CategoryNode(Node):
+    def render(self, context):
+        try:
+            context['category_list'] = Category.objects.all()
+        except:
+            raise template.TemplateSyntaxError("")
+
+        return ''
+
+    def show_categories(parser, token):
+        return CategoryNode()
+
+    show_categories = register.tag(show_categories)

@@ -1,10 +1,11 @@
 from datetime import datetime
-from django.conf.urls import url
-from django.conf.urls.defaults import *
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.dates import YearArchiveView, MonthArchiveView
-
+try:
+    from django.conf.urls import patterns, url
+except ImportError:
+    from django.conf.urls.defaults import patterns, url
 from newscenter.views import ArchiveYear, ArchiveMonth
 from newscenter.feeds import NewsroomFeed
 from newscenter import models 
