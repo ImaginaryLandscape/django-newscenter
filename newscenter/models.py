@@ -13,6 +13,7 @@ class Category(models.Model):
     )
     
     class Meta:
+        ordering = ('title',)
         verbose_name_plural = 'categories'
 
     def __unicode__(self):
@@ -22,6 +23,9 @@ class Category(models.Model):
     def get_absolute_url(self):
         return ('news_category_detail', [str(self.slug)])
 
+    def get_article_count(self):
+        return Category.objects.filter(slug=self.slug).annotate(
+            article_count=models.Count('articles'))[0].article_count
 
 class Newsroom(models.Model):
     name = models.CharField(max_length=50)
@@ -56,7 +60,7 @@ class Location(models.Model):
 class Article(models.Model):
     title = models.CharField(max_length=400)
     location = models.ForeignKey(Location, blank=True, null=True)
-    slug = models.SlugField('ID',
+    slug = models.SlugField('ID', unique=True,
         unique_for_date='release_date',
         help_text='Automatically generated from the title.'
     )
