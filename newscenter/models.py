@@ -27,6 +27,18 @@ class Category(models.Model):
         return Category.objects.filter(slug=self.slug).annotate(
             article_count=models.Count('articles'))[0].article_count
 
+class Contact(models.Model):
+    name = models.CharField(max_length=200)
+    phone = models.CharField(max_length=50, blank=True)
+    email = models.EmailField(blank=True)
+
+    class Meta:
+        ordering = ('name',)
+
+    def __unicode__(self):
+        return u'%s' %(self.name)
+
+
 class Newsroom(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField()
@@ -60,6 +72,7 @@ class Location(models.Model):
 class Article(models.Model):
     title = models.CharField(max_length=400)
     location = models.ForeignKey(Location, blank=True, null=True)
+    contacts = models.ManyToManyField(Contact, blank=True, null=True)
     slug = models.SlugField('ID', unique=True,
         unique_for_date='release_date',
         help_text='Automatically generated from the title.'

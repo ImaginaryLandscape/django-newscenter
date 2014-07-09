@@ -10,6 +10,10 @@ class ArticleInline(admin.StackedInline):
     model = models.Article
     extra = 0
 
+class ContactAdmin(admin.ModelAdmin):
+    list_display = ('name', 'email', 'phone',)
+    search_fields = ('name', 'email', 'phone',)
+
 class LocationAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug' : ('name',)}
 
@@ -30,15 +34,15 @@ class ArticleAdmin(model_admin):
         'featured','newsroom',)
     list_editable = ('active', 'featured','newsroom',)
     search_fields = ['title', 'body', 'teaser',]
-    list_filter = ('release_date', 'expire_date', 'newsroom', 'active', 
+    list_filter = ('contacts', 'release_date', 'expire_date', 'newsroom', 'active', 
         'featured', 'categories',)
     prepopulated_fields = {'slug' : ('title',)}
     date_heirarchy = 'release_date'
     filter_horizontal = ('categories',)
     fieldsets = (
         (None, {'fields': (('title', 'slug'), ('newsroom', 'active', 
-                'featured'), 'categories', 'location', 'teaser', 
-                'body', ('release_date', 'expire_date'),)}),
+                'featured'), 'categories', ('contacts', 'location'), 
+                'teaser', 'body', ('release_date', 'expire_date'),)}),
     )
     form = forms.ArticleAdminModelForm
 
@@ -51,6 +55,7 @@ class CategoryAdmin(admin.ModelAdmin):
     )
 
 admin.site.register(models.Article, ArticleAdmin)
+admin.site.register(models.Contact, ContactAdmin)
 admin.site.register(models.Newsroom, NewsroomAdmin)
 admin.site.register(models.Location, LocationAdmin)
 admin.site.register(models.Category, CategoryAdmin)

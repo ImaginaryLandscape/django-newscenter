@@ -31,25 +31,24 @@
       </li>
     {% endfor %}
     </ul>
-            <div class="ppy-outer">
-                <div class="ppy-stage">
-                    <div class="ppy-nav">
-                        <div class="nav-wrap">
-                            <a class="ppy-prev" title="Previous image">Previous image</a>
-                            <a class="ppy-switch-enlarge" title="Enlarge">Enlarge</a>
-                            <a class="ppy-switch-compact" title="Close">Close</a>
-                            <a class="ppy-next" title="Next image">Next image</a>
-                        </div>
-                    </div>
-                    <div class="ppy-counter">
-                        <strong class="ppy-current"></strong> / <strong class="ppy-total"></strong> 
-                    </div>
-
-                </div>
-                <div class="ppy-caption">
-                    <span class="ppy-text"></span>
-                </div>
-            </div>
+    <div class="ppy-outer">
+      <div class="ppy-stage">
+        <div class="ppy-nav">
+          <div class="nav-wrap">
+            <a class="ppy-prev" title="Previous image">Previous image</a>
+            <a class="ppy-switch-enlarge" title="Enlarge">Enlarge</a>
+            <a class="ppy-switch-compact" title="Close">Close</a>
+            <a class="ppy-next" title="Next image">Next image</a>
+          </div>
+        </div>
+        <div class="ppy-counter">
+          <strong class="ppy-current"></strong> / <strong class="ppy-total"></strong> 
+        </div>
+      </div>
+      <div class="ppy-caption">
+        <span class="ppy-text"></span>
+      </div>
+    </div>
   </div>
   {% endif %}
 
@@ -72,6 +71,18 @@
     <li><a href="{{ category.get_absolute_url }}">{{ category.title }}</a></li>
   {% endfor %}
   </ul>
+  </div>
+{% endif %}
+
+{% if article.contacts.all %}
+  <div id="article-contacts">
+  <h2>Contacts:</h2>
+  {% for contact in article.contacts.all %}
+    <div>
+      <p>{{ contact.name }}</p>
+      <p>{{ contact.phone }} {{ contact.email|urlize }}</p>
+    </div>
+  {% endfor %}
   </div>
 {% endif %}
 

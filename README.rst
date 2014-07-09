@@ -6,7 +6,7 @@ A Django application for creating news releases which can be associated with uni
 
 A Django CMS apphook is included as well as a templatetag for rendering news release headlines in non-application templates.
 
-Now compatible with Django 1.5.
+Django 1.5 and up
 
 Installation
 ============
@@ -28,14 +28,15 @@ Dependencies
 
 The following will be installed automatically if you use pip to install newscenter:
 
-    PIL (http://www.pythonware.com/products/pil/)
+    Pillow (http://python-pillow.github.io/)
 
     easy-thumbnails (https://github.com/SmileyChris/easy-thumbnails)
 
     feedparser (http://pythonhosted.org/feedparser/)
 
-For easy-thumbnails, you'll also need to syncdb or migrate, then add it to INSTALLED_APPS:
+For easy-thumbnails, you'll also need to add it to INSTALLED_APPS and run syncdb or migrate:
     'easy_thumbnails',
+
 
 Template Tag
 ============
