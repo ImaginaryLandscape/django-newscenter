@@ -55,13 +55,15 @@
 }
 
 #article-locations,
-#article-categories,
-#article-contacts {
+#article-categories {
   font-size: .9em;
   margin: 14px 0;
 }
 #article-contacts div {
   margin-bottom: 1em;
+}
+#article-contacts p {
+  margin-bottom: 0;
 }
 .article-list-label {
   font-weight: bold;
