@@ -77,7 +77,7 @@ class Article(models.Model):
         unique_for_date='release_date',
         help_text='Automatically generated from the title.'
     )
-    body = models.TextField()
+    body = models.TextField(blank=True)
     teaser = models.TextField(blank=True, 
         help_text="A summary preview of the article.")
     release_date = models.DateTimeField('Publication Date', 
