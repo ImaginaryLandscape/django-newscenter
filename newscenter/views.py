@@ -22,6 +22,7 @@ def article_detail(request, newsroom, year, month, slug):
             _('Apps'))
         menu = admin_menu.get_or_create_menu('newscenter-menu',
             _('Newscenter ...'))
+        menu.add_break()        
         menu.add_modal_item(_('Change this Article'), url=reverse(
             'admin:newscenter_article_change', args=[article.id]))
     return shortcuts.render_to_response(

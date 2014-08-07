@@ -45,7 +45,7 @@ class NewscenterToolbar(CMSToolbar):
             admin_menu.add_break('custom-break', position=position)
 
         # OK, create our news menu here.
-        news_menu = admin_menu.get_or_create_menu(
+        menu = admin_menu.get_or_create_menu(
             'newscenter-menu',
             _('Newscenter ...'),
             position=position
@@ -54,33 +54,37 @@ class NewscenterToolbar(CMSToolbar):
         # Let's add some sub-menus to our news menu that help our users
         # manage news-related things.
 
+        url = reverse('admin:app_list', args=('newscenter',))
+        menu.add_sideframe_item(_('Newscenter Administration'), url=url)
+
+        menu.add_break()
+
         # Take the user to the admin-listing for news articles...
         url = reverse('admin:newscenter_article_changelist')
-        news_menu.add_sideframe_item(_('Article List'), url=url)
+        menu.add_sideframe_item(_('Article List'), url=url)
 
         # Display a modal dialogue for creating a new news article...
         url = reverse('admin:newscenter_article_add')
-        news_menu.add_modal_item(_('Add New Article'), url=url)
+        menu.add_modal_item(_('Add New Article'), url=url)
 
         # Add a break in the submenus
-        news_menu.add_break()
+        menu.add_break()
 
         url = reverse('admin:newscenter_category_changelist')
-        news_menu.add_sideframe_item(_('Category List'), url=url)
+        menu.add_sideframe_item(_('Category List'), url=url)
 
         # Display a modal dialogue for creating a new news article...
         url = reverse('admin:newscenter_category_add')
-        news_menu.add_modal_item(_('Add New Category'), url=url)
-
+        menu.add_modal_item(_('Add New Category'), url=url)
 
         # Add a break in the submenus
-        news_menu.add_break()
+        menu.add_break()
 
         url = reverse('admin:newscenter_newsroom_changelist')
-        news_menu.add_sideframe_item(_('Newsroom List'), url=url)
+        menu.add_sideframe_item(_('Newsroom List'), url=url)
 
         # Display a modal dialogue for creating a new news article...
         url = reverse('admin:newscenter_newsroom_add')
-        news_menu.add_modal_item(_('Add New Newsroom'), url=url)
+        menu.add_modal_item(_('Add New Newsroom'), url=url)
 
 
