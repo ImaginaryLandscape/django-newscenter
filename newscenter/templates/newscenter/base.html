@@ -5,6 +5,8 @@
   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}newscenter/css/newscenter.css" />
 {% endblock %}
 
+{% block before_content %}<h1><a href="{{ newsroom.get_absolute_url }}">{{ newsroom }}</a></h1>{% endblock %}
+
 {% block content %}
   <div id="news-content">
     {% block appcontent %}{% endblock %}
