@@ -3,7 +3,9 @@ from django.conf import settings
 from django.views.generic import YearArchiveView, MonthArchiveView
 from django.contrib.sites.models import Site
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import get_object_or_404
+from django.core.urlresolvers import reverse
 
 from newscenter import models
 
@@ -14,6 +16,14 @@ def article_detail(request, newsroom, year, month, slug):
     article = get_object_or_404(models.Article.objects.get_published(), 
         slug__exact=slug, newsroom__slug__exact=newsroom)
     newsroom = article.newsroom
+    if hasattr(request, 'toolbar'):    
+        from cms.cms_toolbar import ADMIN_MENU_IDENTIFIER      
+        admin_menu = request.toolbar.get_or_create_menu(ADMIN_MENU_IDENTIFIER, 
+            _('Apps'))
+        menu = admin_menu.get_or_create_menu('newscenter-menu',
+            _('Newscenter ...'))
+        menu.add_modal_item(_('Change this Article'), url=reverse(
+            'admin:newscenter_article_change', args=[article.id]))
     return shortcuts.render_to_response(
         'newscenter/article_detail.html', locals(),
         context_instance=template.RequestContext(request))
