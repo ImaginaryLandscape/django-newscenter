@@ -8,13 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
 from newscenter import models
 
-try:
-    from site_config.decorators import website_template_override
-except:
-    pass
-
-@website_template_override
-def article_detail(request, newsroom, year, month, slug, website=None, *args, **kwargs):
+def article_detail(request, newsroom, year, month, slug, website=None, template_name='', *args, **kwargs):
     request
     year = year
     month = month
@@ -31,7 +25,7 @@ def article_detail(request, newsroom, year, month, slug, website=None, *args, **
         menu.add_modal_item(_('Change this Article'), url=reverse(
             'admin:newscenter_article_change', args=[article.id]))
     return shortcuts.render_to_response(
-        'newscenter/article_detail.html', locals(),
+        template_name, locals(),
         context_instance=template.RequestContext(request))
 
 class ArchiveYear(YearArchiveView):
@@ -83,7 +77,6 @@ def category_detail(request, slug):
         {'category': category, 'article_list': article_list,},
         context_instance=template.RequestContext(request))
 
-@website_template_override
 def newsroom_detail(request, slug, website='', *args, **kwargs):
     site = Site.objects.get_current()
     model_kwargs={ 'slug__exact':slug, 'website_short_name__exact':website}
