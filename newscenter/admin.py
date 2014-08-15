@@ -18,6 +18,7 @@ class LocationAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug' : ('name',)}
 
 class NewsroomAdmin(admin.ModelAdmin):
+    list_display = ('name', 'website_short_name')
     prepopulated_fields = {'slug' : ('name',)}
 
 

@@ -17,7 +17,7 @@ urlpatterns = patterns('',
         allow_empty=True,
     ), name='newscenter_index'),
     url(r'^categories/$', ListView.as_view(
-        queryset=models.Newsroom.objects.all(), 
+        queryset=models.Category.objects.all(), 
         allow_empty=True,
     )),
 )
