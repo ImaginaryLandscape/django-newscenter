@@ -510,8 +510,8 @@ a.more-link:hover {
 /* popeye example 3 */
 #ppy3.ppy-active {
     width:          240px;
-    float:          left;
-    margin:         0 20px 10px 0;
+    float:          right;
+    margin:         0 0 10px 20px;
 }
 
 #ppy3 .ppy-outer {

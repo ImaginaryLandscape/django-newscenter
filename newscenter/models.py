@@ -50,7 +50,10 @@ class Newsroom(models.Model):
         ordering = ('name',)
 
     def __unicode__(self):
-        return u'%s | %s' %(self.name, self.website_short_name)
+        if self.website_short_name:
+            return u'%s | %s' % (self.name, self.website_short_name)
+        else:
+            return u'%s' % (self.name)
 
     @models.permalink
     def get_absolute_url(self):
