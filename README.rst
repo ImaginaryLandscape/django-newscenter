@@ -39,8 +39,11 @@ For easy-thumbnails, you'll also need to add it to INSTALLED_APPS and run syncdb
 
 Change Log
 ============
-New in 1.4::
-Switched image plugin from popeye to bxslider
+New in 1.4.1:
+-Added title field to Contact model
+
+New in 1.4:
+-Switched image plugin from popeye to bxslider
 
 
 Template Tag
