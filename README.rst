@@ -37,6 +37,11 @@ The following will be installed automatically if you use pip to install newscent
 For easy-thumbnails, you'll also need to add it to INSTALLED_APPS and run syncdb or migrate:
     'easy_thumbnails',
 
+Change Log
+============
+New in 1.4::
+Switched image plugin from popeye to bxslider
+
 
 Template Tag
 ============

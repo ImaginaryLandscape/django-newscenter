@@ -4,15 +4,17 @@
 {% block title %}{{ article.title }}{% endblock %}
 
 {% block extra_head %}
-{{ block.super }}
-  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}newscenter/js/popeye/jquery.popeye.css" media="screen" />
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}newscenter/js/bxslider/jquery.bxslider.css" media="screen" />
 {% endblock %}
-
+  
 {% block extra_js %}
-  <script src="{{ STATIC_URL }}newscenter/js/popeye/jquery.popeye-2.0.4.min.js" type="text/javascript"></script>
+  <script src="{{ STATIC_URL }}newscenter/js/bxslider/jquery.bxslider.min.js" type="text/javascript"></script>
   <script type="text/javascript">
       $(document).ready(function(){
-          $('.ppy').popeye({}); 
+          $('.bxslider').bxSlider({
+              pagerCustom: '#bx-pager'
+          }); 
       }); 
   </script>
 {% endblock %}
@@ -27,33 +29,23 @@
   <h1>{{ article.title }}</h1>
   {% if article.teaser %}<p id="article-teaser">{{ article.teaser }}</p>{% endif %}
   <h2 class="date">{{ article.release_date|date:"F j, Y P" }}</h2>
+
   {% if article.images.count %}
-  <div id="ppy3" class="ppy">
-    <ul class="ppy-imglist">
+  <div id="article-gallery">
+    <ul class="bxslider">
     {% for image in article.images.all %}
-      <li><a href="{{ image.image.url }}"><img src="{% thumbnail image.image 240x180 crop %}" alt="{{ image.name }}" /></a>
-          <span class="ppy-extcaption">{{ image.caption }}</span>
+      <li><a href="{{ image.image.url }}"><img src="{% thumbnail image.image 240x300 crop %}" alt="{{ image.name }}" /></a>
+        {% if image.caption %}<p class="caption">{{ image.caption }}</p>{% endif %}
       </li>
     {% endfor %}
     </ul>
-    <div class="ppy-outer">
-      <div class="ppy-stage">
-        <div class="ppy-nav">
-          <div class="nav-wrap">
-            <a class="ppy-prev" title="Previous image">Previous image</a>
-            <a class="ppy-switch-enlarge" title="Enlarge">Enlarge</a>
-            <a class="ppy-switch-compact" title="Close">Close</a>
-            <a class="ppy-next" title="Next image">Next image</a>
-          </div>
-        </div>
-        <div class="ppy-counter">
-          <strong class="ppy-current"></strong> / <strong class="ppy-total"></strong> 
-        </div>
-      </div>
-      <div class="ppy-caption">
-        <span class="ppy-text"></span>
-      </div>
+    {% if article.images.count > 1 %}
+    <div id="bx-pager">
+    {% for image in article.images.all %}
+      <a data-slide-index="{{ forloop.counter0 }}" href="#"><img src="{% thumbnail image.image 40x40 crop %}" alt="{{ image.name }}" /></a>
+    {% endfor %}
     </div>
+    {% endif %}
   </div>
   {% endif %}
 
