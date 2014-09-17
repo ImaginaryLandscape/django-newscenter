@@ -31,6 +31,7 @@ class Category(models.Model):
 
 class Contact(models.Model):
     name = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, blank=True)
     phone = models.CharField(max_length=50, blank=True)
     email = models.EmailField(blank=True)
 
