@@ -25,7 +25,7 @@
 {{ article.title|truncatewords:"4" }}
 </div>
   <h1>{{ article.title }}</h1>
-  <p id="article-teaser">{{ article.teaser }}</p>
+  {% if article.teaser %}<p id="article-teaser">{{ article.teaser }}</p>{% endif %}
   <h2 class="date">{{ article.release_date|date:"F j, Y P" }}</h2>
   {% if article.images.count %}
   <div id="ppy3" class="ppy">
