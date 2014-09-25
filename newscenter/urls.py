@@ -6,16 +6,12 @@ try:
     from django.conf.urls import patterns, url
 except ImportError:
     from django.conf.urls.defaults import patterns, url
-from newscenter.views import ArchiveYear, ArchiveMonth
+from newscenter.views import NewsroomIndex, ArchiveYear, ArchiveMonth
 from newscenter.feeds import NewsroomFeed
 from newscenter import models 
 
 ##Object List
 urlpatterns = patterns('',
-    url(r'^$', ListView.as_view(
-        queryset=models.Newsroom.objects.all(), 
-        allow_empty=True,
-    ), name='newscenter_index'),
     url(r'^categories/$', ListView.as_view(
         queryset=models.Category.objects.all(), 
         allow_empty=True,
@@ -24,6 +20,7 @@ urlpatterns = patterns('',
 
 ##Custom 
 urlpatterns += patterns('newscenter.views',
+    url(r'^$', NewsroomIndex.as_view(), name="news_newsroom_index"),
     url(r'^(?P<slug>[\-\d\w]+)/$',
         'newsroom_detail', name='news_newsroom_detail'),
     url(r'^categories/(?P<slug>[\-\d\w]+)/$',

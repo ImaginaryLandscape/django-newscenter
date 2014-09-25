@@ -1,12 +1,24 @@
 from django import http, shortcuts, template
 from django.conf import settings
 from django.views.generic import YearArchiveView, MonthArchiveView
+from django.views.generic.list import ListView
 from django.contrib.sites.models import Site
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
 from newscenter import models
+
+class NewsroomIndex(ListView):
+    model = models.Newsroom
+
+    def get_queryset(self):
+        if self.kwargs.get('website'):
+            return models.Newsroom.objects.filter(
+                website_short_name=self.kwargs.get('website')
+            )
+        else:
+            return models.Newsroom.objects.all()
 
 def article_detail(request, newsroom, year, month, slug, website=None, template_name='', *args, **kwargs):
     request
