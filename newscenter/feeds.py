@@ -4,7 +4,7 @@ from newscenter.models import Article, Newsroom
 
 class NewsroomFeed(Feed):
     def get_object(self, request, newsroom, website=''):        
-        return get_object_or_404(Newsroom, slug=newsroom, website_short_name=website)
+        return get_object_or_404(Newsroom, slug=newsroom, website__short_name=website)
 
     def title(self, obj):
         return "%s Entries" % obj.name

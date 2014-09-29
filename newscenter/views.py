@@ -12,10 +12,16 @@ from newscenter import models
 class NewsroomIndex(ListView):
     model = models.Newsroom
 
+    def get_context_data(self, *args, **kwargs):
+        ctx = super(NewsroomIndex, self).get_context_data(*args, **kwargs)
+        website = self.kwargs.get('website', '')
+        ctx['website'] = website
+        return ctx
+
     def get_queryset(self):
         if self.kwargs.get('website'):
             return models.Newsroom.objects.filter(
-                website_short_name=self.kwargs.get('website')
+                website__short_name=self.kwargs.get('website')
             )
         else:
             return models.Newsroom.objects.all()
@@ -48,14 +54,14 @@ class ArchiveYear(YearArchiveView):
     def get_queryset(self):
         return models.Article.objects.get_published().filter(
             newsroom__slug=self.kwargs['newsroom'], 
-            newsroom__website_short_name=self.kwargs.get('website', '')
+            newsroom__website__short_name=self.kwargs.get('website', '')
         )
 
     def get_context_data(self, *args, **kwargs):
         ctx = super(ArchiveYear, self).get_context_data(*args, **kwargs)
         newsroom = get_object_or_404(models.Newsroom, 
             slug__exact=self.kwargs['newsroom'], 
-            website_short_name__exact=self.kwargs.get('website', '')
+            website__short_name__exact=self.kwargs.get('website', '')
         )
         ctx['newsroom'] = newsroom
         return ctx        
@@ -69,14 +75,14 @@ class ArchiveMonth(MonthArchiveView):
     def get_queryset(self):
         return models.Article.objects.get_published().filter(
             newsroom__slug=self.kwargs['newsroom'],
-            newsroom__website_short_name=self.kwargs.get('website', '')
+            newsroom__website__short_name=self.kwargs.get('website', '')
         )
 
     def get_context_data(self, *args, **kwargs):
         ctx = super(ArchiveMonth, self).get_context_data(*args, **kwargs)
         newsroom = get_object_or_404(models.Newsroom, 
             slug__exact=self.kwargs['newsroom'],
-            website_short_name__exact=self.kwargs.get('website', '')
+            website__short_name__exact=self.kwargs.get('website', '')
         )
         ctx['newsroom'] = newsroom
         return ctx        
@@ -89,9 +95,9 @@ def category_detail(request, slug):
         {'category': category, 'article_list': article_list,},
         context_instance=template.RequestContext(request))
 
-def newsroom_detail(request, slug, website='', *args, **kwargs):
+def newsroom_detail(request, slug, website=None, *args, **kwargs):
     site = Site.objects.get_current()
-    model_kwargs={ 'slug__exact':slug, 'website_short_name__exact':website}
+    model_kwargs={ 'slug__exact':slug, 'website__short_name__exact':website}
     newsroom = get_object_or_404(models.Newsroom, **model_kwargs)
     article_list = newsroom.articles.get_published()
     paginator = Paginator(article_list, 10)

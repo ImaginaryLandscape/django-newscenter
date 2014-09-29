@@ -46,20 +46,21 @@ class Newsroom(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField()
     website_short_name = models.SlugField(blank=True, max_length=64)
-    
+    website = models.ForeignKey('site_config.Website', null=True, blank=True, db_constraint=False)
+
     class Meta:
         ordering = ('name',)
 
     def __unicode__(self):
-        if self.website_short_name:
-            return u'%s | %s' % (self.name, self.website_short_name)
+        if self.website:
+            return u'%s | %s' % (self.name, self.website.name)
         else:
             return u'%s' % (self.name)
 
     @models.permalink
     def get_absolute_url(self):
-        if self.website_short_name:
-             return ('news_newsroom_detail', [str(self.website_short_name), str(self.slug)])
+        if self.website:
+             return ('news_newsroom_detail', [str(self.website.short_name), str(self.slug)])
         else:
              return ('news_newsroom_detail', [str(self.slug)])
 
@@ -120,9 +121,9 @@ class Article(models.Model):
            'slug': self.slug 
         }
 
-        if self.newsroom.website_short_name:
+        if self.newsroom.website:
             url_kwargs.update({
-                'website': self.newsroom.website_short_name,
+                'website': self.newsroom.website.short_name,
             })
 
         return ('news_article_detail', (), url_kwargs)
@@ -173,7 +174,7 @@ class Image(models.Model):
 
             try:
                 from newscenter import NewscenterSiteConfig
-                config = NewscenterSiteConfig(website=self.article.newsroom.website_short_name)
+                config = NewscenterSiteConfig(website=self.article.newsroom.website.short_name)
             except:
                 pass
 
