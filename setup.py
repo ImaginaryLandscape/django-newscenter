@@ -13,6 +13,7 @@ setup(
         'pillow',
         'easy-thumbnails',
         'feedparser',
+        'site_config',
     ),
 
     zip_safe=False,
