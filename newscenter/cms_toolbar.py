@@ -66,25 +66,3 @@ class NewscenterToolbar(CMSToolbar):
         # Display a modal dialogue for creating a new news article...
         url = reverse('admin:newscenter_article_add')
         menu.add_modal_item(_('Add New Article'), url=url)
-
-        # Add a break in the submenus
-        menu.add_break()
-
-        url = reverse('admin:newscenter_category_changelist')
-        menu.add_sideframe_item(_('Category List'), url=url)
-
-        # Display a modal dialogue for creating a new news article...
-        url = reverse('admin:newscenter_category_add')
-        menu.add_modal_item(_('Add New Category'), url=url)
-
-        # Add a break in the submenus
-        menu.add_break()
-
-        url = reverse('admin:newscenter_newsroom_changelist')
-        menu.add_sideframe_item(_('Newsroom List'), url=url)
-
-        # Display a modal dialogue for creating a new news article...
-        url = reverse('admin:newscenter_newsroom_add')
-        menu.add_modal_item(_('Add New Newsroom'), url=url)
-
-
