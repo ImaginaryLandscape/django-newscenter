@@ -18,8 +18,12 @@ class LocationAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug' : ('name',)}
 
 class NewsroomAdmin(admin.ModelAdmin):
-    list_display = ('name', 'website')
-    list_editable = ('website',)
+    if 'site_config.backends.model_backend' in settings.INSTALLED_APPS:
+        list_display = ('name', 'website',)
+        list_editable = ('website',)
+    else:
+        list_display = ('name',)
+
     prepopulated_fields = {'slug' : ('name',)}
 
 

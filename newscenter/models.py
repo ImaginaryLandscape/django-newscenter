@@ -46,20 +46,21 @@ class Newsroom(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField()
     website_short_name = models.SlugField(blank=True, max_length=64)
-    website = models.ForeignKey('site_config.Website', null=True, blank=True, db_constraint=False)
+    if 'site_config.backends.model_backend' in settings.INSTALLED_APPS:
+        website = models.ForeignKey('site_config.Website', null=True, blank=True)
 
     class Meta:
         ordering = ('name',)
 
     def __unicode__(self):
-        if self.website:
+        if hasattr(self, 'website') and self.website:
             return u'%s | %s' % (self.name, self.website.name)
         else:
             return u'%s' % (self.name)
 
     @models.permalink
     def get_absolute_url(self):
-        if self.website:
+        if hasattr(self, 'website') and self.website:
              return ('news_newsroom_detail', [str(self.website.short_name), str(self.slug)])
         else:
              return ('news_newsroom_detail', [str(self.slug)])
@@ -121,7 +122,7 @@ class Article(models.Model):
            'slug': self.slug 
         }
 
-        if self.newsroom.website:
+        if hasattr(self.newsroom, 'website') and self.newsroom.website:
             url_kwargs.update({
                 'website': self.newsroom.website.short_name,
             })

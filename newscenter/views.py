@@ -14,7 +14,7 @@ class NewsroomIndex(ListView):
 
     def get_context_data(self, *args, **kwargs):
         ctx = super(NewsroomIndex, self).get_context_data(*args, **kwargs)
-        website = self.kwargs.get('website', '')
+        website = self.kwargs.get('website', None)
         ctx['website'] = website
         return ctx
 
@@ -52,17 +52,23 @@ class ArchiveYear(YearArchiveView):
     make_object_list = True
 
     def get_queryset(self):
-        return models.Article.objects.get_published().filter(
-            newsroom__slug=self.kwargs['newsroom'], 
-            newsroom__website__short_name=self.kwargs.get('website', '')
-        )
+        try:
+            return models.Article.objects.get_published().filter(
+                newsroom__slug=self.kwargs['newsroom'], 
+                newsroom__website__short_name=self.kwargs.get('website', None))
+        except:
+            return models.Article.objects.get_published().filter(
+                newsroom__slug=self.kwargs['newsroom'])
 
     def get_context_data(self, *args, **kwargs):
         ctx = super(ArchiveYear, self).get_context_data(*args, **kwargs)
-        newsroom = get_object_or_404(models.Newsroom, 
-            slug__exact=self.kwargs['newsroom'], 
-            website__short_name__exact=self.kwargs.get('website', '')
-        )
+        try:
+            newsroom = get_object_or_404(models.Newsroom, 
+                slug__exact=self.kwargs['newsroom'], 
+                website__short_name__exact=self.kwargs.get('website', None))
+        except:
+            newsroom = get_object_or_404(models.Newsroom,
+                slug__exact=self.kwargs['newsroom'])
         ctx['newsroom'] = newsroom
         return ctx        
 
@@ -73,17 +79,24 @@ class ArchiveMonth(MonthArchiveView):
     make_object_list = True
 
     def get_queryset(self):
-        return models.Article.objects.get_published().filter(
-            newsroom__slug=self.kwargs['newsroom'],
-            newsroom__website__short_name=self.kwargs.get('website', '')
-        )
+        try:
+            return models.Article.objects.get_published().filter(
+                newsroom__slug=self.kwargs['newsroom'],
+                newsroom__website__short_name=self.kwargs.get('website', None))
+        except:
+            return models.Article.objects.get_published().filter(
+                newsroom__slug=self.kwargs['newsroom'])
 
     def get_context_data(self, *args, **kwargs):
         ctx = super(ArchiveMonth, self).get_context_data(*args, **kwargs)
-        newsroom = get_object_or_404(models.Newsroom, 
-            slug__exact=self.kwargs['newsroom'],
-            website__short_name__exact=self.kwargs.get('website', '')
-        )
+        try:
+            newsroom = get_object_or_404(models.Newsroom, 
+                slug__exact=self.kwargs['newsroom'],
+                website__short_name__exact=self.kwargs.get('website', None))
+        except:
+            newsroom = get_object_or_404(models.Newsroom, 
+                slug__exact=self.kwargs['newsroom'])
+
         ctx['newsroom'] = newsroom
         return ctx        
 
@@ -97,7 +110,10 @@ def category_detail(request, slug):
 
 def newsroom_detail(request, slug, website=None, *args, **kwargs):
     site = Site.objects.get_current()
-    model_kwargs={ 'slug__exact':slug, 'website__short_name__exact':website}
+    if 'site_config.backend.model_backend' in settings.INSTALLED_APPS:
+        model_kwargs={'slug__exact':slug, 'website__short_name__exact':website}
+    else:
+        model_kwargs={'slug__exact':slug}
     newsroom = get_object_or_404(models.Newsroom, **model_kwargs)
     article_list = newsroom.articles.get_published()
     paginator = Paginator(article_list, 10)
