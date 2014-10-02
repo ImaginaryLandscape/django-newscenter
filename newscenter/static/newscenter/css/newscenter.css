@@ -6,7 +6,6 @@
 }
 #news-content h2 {
   border-bottom: none;
-  font-weight: bold;
   line-height: normal;
 }
 #news-content h2.subhead {
@@ -226,13 +225,14 @@ a.more-link:hover {
   left: 0;
 }
 #article-gallery .caption {
+  margin-bottom: 0;
   padding: 12px;
 }
 #article-gallery ul {
   margin-left: 0;
 }
 #article-gallery #bx-pager {
-  padding: 0 12px 8px;
+  padding: 8px 12px;
 }
 #article-gallery #bx-pager a {
   display: inline-block;

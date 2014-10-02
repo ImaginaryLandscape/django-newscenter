@@ -35,5 +35,5 @@ urlpatterns += patterns('newscenter.views',
 
 ##Feeds
 urlpatterns += patterns('',
-    (r'^(?P<newsroom>[\-\d\w]+)/rss/$', NewsroomFeed(), None, 'newsroom_feed'),
+    url(r'^(?P<newsroom>[\-\d\w]+)/rss/$', NewsroomFeed(), {}, name='newsroom_feed'),
 )
