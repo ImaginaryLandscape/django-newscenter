@@ -1,13 +1,6 @@
 #news-content {
   position: relative;
 }
-#news-content p {
-  margin: 0 0 8px 0;
-}
-#news-content h2 {
-  border-bottom: none;
-  line-height: normal;
-}
 #news-content h2.subhead {
   color: #444;
   font-size: 1em;
@@ -17,19 +10,8 @@
 #news-content .date {
   font-weight: bold;
 }
-#news-content h3 {
-  border: none;
-  font-size: 1em;
-}
 #news-content img {
   border: 0;
-}
-#news-content ul {
-  padding: 0;
-}
-#news-content li {
-  margin: 0;
-  padding: 0;
 }
 #news-content .clear {
   clear: both;
@@ -51,7 +33,9 @@
   margin-bottom: 12px;
   text-align: right;
 }
-
+.newsroom-list-name {
+  border-bottom: none;
+}
 #article-locations,
 #article-categories {
   font-size: .9em;
@@ -112,9 +96,6 @@ a.more-link:hover {
 }
 #article-location {
   font-size: .95em;
-}
-#article-body p {
-  margin-bottom: .8em;
 }
 #news-column {
   clear: both;
@@ -211,7 +192,7 @@ a.more-link:hover {
 #article-gallery {
   border: 1px solid #999;
   float: right;
-  margin: 0 8px 8px;
+  margin: 0 0 8px 8px;
   max-width: 50%;
   width: 240px;
 }
