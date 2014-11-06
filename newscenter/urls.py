@@ -6,7 +6,7 @@ try:
     from django.conf.urls import patterns, url
 except ImportError:
     from django.conf.urls.defaults import patterns, url
-from newscenter.views import NewsroomIndex, ArchiveYear, ArchiveMonth
+from newscenter.views import NewsroomIndex, ArticleDetail, ArchiveYear, ArchiveMonth
 from newscenter.feeds import NewsroomFeed
 from newscenter import models 
 
@@ -26,7 +26,7 @@ urlpatterns += patterns('newscenter.views',
     url(r'^categories/(?P<slug>[\-\d\w]+)/$',
         'category_detail', name='news_category_detail'),
     url(r'^(?P<newsroom>[\-\d\w]+)/(?P<year>\d{4})/(?P<month>[a-z]{3})/(?P<slug>[\-\d\w]+)/$',
-      'article_detail', {'template_name': 'newscenter/article_detail.html'}, name='news_article_detail'),
+      ArticleDetail.as_view(), name='news_article_detail'),
     url(r'^(?P<newsroom>[\-\d\w]+)/(?P<year>\d{4})/(?P<month>[a-z]{3})/$',
         ArchiveMonth.as_view(), name='news_archive_month',),
     url(r'^(?P<newsroom>[\-\d\w]+)/(?P<year>\d{4})/$', 

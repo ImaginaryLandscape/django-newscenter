@@ -28,7 +28,10 @@ class NewsroomAdmin(admin.ModelAdmin):
 
 
 model_admin = admin.ModelAdmin
-if 'reversion' in settings.INSTALLED_APPS:
+if 'light_draft' in settings.INSTALLED_APPS:
+    from light_draft.admin import DraftAdmin
+    model_admin = DraftAdmin
+elif 'reversion' in settings.INSTALLED_APPS:
     from reversion.admin import VersionAdmin
     model_admin = VersionAdmin
 

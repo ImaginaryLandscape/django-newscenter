@@ -1,6 +1,6 @@
 from django import http, shortcuts, template
 from django.conf import settings
-from django.views.generic import YearArchiveView, MonthArchiveView
+from django.views.generic import YearArchiveView, MonthArchiveView, DetailView
 from django.views.generic.list import ListView
 from django.contrib.sites.models import Site
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
@@ -25,6 +25,37 @@ class NewsroomIndex(ListView):
             )
         else:
             return models.Newsroom.objects.all()
+
+if 'light_draft' in settings.INSTALLED_APPS:
+    from light_draft.views import BaseDraftView
+    DetailView = BaseDraftView
+
+class ArticleDetail(DetailView):
+    model = models.Article
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super(ArticleDetail, self).get_context_data(*args, **kwargs)
+
+        if hasattr(self.request, 'toolbar'):    
+            from cms.cms_toolbar import ADMIN_MENU_IDENTIFIER      
+            admin_menu = self.request.toolbar.get_or_create_menu(ADMIN_MENU_IDENTIFIER, 
+                _('Apps'))
+            menu = admin_menu.get_or_create_menu('newscenter-menu',
+                _('Newscenter ...'))
+            menu.add_break()        
+            menu.add_modal_item(_('Change this Article'), url=reverse(
+                'admin:newscenter_article_change', args=[self.object.id]))
+
+        ctx['newsroom'] = self.object.newsroom
+        return ctx
+
+    def get(self, request, *args, **kwargs):
+        if 'hash' not in self.request.GET:
+            self.object = get_object_or_404(models.Article.objects.get_published(),
+                slug__exact=self.kwargs.get('slug'), newsroom__slug__exact=self.kwargs.get('newsroom'))
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
+        return self.render_to_response(context)
 
 def article_detail(request, newsroom, year, month, slug, website=None, template_name='', *args, **kwargs):
     request
