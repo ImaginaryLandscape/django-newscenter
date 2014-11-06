@@ -27,15 +27,19 @@ class NewsroomAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug' : ('name',)}
 
 
-model_admin = admin.ModelAdmin
 if 'light_draft' in settings.INSTALLED_APPS:
-    from light_draft.admin import DraftAdmin
-    model_admin = DraftAdmin
-elif 'reversion' in settings.INSTALLED_APPS:
+    from light_draft.admin import DraftAdmin    
+else:
+    class DraftAdmin():
+        pass
+    
+if 'reversion' in settings.INSTALLED_APPS:
     from reversion.admin import VersionAdmin
-    model_admin = VersionAdmin
+else:
+    class VersionAdmin():
+        pass
 
-class ArticleAdmin(model_admin):
+class ArticleAdmin(VersionAdmin, DraftAdmin, admin.ModelAdmin):
     inlines = [
         ImageInline,
     ]
