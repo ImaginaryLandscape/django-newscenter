@@ -45,7 +45,6 @@ class Contact(models.Model):
 class Newsroom(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField()
-    website_short_name = models.SlugField(blank=True, max_length=64)
     if 'site_config.backends.model_backend' in settings.INSTALLED_APPS:
         website = models.ForeignKey('site_config.Website', null=True, blank=True)
 
