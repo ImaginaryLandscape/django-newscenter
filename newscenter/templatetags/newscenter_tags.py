@@ -6,9 +6,8 @@ from newscenter.models import Category
 register = Library()
 
 class FeaturedNode(Node):
-
     def __init__(self, newsroom):
-        self.newsroom = newsroom
+        self.newsroom = template.Variable(newsroom)
 
     def render(self, context):
         try:
@@ -16,7 +15,8 @@ class FeaturedNode(Node):
         except:
             raise template.TemplateSyntaxError("Failed to retrieve model")
         try:
-            newsroom = model.objects.get(slug=self.newsroom)
+            newsroom_slug = self.newsroom.resolve(context)
+            newsroom = model.objects.get(slug=newsroom_slug)
             context['newsroom'] = newsroom
             context['featured_list'] = newsroom.articles.get_featured()
         except:
@@ -30,7 +30,7 @@ class FeaturedNode(Node):
         except ValueError:
             raise template.TemplateSyntaxError("get_news requires a newsroom")
 
-        return FeaturedNode(newsroom[1:-1])
+        return FeaturedNode(newsroom)
 
     get_news = register.tag(get_news)
 
