@@ -48,7 +48,7 @@ class ArticleAdmin(VersionAdmin, DraftAdmin, admin.ModelAdmin):
     list_editable = ('active', 'featured','newsroom',)
     search_fields = ['title', 'body', 'teaser',]
     list_filter = ('contacts', 'release_date', 'expire_date', 'newsroom', 'active', 
-        'featured', 'categories',)
+        'featured', 'location', 'categories',)
     prepopulated_fields = {'slug' : ('title',)}
     date_heirarchy = 'release_date'
     filter_horizontal = ('categories',)
