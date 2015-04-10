@@ -196,3 +196,14 @@ class Image(models.Model):
             size=(width, height)
             image.thumbnail(size, PIL.Image.ANTIALIAS)
             image.save(filename, quality=imquality)
+
+if 'cms' in settings.INSTALLED_APPS:
+    from cms.models import CMSPlugin
+
+    class NewsFeedPluginModel(CMSPlugin):
+        location = models.ForeignKey(Location)
+        limit = models.IntegerField('Article Limit', default=5, 
+            help_text="Maximum number of articles to display")
+
+        def __unicode__(self):
+            return self.location.name

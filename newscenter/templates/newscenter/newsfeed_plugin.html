@@ -1,0 +1,7 @@
+<h2>Recent News from {{ instance.location }}</h2>
+<ul>
+{% for article in instance.location.article_set.all %}
+<li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
+{% endfor %}
+</ul>
+<a href="{% url "newscenter_home" %}?location={{ instance.location.id }}">View More Headlines</a>
