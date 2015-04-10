@@ -1,6 +1,6 @@
 <h2>Recent News from {{ instance.location }}</h2>
 <ul>
-{% for article in instance.location.article_set.all %}
+{% for article in articles %}
 <li><a href="{{ article.get_absolute_url }}">{{ article.title }}</a></li>
 {% endfor %}
 </ul>
