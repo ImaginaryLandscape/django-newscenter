@@ -147,7 +147,7 @@ def newsroom_detail(request, slug, website=None, *args, **kwargs):
         model_kwargs={'slug__exact':slug}
     newsroom = get_object_or_404(models.Newsroom, **model_kwargs)
     article_list = newsroom.articles.get_published()
-    paginator = Paginator(article_list, 10)
+    paginator = Paginator(article_list, getattr(settings, 'NEWSCENTER_PAGINATE_BY', 10))
     page = int(request.GET.get('page', '1'))
     article_list = paginator.page(page)
 
