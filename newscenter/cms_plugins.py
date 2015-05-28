@@ -2,7 +2,8 @@ from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 from django.utils.translation import ugettext_lazy as _
 
-from .models import NewsFeedPluginModel, Location
+from .models import NewsFeedPluginModel
+
 
 class NewsFeedPlugin(CMSPluginBase):
     model = NewsFeedPluginModel
@@ -11,7 +12,7 @@ class NewsFeedPlugin(CMSPluginBase):
     render_template = "newscenter/newsfeed_plugin.html"
 
     def render(self, context, instance, placeholder):
-        articles = instance.location.article_set.all()[:instance.limit]
+        articles = instance.location.article_set.get_published()[:instance.limit]
         context.update({'instance': instance, 'articles': articles})
         return context
 
