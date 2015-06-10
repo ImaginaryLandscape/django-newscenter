@@ -1,4 +1,4 @@
-{% extends 'newscenter/base.html' %}
+{% extends "newscenter/base.html" %}
 
 {% load tz %}
 
@@ -10,11 +10,7 @@
 </div>
 <h1>{{ newsroom.name }} {{ year|date:"Y" }}</h1>
 
-{% for article in newsroom.articles.all %}
-  {% include "newscenter/includes/list_article.html" %}
-  {% empty %}
-  <p>There are currently no articles available.</p>
-{% endfor %}
+{% include "newscenter/includes/article_list.html" %}
 
 <div id="date-list">
 <p>View articles for the month of:</p>

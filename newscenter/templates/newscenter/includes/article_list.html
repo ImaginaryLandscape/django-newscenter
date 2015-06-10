@@ -1,0 +1,14 @@
+{% load endless %}
+
+{% paginate article_list %}
+{% for article in article_list %}
+  {% include "newscenter/includes/list_article.html" %}
+{% empty %}
+  <p>There are currently no articles available.</p>
+{% endfor %}
+
+{% get_pages %}
+<div id="news-pagination" class="pagination">
+  Showing {{ pages.current_start_index }}-{{ pages.current_end_index }} of {{ pages.total_count }}
+  <nav id="news-pages" class="pages">{{ pages }}</nav>
+</div>

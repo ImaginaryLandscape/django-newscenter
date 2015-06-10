@@ -1,18 +1,14 @@
 {% extends "newscenter/base.html" %}
 
 {% load url from future %}
+{% load endless %}
 
 {% block title %}{{ newsroom.name }}{% endblock %}
 
 {% block appcontent %}
 <div id="article-index">
   <h1>{{ newsroom.name }} <a id="newsroom-rss-link" href="{% if newsroom.website %}{% url "newsroom_feed" newsroom.website.short_name newsroom.slug %}{% else %}{% url "newsroom_feed" newsroom.slug %}{% endif %}"><img src="{{ STATIC_URL }}newscenter/img/feed-icon-14x14.png" alt="{{ newsroom.name }} rss" /></a></h1>
-{% for article in article_list.object_list %}
-  {% include "newscenter/includes/list_article.html" %}
-  {% empty %}
-  <p>There are no matching articles in {{ newsroom.name }}.</p>
-{% endfor %}
-{% include "newscenter/includes/pagination.html" %}
+  {% include "newscenter/includes/article_list.html" %}
 </div>
 {% endblock %}
 
