@@ -1,6 +1,5 @@
 from datetime import datetime
 from django.db import models
-from django.contrib.syndication.views import Feed
 from random import choice
 from newscenter import managers
 import PIL
@@ -60,10 +59,20 @@ class Newsroom(models.Model):
     @models.permalink
     def get_absolute_url(self):
         if hasattr(self, 'website') and self.website:
-             return ('news_newsroom_detail', [str(self.website.short_name), str(self.slug)])
+             return ('news_newsroom_detail', [str(self.website.short_name), 
+                 str(self.slug)])
         else:
              return ('news_newsroom_detail', [str(self.slug)])
 
+class Feed(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField()
+    
+    class Meta:
+        ordering = ('name',)
+
+    def __unicode__(self):
+        return u'%s' %(self.name)
 
 class Location(models.Model):
     name = models.CharField(max_length=100)
@@ -82,7 +91,11 @@ class Location(models.Model):
 
 class Article(models.Model):
     title = models.CharField(max_length=400)
-    location = models.ForeignKey(Location, blank=True, null=True)
+    location = models.ForeignKey(Location, blank=True, null=True, 
+        help_text="Primary location, appearing on the article detail page")
+    feeds = models.ManyToManyField(Feed, blank=True, null=True, 
+        related_name='articles', help_text="Select all areas in which this "
+        "article should be listed")
     contacts = models.ManyToManyField(Contact, blank=True, null=True)
     slug = models.SlugField('ID', unique=True,
         unique_for_date='release_date',
@@ -201,7 +214,7 @@ if 'cms' in settings.INSTALLED_APPS:
     from cms.models import CMSPlugin
 
     class NewsFeedPluginModel(CMSPlugin):
-        location = models.ForeignKey(Location)
+        location = models.ForeignKey(Feed)
         limit = models.IntegerField('Article Limit', default=5, 
             help_text="Maximum number of articles to display")
 

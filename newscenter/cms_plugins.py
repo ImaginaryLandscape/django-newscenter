@@ -12,7 +12,7 @@ class NewsFeedPlugin(CMSPluginBase):
     render_template = "newscenter/newsfeed_plugin.html"
 
     def render(self, context, instance, placeholder):
-        articles = instance.location.article_set.get_published()[:instance.limit]
+        articles = instance.location.articles.get_published()[:instance.limit]
         context.update({'instance': instance, 'articles': articles})
         return context
 
