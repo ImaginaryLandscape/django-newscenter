@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='newscenter',
-    version='1.5.7',
+    version='1.5.8',
     description='A News Release Application for Django',
     long_description=open('README.rst').read(),
 
@@ -14,7 +14,7 @@ setup(
         'easy-thumbnails',
         'feedparser',
         'site_config',
-        'django-endless-pagination==2.0',
+        'django-endless-pagination>=2.0',
 
     ),
 

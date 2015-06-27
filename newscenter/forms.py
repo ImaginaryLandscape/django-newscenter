@@ -14,4 +14,4 @@ class ArticleAdminModelForm(forms.ModelForm):
 
     class Meta:
         model = get_model('newscenter', 'article')
-
+        exclude = []
