@@ -117,6 +117,9 @@ class Article(models.Model):
     class Meta:
         ordering = ('-release_date',)
         get_latest_by = 'release_date'
+        permissions = (
+            ("can_feature", "Can feature an article"),
+        )
 
     def random_thumbnail(self):
         if self.images.filter(thumbnail=True).count() > 0:

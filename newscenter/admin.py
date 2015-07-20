@@ -42,6 +42,18 @@ else:
     class VersionAdmin():
         pass
 
+def remove_from_fieldsets(fieldsets, fields):
+    for fieldset in fieldsets:
+        for field in fields:
+            if field in fieldset[1]['fields']:
+                new_fields = []
+                for new_field in fieldset[1]['fields']:
+                    if not new_field in fields:
+                        new_fields.append(new_field)
+                        
+                fieldset[1]['fields'] = tuple(new_fields)
+                break
+
 class ArticleAdmin(VersionAdmin, DraftAdmin, admin.ModelAdmin):
     inlines = [
         ImageInline,
@@ -55,11 +67,28 @@ class ArticleAdmin(VersionAdmin, DraftAdmin, admin.ModelAdmin):
     prepopulated_fields = {'slug' : ('title',)}
     date_heirarchy = 'release_date'
     fieldsets = (
-        (None, {'fields': (('title', 'slug'), ('newsroom', 'active', 
-                'featured'), 'categories', ('contacts', 'location', 'feeds'), 
-                'teaser', 'body', ('release_date', 'expire_date'),)}),
+        (None, {
+            'fields': ('title', 'slug', 'newsroom')
+        }), 
+        (None, {
+            'fields': (            
+            'active', 'featured', 
+            'categories', 
+            ('contacts', 'location', 'feeds'), 
+            'teaser', 
+            'body', 
+            ('release_date', 'expire_date'),
+        )}),
     )
     form = forms.ArticleAdminModelForm
+
+    def get_fieldsets(self, request, obj=None):
+        fieldsets = super(ArticleAdmin, self).get_fieldsets(request, obj)
+    
+        if not request.user.is_superuser and not request.user.has_perm('newscenter.can_feature'):
+            remove_from_fieldsets(fieldsets, ('featured',))
+        return fieldsets
+    
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('title',)
