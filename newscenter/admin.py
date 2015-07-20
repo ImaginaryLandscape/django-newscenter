@@ -42,25 +42,13 @@ else:
     class VersionAdmin():
         pass
 
-def remove_from_fieldsets(fieldsets, fields):
-    for fieldset in fieldsets:
-        for field in fields:
-            if field in fieldset[1]['fields']:
-                new_fields = []
-                for new_field in fieldset[1]['fields']:
-                    if not new_field in fields:
-                        new_fields.append(new_field)
-                        
-                fieldset[1]['fields'] = tuple(new_fields)
-                break
-
 class ArticleAdmin(VersionAdmin, DraftAdmin, admin.ModelAdmin):
     inlines = [
         ImageInline,
     ]
     list_display = ('title', 'release_date', 'expire_date', 'active', 
         'featured','newsroom',)
-    list_editable = ('active', 'featured','newsroom',)
+    list_editable = ('active', 'newsroom',)
     search_fields = ['title', 'body', 'teaser',]
     list_filter = ('release_date', 'expire_date', 'newsroom', 'active', 
         'featured', 'feeds', 'location', 'categories',)
@@ -82,13 +70,16 @@ class ArticleAdmin(VersionAdmin, DraftAdmin, admin.ModelAdmin):
     )
     form = forms.ArticleAdminModelForm
 
-    def get_fieldsets(self, request, obj=None):
-        fieldsets = super(ArticleAdmin, self).get_fieldsets(request, obj)
-    
+    def changelist_view(self, request, extra_context=None):
+        if request.user.is_superuser or request.user.has_perm('newscenter.can_feature'):
+            self.list_editable = ('active', 'featured', 'newsroom',)
+        return super(ArticleAdmin, self).changelist_view(request, extra_context)
+
+    def get_readonly_fields(self, request, obj=None):
         if not request.user.is_superuser and not request.user.has_perm('newscenter.can_feature'):
-            remove_from_fieldsets(fieldsets, ('featured',))
-        return fieldsets
-    
+            return ('featured',) + self.readonly_fields
+        else:
+            return self.readonly_fields
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('title',)
