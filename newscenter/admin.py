@@ -48,7 +48,7 @@ class ArticleAdmin(VersionAdmin, DraftAdmin, admin.ModelAdmin):
     ]
     list_display = ('title', 'release_date', 'expire_date', 'active', 
         'featured','newsroom',)
-    list_editable = ('active', 'newsroom',)
+    list_editable = ('active', 'featured', 'newsroom',)
     search_fields = ['title', 'body', 'teaser',]
     list_filter = ('release_date', 'expire_date', 'newsroom', 'active', 
         'featured', 'feeds', 'location', 'categories',)
@@ -71,8 +71,8 @@ class ArticleAdmin(VersionAdmin, DraftAdmin, admin.ModelAdmin):
     form = forms.ArticleAdminModelForm
 
     def changelist_view(self, request, extra_context=None):
-        if request.user.is_superuser or request.user.has_perm('newscenter.can_feature'):
-            self.list_editable = ('active', 'featured', 'newsroom',)
+        if not request.user.is_superuser and not request.user.has_perm('newscenter.can_feature'):
+            self.list_editable = ('active', 'newsroom',)
         return super(ArticleAdmin, self).changelist_view(request, extra_context)
 
     def get_readonly_fields(self, request, obj=None):
