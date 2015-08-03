@@ -93,10 +93,10 @@ class Article(models.Model):
     title = models.CharField(max_length=400)
     location = models.ForeignKey(Location, blank=True, null=True, 
         help_text="Primary location, appearing on the article detail page")
-    feeds = models.ManyToManyField(Feed, blank=True, null=True, 
+    feeds = models.ManyToManyField(Feed, blank=True, 
         related_name='articles', help_text="Select all areas in which this "
         "article should be listed")
-    contacts = models.ManyToManyField(Contact, blank=True, null=True)
+    contacts = models.ManyToManyField(Contact, blank=True)
     slug = models.SlugField('ID', unique=True,
         unique_for_date='release_date',
         help_text='Automatically generated from the title.'
@@ -110,7 +110,7 @@ class Article(models.Model):
     active = models.BooleanField(default=True)
     featured = models.BooleanField(default=False)
     categories = models.ManyToManyField('Category', related_name='articles', 
-        null=True, blank=True)    
+        blank=True)    
     newsroom = models.ForeignKey(Newsroom, related_name='articles',default=1)
     objects = managers.ArticleManager()
 
