@@ -167,7 +167,10 @@ class Article(models.Model):
 
 
 class Image(models.Model):
-    image = models.ImageField(blank=False, upload_to='newscenter_uploads',
+    image = models.ImageField(blank=False, upload_to=settings.NEWSCENTER_STORAGES['UPLOAD_TO'],
+       storage=get_storage_class(
+            settings.NEWSCENTER_STORAGES['ENGINE'])(**settings.NEWSCENTER_STORAGES['OPTIONS']
+        ),
         help_text="Images larger than the configured dimensions will be resized")
     article = models.ForeignKey(Article, related_name='images')
     caption = models.CharField(max_length=200, blank=True)
@@ -183,11 +186,11 @@ class Image(models.Model):
         ordering = ('sort',)
 
     def save(self):
-        super(Image, self).save()
-        if self.image:
-            filename = self.image.path
-            image = PIL.Image.open(filename)
 
+        if self.image:
+            thumbnail = PIL.Image.open(self.image.file)
+            thumbnail_io = StringIO.StringIO()
+            
             try:
                 from newscenter import NewscenterSiteConfig
                 config = NewscenterSiteConfig(website=self.article.newsroom.website.short_name)
@@ -207,11 +210,15 @@ class Image(models.Model):
             try:
                 imquality = config.NEWSCENTER_IMAGE_QUALITY
             except:
-                imquality = getattr(settings, 'NEWSCENTER_IMAGE_QUALITY', 100)
+                imquality = getattr(settings, 'NEWSCENTER_IMAGE_QUALITY', 99)
 
-            size=(width, height)
-            image.thumbnail(size, PIL.Image.ANTIALIAS)
-            image.save(filename, quality=imquality)
+            size=(100, height)
+            thumbnail.thumbnail(size, PIL.Image.ANTIALIAS)
+
+            thumbnail.save(thumbnail_io, format='JPEG')
+            thumbnail_file = InMemoryUploadedFile(thumbnail_io, None, 'picture2.jpg', '/image/jpeg', thumbnail_io.len, None)
+            self.image = thumbnail_file
+        super(Image, self).save()
 
 if 'cms' in settings.INSTALLED_APPS:
     from cms.models import CMSPlugin
