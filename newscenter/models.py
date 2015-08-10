@@ -5,6 +5,8 @@ from newscenter import managers
 import PIL
 from django.conf import settings
 
+from newscenter import newscenter_settings
+
 
 class Category(models.Model):
     title = models.CharField(max_length=100, unique=True)
@@ -167,10 +169,9 @@ class Article(models.Model):
 
 
 class Image(models.Model):
-    image = models.ImageField(blank=False, upload_to=settings.NEWSCENTER_STORAGES['UPLOAD_TO'],
-       storage=get_storage_class(
-            settings.NEWSCENTER_STORAGES['ENGINE'])(**settings.NEWSCENTER_STORAGES['OPTIONS']
-        ),
+    image = models.ImageField(blank=False, 
+        upload_to=newscenter_settings.get_upload_to(),
+        storage=newscenter_settings.get_newscenter_storage_class(),
         help_text="Images larger than the configured dimensions will be resized")
     article = models.ForeignKey(Article, related_name='images')
     caption = models.CharField(max_length=200, blank=True)
