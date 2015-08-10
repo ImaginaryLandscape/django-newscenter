@@ -29,4 +29,8 @@ def get_newscenter_storage_class():
 
 def get_newscenter_upload_to():
     """ Return UPLOAD_TO setting value"""
-    return settings.NEWSCENTER_STORAGES['UPLOAD_TO']
+
+    if not hasattr(settings, 'NEWSCENTER_STORAGES'):
+        return 'newscenter/'
+    else:
+        return settings.NEWSCENTER_STORAGES['UPLOAD_TO']
