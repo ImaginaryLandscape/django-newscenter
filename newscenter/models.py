@@ -1,11 +1,14 @@
 from datetime import datetime
 from django.db import models
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from random import choice
 from newscenter import managers
 import PIL
 from django.conf import settings
 
 from newscenter import newscenter_settings
+
+import StringIO
 
 
 class Category(models.Model):
