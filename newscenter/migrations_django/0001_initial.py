@@ -7,6 +7,10 @@ import datetime
 
 class Migration(migrations.Migration):
 
+    dependencies = [
+        ('cms', '0012_auto_20150607_2207'),
+    ]
+
     operations = [
         migrations.CreateModel(
             name='Article',
@@ -26,6 +30,7 @@ class Migration(migrations.Migration):
                 'get_latest_by': 'release_date',
                 'permissions': (('can_feature', 'Can feature an article'),),
             },
+            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='Category',
@@ -38,6 +43,7 @@ class Migration(migrations.Migration):
                 'ordering': ('title',),
                 'verbose_name_plural': 'categories',
             },
+            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='Contact',
@@ -46,11 +52,12 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=200)),
                 ('title', models.CharField(max_length=200, blank=True)),
                 ('phone', models.CharField(max_length=50, blank=True)),
-                ('email', models.EmailField(max_length=254, blank=True)),
+                ('email', models.EmailField(max_length=75, blank=True)),
             ],
             options={
                 'ordering': ('name',),
             },
+            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='Feed',
@@ -62,6 +69,7 @@ class Migration(migrations.Migration):
             options={
                 'ordering': ('name',),
             },
+            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='Image',
@@ -77,6 +85,7 @@ class Migration(migrations.Migration):
             options={
                 'ordering': ('sort',),
             },
+            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='Location',
@@ -88,6 +97,7 @@ class Migration(migrations.Migration):
             options={
                 'ordering': ('name',),
             },
+            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='NewsFeedPluginModel',
@@ -111,30 +121,36 @@ class Migration(migrations.Migration):
             options={
                 'ordering': ('name',),
             },
+            bases=(models.Model,),
         ),
         migrations.AddField(
             model_name='article',
             name='categories',
             field=models.ManyToManyField(related_name='articles', to='newscenter.Category', blank=True),
+            preserve_default=True,
         ),
         migrations.AddField(
             model_name='article',
             name='contacts',
             field=models.ManyToManyField(to='newscenter.Contact', blank=True),
+            preserve_default=True,
         ),
         migrations.AddField(
             model_name='article',
             name='feeds',
             field=models.ManyToManyField(help_text=b'Select all areas in which this article should be listed', related_name='articles', to='newscenter.Feed', blank=True),
+            preserve_default=True,
         ),
         migrations.AddField(
             model_name='article',
             name='location',
             field=models.ForeignKey(blank=True, to='newscenter.Location', help_text=b'Primary location, appearing on the article detail page', null=True),
+            preserve_default=True,
         ),
         migrations.AddField(
             model_name='article',
             name='newsroom',
             field=models.ForeignKey(related_name='articles', default=1, to='newscenter.Newsroom'),
+            preserve_default=True,
         ),
     ]
