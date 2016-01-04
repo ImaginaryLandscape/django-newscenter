@@ -36,7 +36,10 @@ class ArticleDetail(DetailView):
         ctx = super(ArticleDetail, self).get_context_data(*args, **kwargs)
 
         if hasattr(self.request, 'toolbar'):    
-            from cms.cms_toolbar import ADMIN_MENU_IDENTIFIER      
+            try:
+                from cms.cms_toolbars import ADMIN_MENU_IDENTIFIER
+            except:
+                from cms.cms_toolbar import ADMIN_MENU_IDENTIFIER      
             admin_menu = self.request.toolbar.get_or_create_menu(ADMIN_MENU_IDENTIFIER, 
                 _('Apps'))
             menu = admin_menu.get_or_create_menu('newscenter-menu',
