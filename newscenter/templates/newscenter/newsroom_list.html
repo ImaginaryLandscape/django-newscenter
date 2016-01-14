@@ -1,12 +1,12 @@
 {% extends "newscenter/base.html" %}
 
-{% block title %}News Center{% endblock %}
+{% block title %}Newsrooms{% endblock %}
 {% block appcontent %}
 
-<h1>News Center</h1>
+<h1>Newsrooms</h1>
 {% for object in object_list %}
-<h2><a href="{{ object.get_absolute_url }}">{{ object.name }}</a></h2>
-{% empty %}
-<p>There are currently no newsrooms.</p>
+{% if object.articles.count %}
+<h2 class="newsroom-list-name"><a href="{{ object.get_absolute_url }}">{{ object.name }}</a>{% if not website and object.website %} | <a href="{% url "news_newsroom_index" object.website.short_name %}">{{ object.website.name }}</a>{% endif %}</h2>
+{% endif %}
 {% endfor %}
 {% endblock %}

@@ -1,10 +1,10 @@
 from datetime import datetime
 from django.db import models
-from django.contrib.syndication.views import Feed
 from random import choice
 from newscenter import managers
 import PIL
 from django.conf import settings
+
 
 class Category(models.Model):
     title = models.CharField(max_length=100, unique=True)
@@ -27,8 +27,45 @@ class Category(models.Model):
         return Category.objects.filter(slug=self.slug).annotate(
             article_count=models.Count('articles'))[0].article_count
 
+
+class Contact(models.Model):
+    name = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, blank=True)
+    phone = models.CharField(max_length=50, blank=True)
+    email = models.EmailField(blank=True)
+
+    class Meta:
+        ordering = ('name',)
+
+    def __unicode__(self):
+        return u'%s' %(self.name)
+
+
 class Newsroom(models.Model):
     name = models.CharField(max_length=50)
+    slug = models.SlugField()
+    if 'site_config.backends.model_backend' in settings.INSTALLED_APPS:
+        website = models.ForeignKey('site_config.Website', null=True, blank=True)
+
+    class Meta:
+        ordering = ('name',)
+
+    def __unicode__(self):
+        if hasattr(self, 'website') and self.website:
+            return u'%s | %s' % (self.name, self.website.name)
+        else:
+            return u'%s' % (self.name)
+
+    @models.permalink
+    def get_absolute_url(self):
+        if hasattr(self, 'website') and self.website:
+             return ('news_newsroom_detail', [str(self.website.short_name), 
+                 str(self.slug)])
+        else:
+             return ('news_newsroom_detail', [str(self.slug)])
+
+class Feed(models.Model):
+    name = models.CharField(max_length=100)
     slug = models.SlugField()
     
     class Meta:
@@ -36,11 +73,6 @@ class Newsroom(models.Model):
 
     def __unicode__(self):
         return u'%s' %(self.name)
-
-    @models.permalink
-    def get_absolute_url(self):
-        return ('news_newsroom_detail', [str(self.slug)])
-
 
 class Location(models.Model):
     name = models.CharField(max_length=100)
@@ -59,12 +91,17 @@ class Location(models.Model):
 
 class Article(models.Model):
     title = models.CharField(max_length=400)
-    location = models.ForeignKey(Location, blank=True, null=True)
+    location = models.ForeignKey(Location, blank=True, null=True, 
+        help_text="Primary location, appearing on the article detail page")
+    feeds = models.ManyToManyField(Feed, blank=True, 
+        related_name='articles', help_text="Select all areas in which this "
+        "article should be listed")
+    contacts = models.ManyToManyField(Contact, blank=True)
     slug = models.SlugField('ID', unique=True,
         unique_for_date='release_date',
         help_text='Automatically generated from the title.'
     )
-    body = models.TextField()
+    body = models.TextField(blank=True)
     teaser = models.TextField(blank=True, 
         help_text="A summary preview of the article.")
     release_date = models.DateTimeField('Publication Date', 
@@ -73,14 +110,16 @@ class Article(models.Model):
     active = models.BooleanField(default=True)
     featured = models.BooleanField(default=False)
     categories = models.ManyToManyField('Category', related_name='articles', 
-        null=True, blank=True)    
-    newsroom = models.ForeignKey(Newsroom, null=True, blank=True, 
-        related_name='articles',default=1)
+        blank=True)    
+    newsroom = models.ForeignKey(Newsroom, related_name='articles',default=1)
     objects = managers.ArticleManager()
 
     class Meta:
         ordering = ('-release_date',)
         get_latest_by = 'release_date'
+        permissions = (
+            ("can_feature", "Can feature an article"),
+        )
 
     def random_thumbnail(self):
         if self.images.filter(thumbnail=True).count() > 0:
@@ -90,11 +129,20 @@ class Article(models.Model):
         return u'%s' %(self.title)
 
     def get_absolute_url(self):
-        return ('news_article_detail', (), { 
-             'newsroom': self.newsroom.slug,
-             'year': self.release_date.strftime('%Y'),
-             'month': self.release_date.strftime('%b').lower(),
-             'slug': self.slug })
+        
+        url_kwargs = { 
+           'newsroom': self.newsroom.slug,
+           'year': self.release_date.strftime('%Y'),
+           'month': self.release_date.strftime('%b').lower(),
+           'slug': self.slug 
+        }
+
+        if hasattr(self.newsroom, 'website') and self.newsroom.website:
+            url_kwargs.update({
+                'website': self.newsroom.website.short_name,
+            })
+
+        return ('news_article_detail', (), url_kwargs)
     get_absolute_url = models.permalink(get_absolute_url)
 
     def get_previous_published(self):
@@ -120,7 +168,7 @@ class Article(models.Model):
 
 class Image(models.Model):
     image = models.ImageField(blank=False, upload_to='newscenter_uploads',
-        help_text="Images larger than 800x600 will be resized")
+        help_text="Images larger than the configured dimensions will be resized")
     article = models.ForeignKey(Article, related_name='images')
     caption = models.CharField(max_length=200, blank=True)
     name = models.CharField('description', max_length=100, blank=True, 
@@ -139,19 +187,39 @@ class Image(models.Model):
         if self.image:
             filename = self.image.path
             image = PIL.Image.open(filename)
+
             try:
-                width = settings.NEWSCENTER_IMAGE_WIDTH
+                from newscenter import NewscenterSiteConfig
+                config = NewscenterSiteConfig(website=self.article.newsroom.website.short_name)
             except:
-                width = 800
+                pass
+
             try:
-                height = settings.NEWSCENTER_IMAGE_HEIGHT
+                width = config.NEWSCENTER_IMAGE_WIDTH
             except:
-                height = 600
+                width = getattr(settings, 'NEWSCENTER_IMAGE_WIDTH', 800)
+
             try:
-                imquality = settings.NEWSCENTER_IMAGE_QUALITY
+                height = config.NEWSCENTER_IMAGE_HEIGHT
             except:
-                imquality = 100
+                height = getattr(settings, 'NEWSCENTER_IMAGE_HEIGHT', 600)                
+
+            try:
+                imquality = config.NEWSCENTER_IMAGE_QUALITY
+            except:
+                imquality = getattr(settings, 'NEWSCENTER_IMAGE_QUALITY', 100)
+
             size=(width, height)
             image.thumbnail(size, PIL.Image.ANTIALIAS)
             image.save(filename, quality=imquality)
 
+if 'cms' in settings.INSTALLED_APPS:
+    from cms.models import CMSPlugin
+
+    class NewsFeedPluginModel(CMSPlugin):
+        location = models.ForeignKey(Feed)
+        limit = models.IntegerField('Article Limit', default=5, 
+            help_text="Maximum number of articles to display")
+
+        def __unicode__(self):
+            return self.location.name

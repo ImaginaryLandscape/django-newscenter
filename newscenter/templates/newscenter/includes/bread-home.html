@@ -1,7 +1,7 @@
 {% load url from future %}
 
 {% if newsroom %}
-<a href="{{ newsroom.get_absolute_url }}">{{ newsroom }}</a>
+<a href="{{ newsroom.get_absolute_url }}">{{ newsroom.name }}</a>
 {% else %}
-<a href="{% url "newscenter_index" %}">Newscenter</a>
+<a href="../">News Rooms</a>
 {% endif %}

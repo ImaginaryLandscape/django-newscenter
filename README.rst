@@ -6,7 +6,7 @@ A Django application for creating news releases which can be associated with uni
 
 A Django CMS apphook is included as well as a templatetag for rendering news release headlines in non-application templates.
 
-Now compatible with Django 1.5.
+Django 1.5 and up
 
 Installation
 ============
@@ -20,22 +20,50 @@ Add the following to the INSTALLED_APPS of your project's settings.py:
 In your urls.py, add:
     url(r'^newscenter/', include('newscenter.urls')),
 
-Run:
-    ``manage.py syncdb`` (or ``manage.py migrate`` if you're using south) and ``manage.py collectstatic``
+For Django <1.6 Run:
+    ``manage.py syncdb`` (or ``manage.py migrate`` if you're using south)
+
+For Djanveo >1.7:
+
+   Add or Update the MIGRATION_MODULES dictionary in django settings as follows
+
+     MIGRATION_MODULES = {
+         'newscenter': 'newscenter.migrations_django',
+     }
+
+   Then Run:
+   ``manage.py migrate``
+
+ Collect static media:
+
+   ``manage.py collectstatic``
+
 
 Dependencies
 ============
 
 The following will be installed automatically if you use pip to install newscenter:
 
-    PIL (http://www.pythonware.com/products/pil/)
+    Pillow (http://python-pillow.github.io/)
 
     easy-thumbnails (https://github.com/SmileyChris/easy-thumbnails)
 
     feedparser (http://pythonhosted.org/feedparser/)
 
-For easy-thumbnails, you'll also need to syncdb or migrate, then add it to INSTALLED_APPS:
+For easy-thumbnails, you'll also need to add it to INSTALLED_APPS and run syncdb or migrate:
     'easy_thumbnails',
+
+Change Log
+============
+New in 1.5.8:
+-Added support for Django 1.7
+
+New in 1.4.1:
+-Added title field to Contact model
+
+New in 1.4:
+-Switched image plugin from popeye to bxslider
+
 
 Template Tag
 ============
@@ -52,5 +80,3 @@ The template tag can be used like this::
     <p><a href="{{ release.get_absolute_url }}">Read more</a></p>
     </article>
     {% endfor %}
-   
-
