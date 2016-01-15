@@ -108,7 +108,7 @@ class Article(models.Model):
         default=datetime.now)
     expire_date = models.DateTimeField('Expiration Date', null=True, blank=True)
     active = models.BooleanField(default=True)
-    featured = models.BooleanField(default=False)
+    featured = models.BooleanField(default=True)
     categories = models.ManyToManyField('Category', related_name='articles', 
         blank=True)    
     newsroom = models.ForeignKey(Newsroom, related_name='articles',default=1)
