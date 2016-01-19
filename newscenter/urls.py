@@ -33,8 +33,6 @@ urlpatterns += patterns('newscenter.views',
         ArchiveYear.as_view(), name='news_archive_year',),
     url(r'^d/(?P<slug1>[\-\d\w]+)_(?P<slug2>[\-\d\w]+)/$',
         'dual_newsrooms', name='news_dual_newsroons'),
-     url(r'^(?P<newsroom>[\-\d\w]+)/latest/$', 
-        NewsroomLatest.as_view(), name='news_newsroom_latest')
     url(r'^(?P<newsroom>[\-\d\w]+)/latest/$', 
         NewsroomLatest.as_view(), name='news_newsroom_latest'),
     url(r'^(?P<newsroom>[\-\d\w]+)/random/$', 
