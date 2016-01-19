@@ -11,14 +11,13 @@ try:
     from .models import Article
 
     class ArticleWizardForm(forms.ModelForm):
-
         if 'djangocms_text_ckeditor' in settings.INSTALLED_APPS:
             from djangocms_text_ckeditor.widgets import TextEditorWidget
             body = forms.CharField(widget=TextEditorWidget())
 
         class Meta:
             model = Article
-            fields = ['title', 'slug', 'release_date', 'body', 'newsroom']
+            fields = ['title', 'slug', 'release_date', 'newsroom', 'body']
 
     class ArticleWizard(Wizard):
         pass
