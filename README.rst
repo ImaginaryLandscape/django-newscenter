@@ -86,11 +86,11 @@ MEDIA STORAGE
 ==============
 
 The storage location for the newscenter MEDIA is configurable. newscenter currently only supports
-setting the storage location for the image field in the Image model.
+changing the storage class for the 'image' field in the article model
 
 Here's an example, using an S3BotoSTORAGE backend from django-storages
 
-ECARDS_STORAGES = {
+NEWSCENTER_STORAGES = {
     'UPLOAD_TO': get_file_path,
     'ENGINE': 'storages.backends.s3boto.S3BotoStorage',
     'OPTIONS': {

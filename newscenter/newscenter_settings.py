@@ -22,7 +22,7 @@ def get_newscenter_storage_class():
 
 
     if not hasattr(settings, 'NEWSCENTER_STORAGES'):
-        return get_storage_class()
+        return get_storage_class()()
     else:
         newscenter_storage_class = get_storage_class(settings.NEWSCENTER_STORAGES['ENGINE'])
         return newscenter_storage_class(**settings.NEWSCENTER_STORAGES['OPTIONS'])
