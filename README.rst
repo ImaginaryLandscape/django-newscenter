@@ -80,3 +80,25 @@ The template tag can be used like this::
     <p><a href="{{ release.get_absolute_url }}">Read more</a></p>
     </article>
     {% endfor %}
+
+
+MEDIA STORAGE 
+==============
+
+The storage location for the newscenter MEDIA is configurable. newscenter currently only supports
+setting the storage location for the image field in the Image model.
+
+Here's an example, using an S3BotoSTORAGE backend from django-storages
+
+ECARDS_STORAGES = {
+    'UPLOAD_TO': get_file_path,
+    'ENGINE': 'storages.backends.s3boto.S3BotoStorage',
+    'OPTIONS': {
+        'bucket_name': 'osf-newscenter',
+        'access_key': os.environ['AWS_ACCESS_KEY_ID'],
+        'secret_key': os.environ['AWS_SECRET_ACCESS_KEY'],
+        'default_acl': None
+    }
+}
+
+The 'OPTIONS' key is just a bunch of kwargs that get passed to the ENGINE (storage class) contructor.
