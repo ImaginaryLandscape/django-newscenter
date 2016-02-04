@@ -1,6 +1,6 @@
 from django import http, shortcuts, template
 from django.conf import settings
-from django.views.generic import YearArchiveView, MonthArchiveView, DetailView
+from django.views.generic import YearArchiveView, MonthArchiveView, DetailView, RedirectView
 from django.views.generic.list import ListView
 from django.contrib.sites.models import Site
 from django.utils.translation import ugettext_lazy as _
@@ -36,7 +36,10 @@ class ArticleDetail(DetailView):
         ctx = super(ArticleDetail, self).get_context_data(*args, **kwargs)
 
         if hasattr(self.request, 'toolbar'):    
-            from cms.cms_toolbar import ADMIN_MENU_IDENTIFIER      
+            try:
+                from cms.cms_toolbars import ADMIN_MENU_IDENTIFIER
+            except:
+                from cms.cms_toolbar import ADMIN_MENU_IDENTIFIER      
             admin_menu = self.request.toolbar.get_or_create_menu(ADMIN_MENU_IDENTIFIER, 
                 _('Apps'))
             menu = admin_menu.get_or_create_menu('newscenter-menu',
@@ -132,3 +135,12 @@ def newsroom_detail(request, slug, website=None, *args, **kwargs):
     return shortcuts.render_to_response(
         'newscenter/newsroom.html', locals(),
         context_instance=template.RequestContext(request))
+
+class NewsroomLatest(RedirectView):
+    permanent = False
+
+    def get_redirect_url(self, *args, **kwargs):
+        newsroom = get_object_or_404(models.Newsroom,
+            slug__exact=self.kwargs['newsroom'])        
+        article = newsroom.articles.get_published()[0]
+        return article.get_absolute_url()
