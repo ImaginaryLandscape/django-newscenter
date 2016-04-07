@@ -116,7 +116,7 @@ class ArchiveMonth(MonthArchiveView):
         return ctx        
 
 def category_detail(request, slug):
-    category = models.Category.objects.get(slug__exact=slug)
+    category = get_object_or_404(models.Category, slug__exact=slug)
     article_list = category.articles.get_published()
     return shortcuts.render_to_response(
         'newscenter/category_detail.html', 
