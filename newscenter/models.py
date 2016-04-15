@@ -4,7 +4,7 @@ from random import choice
 from newscenter import managers
 import PIL
 from django.conf import settings
-
+from django.utils.text import slugify
 
 class Category(models.Model):
     title = models.CharField(max_length=100, unique=True)
@@ -97,7 +97,7 @@ class Article(models.Model):
         related_name='articles', help_text="Select all areas in which this "
         "article should be listed")
     contacts = models.ManyToManyField(Contact, blank=True)
-    slug = models.SlugField('ID', unique=True,
+    slug = models.SlugField('ID', unique=True, blank=True,
         unique_for_date='release_date',
         help_text='Automatically generated from the title.'
     )
@@ -120,6 +120,11 @@ class Article(models.Model):
         permissions = (
             ("can_feature", "Can feature an article"),
         )
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super(Article, self).save(*args, **kwargs)
 
     def random_thumbnail(self):
         if self.images.filter(thumbnail=True).count() > 0:
