@@ -144,3 +144,17 @@ class NewsroomLatest(RedirectView):
             slug__exact=self.kwargs['newsroom'])        
         article = newsroom.articles.get_published()[0]
         return article.get_absolute_url()
+
+class NewsroomRandom(RedirectView):
+    permanent = False
+
+    def get_redirect_url(self, *args, **kwargs):
+        import random
+        newsroom = get_object_or_404(models.Newsroom,
+            slug__exact=self.kwargs['newsroom'])
+        articles = newsroom.articles.get_published()
+        category = self.request.GET.get('category', '')
+        if category:
+            articles = articles.filter(categories__slug=category)
+        article = random.choice(articles)
+        return article.get_absolute_url()
