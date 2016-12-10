@@ -1,5 +1,5 @@
 from django import forms
-try
+try:
     from django.apps.apps import get_model
 except ImportError:
     from django.db.models import get_model
