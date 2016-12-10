@@ -1,7 +1,11 @@
 from django import forms
+try
+    from django.apps.apps import get_model
+except ImportError:
+    from django.db.models import get_model
 from django.conf import settings
-from django.db.models import get_model
 from newscenter.widgets import SmallTextField
+
 
 class ArticleAdminModelForm(forms.ModelForm):
     if 'djangocms_text_ckeditor' in settings.INSTALLED_APPS:
