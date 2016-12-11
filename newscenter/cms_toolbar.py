@@ -8,6 +8,7 @@ try:
 except:
     from cms.cms_toolbars import ADMIN_MENU_IDENTIFIER, ADMINISTRATION_BREAK
 
+
 @toolbar_pool.register
 class NewscenterToolbar(CMSToolbar):
 
