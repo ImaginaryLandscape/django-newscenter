@@ -243,8 +243,8 @@ class Alerts(models.Model):
         max_length=400)
     feeds = models.ManyToManyField(
         Feed, blank=True,
-        related_name='articles', help_text="Select all areas in which this "
-        "article should be listed")
+        related_name='alerts', help_text="Select all areas in which this "
+        "alert should be listed")
     slug = models.SlugField(
         'ID', unique=True, blank=True,
         unique_for_date='release_date',
@@ -253,7 +253,7 @@ class Alerts(models.Model):
     body = models.TextField(
         blank=True)
     teaser = models.TextField(
-        blank=True, help_text="A summary preview of the article.")
+        blank=True, help_text="A summary preview of the alert.")
     release_date = models.DateTimeField(
         'Publication Date', default=datetime.now)
     expire_date = models.DateTimeField(
