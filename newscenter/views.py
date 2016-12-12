@@ -42,9 +42,11 @@ class ArticleDetail(DetailView):
                 from cms.cms_toolbars import ADMIN_MENU_IDENTIFIER
             except:
                 from cms.cms_toolbar import ADMIN_MENU_IDENTIFIER
-            admin_menu = self.request.toolbar.get_or_create_menu(ADMIN_MENU_IDENTIFIER,
+            admin_menu = self.request.toolbar.get_or_create_menu(
+                ADMIN_MENU_IDENTIFIER,
                 _('Apps'))
-            menu = admin_menu.get_or_create_menu('newscenter-menu',
+            menu = admin_menu.get_or_create_menu(
+                'newscenter-menu',
                 _('Newscenter ...'))
             menu.add_break()
             menu.add_modal_item(_('Change this Article'), url=reverse(
@@ -57,7 +59,8 @@ class ArticleDetail(DetailView):
         if 'hash' not in self.request.GET:
             self.object = get_object_or_404(
                 models.Article.objects.get_published(),
-                slug__exact=self.kwargs.get('slug'), newsroom__slug__exact=self.kwargs.get('newsroom'))
+                slug__exact=self.kwargs.get('slug'),
+                newsroom__slug__exact=self.kwargs.get('newsroom'))
         self.object = self.get_object()
         context = self.get_context_data(object=self.object)
         return self.render_to_response(context)

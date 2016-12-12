@@ -61,7 +61,8 @@ class Newsroom(models.Model):
     def get_absolute_url(self):
         if hasattr(self, 'website') and self.website:
             return (
-                'news_newsroom_detail', [str(self.website.short_name), str(self.slug)])
+                'news_newsroom_detail', [
+                    str(self.website.short_name), str(self.slug)])
         else:
             return ('news_newsroom_detail', [str(self.slug)])
 
@@ -208,7 +209,8 @@ class Image(models.Model):
 
             try:
                 from newscenter import NewscenterSiteConfig
-                config = NewscenterSiteConfig(website=self.article.newsroom.website.short_name)
+                config = NewscenterSiteConfig(
+                    website=self.article.newsroom.website.short_name)
             except:
                 pass
 
