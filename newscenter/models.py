@@ -119,6 +119,10 @@ class Article(models.Model):
     categories = models.ManyToManyField(
         'Category', related_name='articles', blank=True)
     newsroom = models.ForeignKey(Newsroom, related_name='articles', default=1)
+
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+
     objects = managers.ArticleManager()
 
     class Meta:
@@ -232,6 +236,39 @@ class Image(models.Model):
             size = (width, height)
             image.thumbnail(size, PIL.Image.ANTIALIAS)
             image.save(filename, quality=imquality)
+
+
+class Alerts(models.Model):
+    title = models.CharField(
+        max_length=400)
+    feeds = models.ManyToManyField(
+        Feed, blank=True,
+        related_name='articles', help_text="Select all areas in which this "
+        "article should be listed")
+    slug = models.SlugField(
+        'ID', unique=True, blank=True,
+        unique_for_date='release_date',
+        help_text='Automatically generated from the title.'
+    )
+    body = models.TextField(
+        blank=True)
+    teaser = models.TextField(
+        blank=True, help_text="A summary preview of the article.")
+    release_date = models.DateTimeField(
+        'Publication Date', default=datetime.now)
+    expire_date = models.DateTimeField(
+        'Expiration Date', null=True, blank=True)
+    active = models.BooleanField(
+        default=True)
+    newsroom = models.ForeignKey(
+        Newsroom, related_name='alerts', default=1)
+
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return u'%s' % (self.title)
+
 
 if 'cms' in settings.INSTALLED_APPS:
     from cms.models import CMSPlugin

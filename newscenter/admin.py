@@ -99,9 +99,25 @@ class CategoryAdmin(admin.ModelAdmin):
         ('Category', {'fields': ('title', 'slug')}),
     )
 
+
+class AlertAdmin(VersionAdmin, DraftAdmin, admin.ModelAdmin):
+    inlines = [
+        ImageInline,
+    ]
+    list_display = (
+        'title', 'release_date', 'expire_date', 'active', 'newsroom',)
+    list_editable = ('active', 'newsroom',)
+    search_fields = ['title', 'body', 'teaser', ]
+    list_filter = (
+        'release_date', 'expire_date', 'newsroom', 'active',)
+    prepopulated_fields = {'slug': ('title',)}
+    date_heirarchy = 'release_date'
+
+
 admin.site.register(models.Article, ArticleAdmin)
 admin.site.register(models.Contact, ContactAdmin)
 admin.site.register(models.Newsroom, NewsroomAdmin)
 admin.site.register(models.Feed, FeedAdmin)
 admin.site.register(models.Location, LocationAdmin)
 admin.site.register(models.Category, CategoryAdmin)
+admin.site.register(models.Alert, AlertAdmin)
