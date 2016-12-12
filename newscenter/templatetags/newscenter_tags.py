@@ -5,6 +5,7 @@ from newscenter.models import Category
 
 register = Library()
 
+
 class FeaturedNode(Node):
     def __init__(self, newsroom):
         self.newsroom = template.Variable(newsroom)
@@ -33,6 +34,7 @@ class FeaturedNode(Node):
         return FeaturedNode(newsroom)
 
     get_news = register.tag(get_news)
+
 
 class CategoryNode(Node):
     def render(self, context):
