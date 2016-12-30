@@ -57,21 +57,23 @@ class ArticleAdmin(VersionAdmin, DraftAdmin, admin.ModelAdmin):
         'title', 'release_date', 'expire_date', 'active',
         'featured', 'newsroom',)
     list_editable = ('active', 'featured', 'newsroom',)
-    search_fields = ['title', 'body', 'teaser', ]
+    search_fields = ('title', 'body', 'teaser',)
     list_filter = (
         'release_date', 'expire_date', 'newsroom', 'active',
         'featured', 'feeds', 'location', 'categories',)
     prepopulated_fields = {'slug': ('title',)}
     date_heirarchy = 'release_date'
+    filter_horizontal = ('categories', 'feeds', 'contacts')
     fieldsets = (
         (None, {
-            'fields': ('title', 'slug', 'newsroom')
+            'fields': ('title', 'slug', 'newsroom', 'location')
         }),
         (None, {
             'fields': (
-                'active', 'featured',
+                ('active', 'featured'),
                 'categories',
-                ('contacts', 'location', 'feeds'),
+                'feeds',
+                'contacts', 
                 'teaser',
                 'body',
                 ('release_date', 'expire_date'),

@@ -16,7 +16,7 @@ try:
 
         class Meta:
             model = Article
-            fields = ['title', 'release_date', 'newsroom', 'body']
+            fields = ['title', 'release_date', 'newsroom', 'body', 'feeds']
 
     class ArticleWizard(Wizard):
         pass
