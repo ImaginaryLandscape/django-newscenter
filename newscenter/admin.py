@@ -66,11 +66,16 @@ class ArticleAdmin(VersionAdmin, DraftAdmin, admin.ModelAdmin):
     filter_horizontal = ('categories', 'feeds', 'contacts')
     fieldsets = (
         (None, {
-            'fields': ('title', 'slug', 'newsroom', 'location')
+            'fields': (
+                ('active', 'featured'),
+                'title', 
+                'slug', 
+                'newsroom', 
+                'location'
+            )
         }),
         (None, {
             'fields': (
-                ('active', 'featured'),
                 'categories',
                 'feeds',
                 'contacts', 
