@@ -1,0 +1,7 @@
+Django==1.8.7
+Pillow==4.0.0
+django-cms==3.4.1
+djangocms-text-ckeditor==3.3.1
+django-reversion==2.0.8
+django-treebeard==4.0.1
+site-config==0.1.2
