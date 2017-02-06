@@ -7,9 +7,7 @@ import datetime
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('cms', '0012_auto_20150607_2207'),
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
@@ -98,18 +96,6 @@ class Migration(migrations.Migration):
                 'ordering': ('name',),
             },
             bases=(models.Model,),
-        ),
-        migrations.CreateModel(
-            name='NewsFeedPluginModel',
-            fields=[
-                ('cmsplugin_ptr', models.OneToOneField(parent_link=True, auto_created=True, primary_key=True, serialize=False, to='cms.CMSPlugin')),
-                ('limit', models.IntegerField(default=5, help_text=b'Maximum number of articles to display', verbose_name=b'Article Limit')),
-                ('location', models.ForeignKey(to='newscenter.Feed')),
-            ],
-            options={
-                'abstract': False,
-            },
-            bases=('cms.cmsplugin',),
         ),
         migrations.CreateModel(
             name='Newsroom',
