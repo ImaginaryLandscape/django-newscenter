@@ -1,138 +1,142 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
+from django.db import models, migrations
 import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'Category'
-        db.create_table('newscenter_category', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('title', self.gf('django.db.models.fields.CharField')(unique=True, max_length=100)),
-            ('slug', self.gf('django.db.models.fields.SlugField')(max_length=50)),
-        ))
-        db.send_create_signal('newscenter', ['Category'])
+    dependencies = []
 
-        # Adding model 'Newsroom'
-        db.create_table('newscenter_newsroom', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=50)),
-            ('slug', self.gf('django.db.models.fields.SlugField')(max_length=50)),
-        ))
-        db.send_create_signal('newscenter', ['Newsroom'])
-
-        # Adding model 'Location'
-        db.create_table('newscenter_location', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('slug', self.gf('django.db.models.fields.SlugField')(max_length=50)),
-        ))
-        db.send_create_signal('newscenter', ['Location'])
-
-        # Adding model 'Article'
-        db.create_table('newscenter_article', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=400)),
-            ('location', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['newscenter.Location'], null=True, blank=True)),
-            ('slug', self.gf('django.db.models.fields.SlugField')(max_length=50)),
-            ('body', self.gf('django.db.models.fields.TextField')()),
-            ('teaser', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('release_date', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
-            ('expire_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('active', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('featured', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('newsroom', self.gf('django.db.models.fields.related.ForeignKey')(default=1, related_name='articles', null=True, blank=True, to=orm['newscenter.Newsroom'])),
-        ))
-        db.send_create_signal('newscenter', ['Article'])
-
-        # Adding M2M table for field categories on 'Article'
-        db.create_table('newscenter_article_categories', (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('article', models.ForeignKey(orm['newscenter.article'], null=False)),
-            ('category', models.ForeignKey(orm['newscenter.category'], null=False))
-        ))
-        db.create_unique('newscenter_article_categories', ['article_id', 'category_id'])
-
-        # Adding model 'Image'
-        db.create_table('newscenter_image', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('image', self.gf('django.db.models.fields.files.ImageField')(max_length=100)),
-            ('article', self.gf('django.db.models.fields.related.ForeignKey')(related_name='images', to=orm['newscenter.Article'])),
-            ('caption', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
-            ('thumbnail', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('sort', self.gf('django.db.models.fields.IntegerField')(default=0)),
-        ))
-        db.send_create_signal('newscenter', ['Image'])
-
-
-    def backwards(self, orm):
-        # Deleting model 'Category'
-        db.delete_table('newscenter_category')
-
-        # Deleting model 'Newsroom'
-        db.delete_table('newscenter_newsroom')
-
-        # Deleting model 'Location'
-        db.delete_table('newscenter_location')
-
-        # Deleting model 'Article'
-        db.delete_table('newscenter_article')
-
-        # Removing M2M table for field categories on 'Article'
-        db.delete_table('newscenter_article_categories')
-
-        # Deleting model 'Image'
-        db.delete_table('newscenter_image')
-
-
-    models = {
-        'newscenter.article': {
-            'Meta': {'ordering': "('-release_date',)", 'object_name': 'Article'},
-            'active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'body': ('django.db.models.fields.TextField', [], {}),
-            'categories': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'articles'", 'null': 'True', 'symmetrical': 'False', 'to': "orm['newscenter.Category']"}),
-            'expire_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
-            'featured': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'location': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['newscenter.Location']", 'null': 'True', 'blank': 'True'}),
-            'newsroom': ('django.db.models.fields.related.ForeignKey', [], {'default': '1', 'related_name': "'articles'", 'null': 'True', 'blank': 'True', 'to': "orm['newscenter.Newsroom']"}),
-            'release_date': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50'}),
-            'teaser': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '400'})
-        },
-        'newscenter.category': {
-            'Meta': {'object_name': 'Category'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50'}),
-            'title': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '100'})
-        },
-        'newscenter.image': {
-            'Meta': {'ordering': "('sort',)", 'object_name': 'Image'},
-            'article': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'images'", 'to': "orm['newscenter.Article']"}),
-            'caption': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'image': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'sort': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
-            'thumbnail': ('django.db.models.fields.BooleanField', [], {'default': 'False'})
-        },
-        'newscenter.location': {
-            'Meta': {'ordering': "('name',)", 'object_name': 'Location'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50'})
-        },
-        'newscenter.newsroom': {
-            'Meta': {'ordering': "('name',)", 'object_name': 'Newsroom'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
-            'slug': ('django.db.models.fields.SlugField', [], {'max_length': '50'})
-        }
-    }
-
-    complete_apps = ['newscenter']
+    operations = [
+        migrations.CreateModel(
+            name='Article',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('title', models.CharField(max_length=400)),
+                ('slug', models.SlugField(unique_for_date=b'release_date', help_text=b'Automatically generated from the title.', unique=True, verbose_name=b'ID')),
+                ('body', models.TextField(blank=True)),
+                ('teaser', models.TextField(help_text=b'A summary preview of the article.', blank=True)),
+                ('release_date', models.DateTimeField(default=datetime.datetime.now, verbose_name=b'Publication Date')),
+                ('expire_date', models.DateTimeField(null=True, verbose_name=b'Expiration Date', blank=True)),
+                ('active', models.BooleanField(default=True)),
+                ('featured', models.BooleanField(default=False)),
+            ],
+            options={
+                'ordering': ('-release_date',),
+                'get_latest_by': 'release_date',
+                'permissions': (('can_feature', 'Can feature an article'),),
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Category',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('title', models.CharField(unique=True, max_length=100)),
+                ('slug', models.SlugField(help_text=b'Automatically generated from the title.')),
+            ],
+            options={
+                'ordering': ('title',),
+                'verbose_name_plural': 'categories',
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Contact',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=200)),
+                ('title', models.CharField(max_length=200, blank=True)),
+                ('phone', models.CharField(max_length=50, blank=True)),
+                ('email', models.EmailField(max_length=75, blank=True)),
+            ],
+            options={
+                'ordering': ('name',),
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Feed',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=100)),
+                ('slug', models.SlugField()),
+            ],
+            options={
+                'ordering': ('name',),
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Image',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('image', models.ImageField(help_text=b'Images larger than the configured dimensions will be resized', upload_to=b'newscenter_uploads')),
+                ('caption', models.CharField(max_length=200, blank=True)),
+                ('name', models.CharField(help_text=b'This will be used for alt text.', max_length=100, verbose_name=b'description', blank=True)),
+                ('thumbnail', models.BooleanField(default=False, help_text=b'To be displayed on article listing pages. If more than one is selected, the thumbnail used will be chosen at random.', verbose_name=b'Use as Thumbnail')),
+                ('sort', models.IntegerField(default=0)),
+                ('article', models.ForeignKey(related_name='images', to='newscenter.Article')),
+            ],
+            options={
+                'ordering': ('sort',),
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Location',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=100)),
+                ('slug', models.SlugField()),
+            ],
+            options={
+                'ordering': ('name',),
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
+            name='Newsroom',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(max_length=50)),
+                ('slug', models.SlugField()),
+            ],
+            options={
+                'ordering': ('name',),
+            },
+            bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='article',
+            name='categories',
+            field=models.ManyToManyField(related_name='articles', to='newscenter.Category', blank=True),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='article',
+            name='contacts',
+            field=models.ManyToManyField(to='newscenter.Contact', blank=True),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='article',
+            name='feeds',
+            field=models.ManyToManyField(help_text=b'Select all areas in which this article should be listed', related_name='articles', to='newscenter.Feed', blank=True),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='article',
+            name='location',
+            field=models.ForeignKey(blank=True, to='newscenter.Location', help_text=b'Primary location, appearing on the article detail page', null=True),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='article',
+            name='newsroom',
+            field=models.ForeignKey(related_name='articles', default=1, to='newscenter.Newsroom'),
+            preserve_default=True,
+        ),
+    ]

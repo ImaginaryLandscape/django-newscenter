@@ -1,8 +1,6 @@
 try:
-    import datetime
     from cms.wizards.wizard_base import Wizard
     from cms.wizards.wizard_pool import wizard_pool
-    from cms.wizards.forms import BaseFormMixin    
 
     from django import forms
     from django.forms import widgets
@@ -18,7 +16,7 @@ try:
 
         class Meta:
             model = Article
-            fields = ['title', 'release_date', 'newsroom', 'body']
+            fields = ['title', 'release_date', 'newsroom', 'body', 'feeds']
 
     class ArticleWizard(Wizard):
         pass
@@ -36,4 +34,4 @@ try:
 
 except ImportError:
     # For django CMS version not supporting wizards just ignore this file
-    pass    
+    pass
