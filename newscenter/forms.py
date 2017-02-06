@@ -1,6 +1,7 @@
 from django import forms
 try:
-    from django.apps.apps import get_model
+    from django.apps import apps
+    get_model = apps.get_model
 except ImportError:
     from django.db.models import get_model
 from django.conf import settings
