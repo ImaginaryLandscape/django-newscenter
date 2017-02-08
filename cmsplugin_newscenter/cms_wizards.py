@@ -7,7 +7,7 @@ try:
 
     from django.conf import settings
 
-    from .models import Article
+    from newscenter.models import Article
 
     class ArticleWizardForm(forms.ModelForm):
         if 'djangocms_text_ckeditor' in settings.INSTALLED_APPS:
