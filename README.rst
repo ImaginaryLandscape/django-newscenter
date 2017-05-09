@@ -6,35 +6,27 @@ A Django application for creating news releases which can be associated with uni
 
 A Django CMS apphook is included as well as a templatetag for rendering news release headlines in non-application templates.
 
-Django 1.5 and up
+Django 1.7 and up
 
 Installation
 ============
 
 Add newscenter to your python path:
+
     $ pip install newscenter
 
 Add the following to the INSTALLED_APPS of your project's settings.py:
+
     'newscenter',
 
 In your urls.py, add:
     url(r'^newscenter/', include('newscenter.urls')),
 
-For Django <1.6 Run:
-    ``manage.py syncdb`` (or ``manage.py migrate`` if you're using south)
+Run:
 
-For Djanveo >1.7:
-
-   Add or Update the MIGRATION_MODULES dictionary in django settings as follows
-
-     MIGRATION_MODULES = {
-         'newscenter': 'newscenter.migrations_django',
-     }
-
-   Then Run:
    ``manage.py migrate``
 
- Collect static media:
+Collect static media:
 
    ``manage.py collectstatic``
 
@@ -50,19 +42,8 @@ The following will be installed automatically if you use pip to install newscent
 
     feedparser (http://pythonhosted.org/feedparser/)
 
-For easy-thumbnails, you'll also need to add it to INSTALLED_APPS and run syncdb or migrate:
+For easy-thumbnails, you'll also need to add it to INSTALLED_APPS and run migrate:
     'easy_thumbnails',
-
-Change Log
-============
-New in 1.5.8:
--Added support for Django 1.7
-
-New in 1.4.1:
--Added title field to Contact model
-
-New in 1.4:
--Switched image plugin from popeye to bxslider
 
 
 Template Tag
@@ -80,3 +61,30 @@ The template tag can be used like this::
     <p><a href="{{ release.get_absolute_url }}">Read more</a></p>
     </article>
     {% endfor %}
+
+    
+Change Log
+============
+Changed in 2.0.0:
+ - In this version, we changed the name of the migrations directories as follows.  If you
+ are using Django 1.7+ and are upgrading to newscenter 2.0.0, you can make sure to
+ remove newscenter from MIGRATION_MODULES in settings.py.  If you are using Django 1.6,
+ update the MIGRATION_MODULES as documented above.
+  - https://github.com/ImaginaryLandscape/django-newscenter/issues/4
+
+    Renamed Directories:
+    migrations -> south_migrations
+    migrations_django -> migrations
+
+ - Fixed a depreciation warning in forms.py regarding get_model
+  - https://github.com/ImaginaryLandscape/django-newscenter/issues/3
+
+New in 1.5.8:
+- Added support for Django 1.7
+
+New in 1.4.1:
+- Added title field to Contact model
+
+New in 1.4:
+- Switched image plugin from popeye to bxslider
+
