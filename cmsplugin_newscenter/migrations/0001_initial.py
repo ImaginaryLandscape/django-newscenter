@@ -7,10 +7,6 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-<<<<<<< HEAD
-        ('cms', '0016_auto_20160608_1535'),
-=======
->>>>>>> origin/master
         ('newscenter', '__first__'),
     ]
 
