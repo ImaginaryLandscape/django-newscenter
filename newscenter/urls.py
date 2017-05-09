@@ -5,7 +5,7 @@ except ImportError:
     from django.conf.urls.defaults import url
 from newscenter.views import (
     NewsroomIndex, NewsroomLatest, NewsroomRandom,
-    ArticleDetail, ArchiveYear, ArchiveMonth)
+    ArticleDetail, ArchiveYear, ArchiveMonth, dual_newsrooms)
 from newscenter.feeds import NewsroomFeed
 from newscenter import models
 
@@ -31,7 +31,7 @@ urlpatterns += [
     url(r'^(?P<newsroom>[\-\d\w]+)/(?P<year>\d{4})/$',
         ArchiveYear.as_view(), name='news_archive_year',),
     url(r'^d/(?P<slug1>[\-\d\w]+)_(?P<slug2>[\-\d\w]+)/$',
-        'dual_newsrooms', name='news_dual_newsroons'),
+        dual_newsrooms, name='news_dual_newsroons'),
     url(r'^(?P<newsroom>[\-\d\w]+)/latest/$', 
         NewsroomLatest.as_view(), name='news_newsroom_latest'),
     url(r'^(?P<newsroom>[\-\d\w]+)/random/$',
