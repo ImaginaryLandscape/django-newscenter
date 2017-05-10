@@ -28,10 +28,11 @@ class LocationAdmin(admin.ModelAdmin):
 
 class NewsroomAdmin(admin.ModelAdmin):
     if 'site_config.backends.model_backend' in settings.INSTALLED_APPS:
-        list_display = ('name', 'website',)
-        list_editable = ('website',)
+        list_display = ('name', 'private', 'website',)
+        list_editable = ('private', 'website',)
     else:
-        list_display = ('name',)
+        list_display = ('name', 'private',)
+        list_editable = ('private',)
 
     prepopulated_fields = {'slug': ('name',)}
 
@@ -54,20 +55,18 @@ class ArticleAdmin(VersionAdmin, DraftAdmin, admin.ModelAdmin):
         ImageInline,
     ]
     list_display = (
-        'title', 'release_date', 'expire_date', 'active',
-        'featured', 'newsroom',)
-    list_editable = ('active', 'featured', 'newsroom',)
+        'id','title', 'release_date', 'active', 'featured', 'private', 'newsroom',)
+    list_editable = ('title', 'active', 'featured', 'private', 'newsroom',)
     search_fields = ('title', 'body', 'teaser',)
-    list_filter = (
-        'release_date', 'expire_date', 'newsroom', 'active',
-        'featured', 'feeds', 'location', 'categories',)
+    list_filter = ('newsroom', 'release_date', 'active', 'featured', 'feeds', 
+        'location', 'categories',)
     prepopulated_fields = {'slug': ('title',)}
     date_heirarchy = 'release_date'
     filter_horizontal = ('categories', 'feeds', 'contacts')
     fieldsets = (
         (None, {
             'fields': (
-                ('active', 'featured'),
+                ('active', 'featured', 'private',),
                 'title', 
                 'slug', 
                 'newsroom', 

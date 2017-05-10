@@ -45,6 +45,7 @@ class Contact(models.Model):
 class Newsroom(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField()
+    private = models.BooleanField(default=False)
     if 'site_config.backends.model_backend' in settings.INSTALLED_APPS:
         website = models.ForeignKey('site_config.Website', null=True, blank=True)
 
@@ -116,6 +117,7 @@ class Article(models.Model):
     expire_date = models.DateTimeField('Expiration Date', null=True, blank=True)
     active = models.BooleanField(default=True)
     featured = models.BooleanField(default=True)
+    private = models.BooleanField(default=False)
     categories = models.ManyToManyField('Category', related_name='articles', 
         blank=True)    
     newsroom = models.ForeignKey(Newsroom, related_name='articles',default=1)

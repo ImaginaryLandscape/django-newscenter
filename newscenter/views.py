@@ -1,11 +1,14 @@
 from django import shortcuts, template
 from django.conf import settings
-from django.views.generic import YearArchiveView, MonthArchiveView, DetailView, RedirectView
+from django.views.generic import (YearArchiveView, MonthArchiveView, 
+    DetailView, RedirectView)
 from django.views.generic.list import ListView
 from django.contrib.sites.models import Site
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
+from django.contrib.auth.views import redirect_to_login
+from django.utils.http import urlquote
 from newscenter import models
 
 
@@ -63,7 +66,13 @@ class ArticleDetail(DetailView):
                 newsroom__slug__exact=self.kwargs.get('newsroom'))
         self.object = self.get_object()
         context = self.get_context_data(object=self.object)
-        return self.render_to_response(context)
+
+        if ((self.object.private or self.object.newsroom.private) and not 
+            request.user.is_authenticated()):
+            return redirect_to_login(urlquote(request.get_full_path()), 
+                settings.LOGIN_URL)
+        else:
+            return self.render_to_response(context)
 
 
 class ArchiveYear(YearArchiveView):
@@ -95,6 +104,20 @@ class ArchiveYear(YearArchiveView):
         ctx['newsroom'] = newsroom
         return ctx
 
+    def render_to_response(self, context, **response_kwargs):
+        """
+        Returns a response with a template rendered with the given context.
+        """
+        if context['newsroom'].private  and not self.request.user.is_authenticated():
+            return redirect_to_login(urlquote(self.request.get_full_path()), 
+                settings.LOGIN_URL)
+        else:
+            return self.response_class(
+                request = self.request,
+                template = self.get_template_names(),
+                context = context,
+                **response_kwargs
+            )
 
 class ArchiveMonth(MonthArchiveView):
     context_object_name = 'article_list'
@@ -126,6 +149,22 @@ class ArchiveMonth(MonthArchiveView):
         ctx['newsroom'] = newsroom
         return ctx
 
+    def render_to_response(self, context, **response_kwargs):
+        """
+        Returns a response with a template rendered with the given context.
+        """
+        if context['newsroom'].private  and not self.request.user.is_authenticated():
+            return redirect_to_login(urlquote(self.request.get_full_path()),
+                settings.LOGIN_URL)
+        else:
+            return self.response_class(
+                request = self.request,
+                template = self.get_template_names(),
+                context = context,
+                **response_kwargs
+            )
+
+
 
 def category_detail(request, slug):
     category = get_object_or_404(models.Category, slug__exact=slug)
@@ -139,15 +178,19 @@ def category_detail(request, slug):
 def newsroom_detail(request, slug, website=None, *args, **kwargs):
     site = Site.objects.get_current()
     if 'site_config.backend.model_backend' in settings.INSTALLED_APPS:
-        model_kwargs = {'slug__exact': slug, 'website__short_name__exact': website}
+        model_kwargs = {'slug__exact': slug, 
+                        'website__short_name__exact': website}
     else:
         model_kwargs = {'slug__exact': slug}
     newsroom = get_object_or_404(models.Newsroom, **model_kwargs)
     article_list = newsroom.articles.get_published()
 
-    return shortcuts.render_to_response(
-        'newscenter/newsroom.html', locals(),
-        context_instance=template.RequestContext(request))
+    if newsroom.private and not request.user.is_authenticated():
+        return redirect_to_login(urlquote(request.get_full_path()), 
+            settings.LOGIN_URL)
+    else:
+        return shortcuts.render_to_response('newscenter/newsroom.html', 
+            locals(), context_instance=template.RequestContext(request))
 
 def dual_newsrooms(request, slug1, slug2):
     from django.core.paginator import Paginator
