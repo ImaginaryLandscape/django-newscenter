@@ -42,9 +42,16 @@ The following will be installed automatically if you use pip to install newscent
 
     feedparser (http://pythonhosted.org/feedparser/)
 
+    django-endless-pagination (https://github.com/frankban/django-endless-pagination)
+
 For easy-thumbnails, you'll also need to add it to INSTALLED_APPS and run migrate:
     'easy_thumbnails',
 
+For django-endless-pagination, you'll also need to add it to INSTALLED_APPS:
+    'endless_pagination',
+
+You will also need to update your `context_processors` with:
+    'django.core.context_processors.request',
 
 Template Tag
 ============
@@ -62,7 +69,7 @@ The template tag can be used like this::
     </article>
     {% endfor %}
 
-    
+
 Change Log
 ============
 Changed in 2.0.0:
@@ -87,4 +94,3 @@ New in 1.4.1:
 
 New in 1.4:
 - Switched image plugin from popeye to bxslider
-
