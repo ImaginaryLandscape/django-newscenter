@@ -4,9 +4,9 @@
 
 {% block appcontent %}
 <div id="breadcrumbs">
-  {% include "newscenter/includes/bread-home.html" %} | Day of week
+  {% include "newscenter/includes/bread-home.html" %} | {{ dayofweek|title }}
 </div>
-<h1>{{ newsroom.name }} day of week</h1>
+<h1>{{ newsroom.name }} | {{ dayofweek|title }}</h1>
 {% include "newscenter/includes/article_list.html" with article_list=object_list %}
 {% endblock %}
 ~                 

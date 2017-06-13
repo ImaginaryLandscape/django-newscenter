@@ -168,10 +168,25 @@ class DayOfWeek(ListView):
     model = models.Article
     template_name = "newscenter/day_of_week.html"
 
-    def get_queryset(self):
+    def get_context_data(self, *args, **kwargs):
+        ctx = super(DayOfWeek, self).get_context_data(*args, **kwargs)
+        days = {'sun':'Sunday','mon':'Monday', 'tue':'Tuesday', 
+                'wed':'Wednesday', 'thu':'Thursday','fri':'Friday',
+                'sat':'Saturday'}
+        dayofweek = days[self.kwargs['dayofweek']]
         newsroom = get_object_or_404(models.Newsroom,
             slug__exact=self.kwargs['newsroom'])
-        articles = newsroom.articles.filter(release_date__week_day=self.kwargs['dayofweek']).get_published()
+        ctx['dayofweek'] = dayofweek
+        ctx['newsroom'] = newsroom
+        return ctx
+
+    def get_queryset(self):
+        dayofweek = [0,'sun','mon','tue','wed','thu','fri','sat'].index(
+            self.kwargs['dayofweek'])
+        newsroom = get_object_or_404(models.Newsroom,
+            slug__exact=self.kwargs['newsroom'])
+        articles = newsroom.articles.get_published().filter(
+            release_date__week_day=dayofweek)
 
         return articles
 

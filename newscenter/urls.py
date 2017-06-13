@@ -30,7 +30,7 @@ urlpatterns += [
         ArchiveMonth.as_view(), name='news_archive_month',),
     url(r'^(?P<newsroom>[\-\d\w]+)/(?P<year>\d{4})/$',
         ArchiveYear.as_view(), name='news_archive_year',),
-    url(r'^(?P<newsroom>[\-\d\w]+)/(?P<dayofweek>[1-7]{1})/$',
+    url(r'^(?P<newsroom>[\-\d\w]+)/(?P<dayofweek>[a-z]{3})/$',
         DayOfWeek.as_view(), name='news_dayofweek',),
     url(r'^d/(?P<slug1>[\-\d\w]+)_(?P<slug2>[\-\d\w]+)/$',
         dual_newsrooms, name='news_dual_newsroons'),
