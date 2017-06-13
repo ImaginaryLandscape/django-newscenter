@@ -1,0 +1,12 @@
+{% extends 'newscenter/base.html' %}
+
+{% block title %}{{ newsroom.name }} day of week{% endblock %}
+
+{% block appcontent %}
+<div id="breadcrumbs">
+  {% include "newscenter/includes/bread-home.html" %} | Day of week
+</div>
+<h1>{{ newsroom.name }} day of week</h1>
+{% include "newscenter/includes/article_list.html" with article_list=object_list %}
+{% endblock %}
+~                 

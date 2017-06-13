@@ -164,6 +164,16 @@ class ArchiveMonth(MonthArchiveView):
                 **response_kwargs
             )
 
+class DayOfWeek(ListView):
+    model = models.Article
+    template_name = "newscenter/day_of_week.html"
+
+    def get_queryset(self):
+        newsroom = get_object_or_404(models.Newsroom,
+            slug__exact=self.kwargs['newsroom'])
+        articles = newsroom.articles.filter(release_date__week_day=self.kwargs['dayofweek']).get_published()
+
+        return articles
 
 
 def category_detail(request, slug):
