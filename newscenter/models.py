@@ -5,6 +5,7 @@ from newscenter import managers
 import PIL
 from django.conf import settings
 from django.utils.text import slugify
+from filer.fields.file import FilerFileField
 
 
 class Category(models.Model):
@@ -121,6 +122,7 @@ class Article(models.Model):
     categories = models.ManyToManyField('Category', related_name='articles', 
         blank=True)    
     newsroom = models.ForeignKey(Newsroom, related_name='articles',default=1)
+    audio_file = FilerFileField(null=True, blank=True, related_name="article_audio")
     objects = managers.ArticleManager()
 
     class Meta:

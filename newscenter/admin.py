@@ -81,6 +81,7 @@ class ArticleAdmin(VersionAdmin, DraftAdmin, admin.ModelAdmin):
                 'teaser',
                 'body',
                 ('release_date', 'expire_date'),
+                'audio_file',
         )}),
     )
     form = forms.ArticleAdminModelForm
