@@ -70,19 +70,24 @@ class ArticleAdmin(VersionAdmin, DraftAdmin, admin.ModelAdmin):
                 'title', 
                 'slug', 
                 'newsroom', 
-                'location'
             )
         }),
         (None, {
             'fields': (
-                'categories',
-                'feeds',
-                'contacts', 
                 'teaser',
                 'body',
                 ('release_date', 'expire_date'),
                 'audio_file',
         )}),
+        ('Details', {
+            'classes': ('collapse',),
+            'fields': (
+                'location',
+                'categories',
+                'feeds',
+                'contacts', 
+        )}),
+
     )
     form = forms.ArticleAdminModelForm
 
