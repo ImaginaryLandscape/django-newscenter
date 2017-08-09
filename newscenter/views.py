@@ -10,7 +10,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.views import redirect_to_login
 from django.utils.http import urlquote
 from newscenter import models
-
+import random
 
 class NewsroomIndex(ListView):
     model = models.Newsroom
@@ -248,7 +248,6 @@ class NewsroomRandom(RedirectView):
     permanent = False
 
     def get_redirect_url(self, *args, **kwargs):
-        import random
         newsroom = get_object_or_404(
             models.Newsroom,
             slug__exact=self.kwargs['newsroom'])
@@ -257,4 +256,12 @@ class NewsroomRandom(RedirectView):
         if category:
             articles = articles.filter(categories__slug=category)
         article = random.choice(articles)
+        return article.get_absolute_url()
+
+class RandomFeatured(RedirectView):
+    permanent = False
+
+    def get_redirect_url(self, *args, **kwargs):
+        featured = models.Article.objects.get_featured()
+        article = random.choice(featured)
         return article.get_absolute_url()
