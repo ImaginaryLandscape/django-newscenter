@@ -262,6 +262,7 @@ class RandomFeatured(RedirectView):
     permanent = False
 
     def get_redirect_url(self, *args, **kwargs):
-        featured = models.Article.objects.get_featured()
+        exclude_newsrooms = getattr(settings, 'NEWSCENTER_EXCLUDE_RANDOM_FEATURED_NEWSROOMS', [])
+        featured = models.Article.objects.get_featured().exclude(newsroom__slug__in=exclude_newsrooms)
         article = random.choice(featured)
         return article.get_absolute_url()
