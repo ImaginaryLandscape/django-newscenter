@@ -1,6 +1,5 @@
 from django import template
 from django.template import Library, Node
-from django.db.models import get_model
 from newscenter.models import Category
 
 register = Library()
@@ -12,6 +11,10 @@ class FeaturedNode(Node):
 
     def render(self, context):
         try:
+            from django.apps import apps
+            model = apps.get_model('newscenter', 'Newsroom')
+        except ImportError:
+            from django.db.models import get_model
             model = get_model('newscenter', 'Newsroom')
         except:
             raise template.TemplateSyntaxError("Failed to retrieve model")
