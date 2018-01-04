@@ -187,10 +187,10 @@ class Image(models.Model):
         blank=False, upload_to='newscenter_uploads',
         help_text="Images larger than the configured dimensions will be resized")
     article = models.ForeignKey(Article, related_name='images')
-    caption = models.CharField(max_length=200, blank=True)
-    name = models.CharField(
-        'description', max_length=100, blank=True,
-        help_text="This will be used for alt text.")
+    name = models.CharField('description', max_length=255,
+        help_text="This will be used for the image alt text.")
+    caption = models.CharField(max_length=255, blank=True, help_text="Text "
+        "to be displayed below the image.")
     thumbnail = models.BooleanField(
         'Use as Thumbnail', default=False,
         help_text="To be displayed on article listing pages. If more than "
