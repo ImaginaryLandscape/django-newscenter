@@ -20,7 +20,6 @@ class Category(models.Model):
     def __unicode__(self):
         return self.title
 
-    @models.permalink
     def get_absolute_url(self):
         return ('news_category_detail', [str(self.slug)])
 
@@ -57,7 +56,6 @@ class Newsroom(models.Model):
         else:
             return u'%s' % (self.name)
 
-    @models.permalink
     def get_absolute_url(self):
         if hasattr(self, 'website') and self.website:
             return (
@@ -88,7 +86,6 @@ class Location(models.Model):
     def __unicode__(self):
         return u'%s' % (self.name)
 
-    @models.permalink
     def get_absolute_url(self):
         return ('news_location_detail', [str(self.slug)])
 
@@ -96,7 +93,7 @@ class Location(models.Model):
 class Article(models.Model):
     title = models.CharField(max_length=400)
     location = models.ForeignKey(
-        Location, blank=True, null=True,
+        Location, blank=True, null=True, on_delete=models.SET_NULL,
         help_text="Primary location, appearing on the article detail page")
     feeds = models.ManyToManyField(
         Feed, blank=True,
@@ -118,7 +115,8 @@ class Article(models.Model):
     featured = models.BooleanField(default=False)
     categories = models.ManyToManyField(
         'Category', related_name='articles', blank=True)
-    newsroom = models.ForeignKey(Newsroom, related_name='articles', default=1)
+    newsroom = models.ForeignKey(Newsroom, related_name='articles', default=1,
+        on_delete=models.PROTECT)
     objects = managers.ArticleManager()
 
     class Meta:
@@ -155,7 +153,6 @@ class Article(models.Model):
             })
 
         return ('news_article_detail', (), url_kwargs)
-    get_absolute_url = models.permalink(get_absolute_url)
 
     def get_previous_published(self):
         try:
@@ -186,7 +183,8 @@ class Image(models.Model):
     image = models.ImageField(
         blank=False, upload_to='newscenter_uploads',
         help_text="Images larger than the configured dimensions will be resized")
-    article = models.ForeignKey(Article, related_name='images')
+    article = models.ForeignKey(Article, related_name='images', 
+        on_delete=models.CASCADE)
     name = models.CharField('description', max_length=255,
         help_text="This will be used for the image alt text.")
     caption = models.CharField(max_length=255, blank=True, help_text="Text "

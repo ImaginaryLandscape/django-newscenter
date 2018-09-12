@@ -2,10 +2,12 @@ from django import shortcuts, template
 from django.conf import settings
 from django.views.generic import YearArchiveView, MonthArchiveView, DetailView, RedirectView
 from django.views.generic.list import ListView
-from django.contrib.sites.models import Site
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import get_object_or_404
-from django.core.urlresolvers import reverse
+try:
+    from django.urls import reverse
+except:
+    from django.core.urlresolvers import reverse
 from newscenter import models
 
 
@@ -137,7 +139,6 @@ def category_detail(request, slug):
 
 
 def newsroom_detail(request, slug, website=None, *args, **kwargs):
-    site = Site.objects.get_current()
     if 'site_config.backend.model_backend' in settings.INSTALLED_APPS:
         model_kwargs = {'slug__exact': slug, 'website__short_name__exact': website}
     else:

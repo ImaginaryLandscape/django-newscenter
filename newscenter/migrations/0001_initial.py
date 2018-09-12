@@ -78,7 +78,7 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(help_text=b'This will be used for alt text.', max_length=100, verbose_name=b'description', blank=True)),
                 ('thumbnail', models.BooleanField(default=False, help_text=b'To be displayed on article listing pages. If more than one is selected, the thumbnail used will be chosen at random.', verbose_name=b'Use as Thumbnail')),
                 ('sort', models.IntegerField(default=0)),
-                ('article', models.ForeignKey(related_name='images', to='newscenter.Article')),
+                ('article', models.ForeignKey(related_name='images', to='newscenter.Article', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ('sort',),
@@ -130,13 +130,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='article',
             name='location',
-            field=models.ForeignKey(blank=True, to='newscenter.Location', help_text=b'Primary location, appearing on the article detail page', null=True),
+            field=models.ForeignKey(blank=True, to='newscenter.Location', help_text=b'Primary location, appearing on the article detail page', null=True, on_delete=models.SET_NULL),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='article',
             name='newsroom',
-            field=models.ForeignKey(related_name='articles', default=1, to='newscenter.Newsroom'),
+            field=models.ForeignKey(related_name='articles', default=1, to='newscenter.Newsroom', on_delete=models.PROTECT),
             preserve_default=True,
         ),
     ]
