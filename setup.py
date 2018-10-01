@@ -14,7 +14,7 @@ setup(
         'easy-thumbnails',
         'feedparser',
         'site_config',
-        'django-endless-pagination>=2.0',
+        'django-el-pagination>=2.0',
     ),
 
     zip_safe=False,
