@@ -3,13 +3,12 @@ try:
     from django.conf.urls import url
 except ImportError:
     from django.conf.urls.defaults import url
-from newscenter.views import (
-    NewsroomIndex, NewsroomLatest, NewsroomRandom, DayOfWeek,
-    ArticleDetail, ArchiveYear, ArchiveMonth, dual_newsrooms,
-    RandomFeatured
-)
-from newscenter.feeds import NewsroomFeed
-from newscenter import models
+from .views import (
+    NewsroomIndex, NewsroomLatest, NewsroomRandom, ArticleDetail,
+    ArchiveYear, ArchiveMonth, newsroom_detail, category_detail,
+    dual_newsrooms, RandomFeatured, DayOfWeek)
+from .feeds import NewsroomFeed
+from . import models
 
 # ## Object List
 urlpatterns = [
@@ -24,10 +23,10 @@ urlpatterns += [
     url(r'^$', NewsroomIndex.as_view(), name="news_newsroom_index"),
     url(r'^random_featured/$', RandomFeatured.as_view(), 
         name='news_random_featured'),
-    url(r'^(?P<slug>[\-\d\w]+)/$',
-        'newscenter.views.newsroom_detail', name='news_newsroom_detail'),
-    url(r'^categories/(?P<slug>[\-\d\w]+)/$',
-        'newscenter.views.category_detail', name='news_category_detail'),
+    url(r'^(?P<slug>[\-\d\w]+)/$', newsroom_detail,
+        name='news_newsroom_detail'),
+    url(r'^categories/(?P<slug>[\-\d\w]+)/$', category_detail,
+        name='news_category_detail'),
     url(r'^(?P<newsroom>[\-\d\w]+)/(?P<year>\d{4})/(?P<month>[a-z]{3})/(?P<slug>[\-\d\w]+)/$',
         ArticleDetail.as_view(), name='news_article_detail'),
     url(r'^(?P<newsroom>[\-\d\w]+)/(?P<year>\d{4})/(?P<month>[a-z]{3})/$',
