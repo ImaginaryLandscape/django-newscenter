@@ -1,4 +1,5 @@
 from django import shortcuts, template
+from django.shortcuts import render
 from django.conf import settings
 from django.views.generic import (YearArchiveView, MonthArchiveView, 
     DetailView, RedirectView)
@@ -194,10 +195,8 @@ class DayOfWeek(ListView):
 def category_detail(request, slug):
     category = get_object_or_404(models.Category, slug__exact=slug)
     article_list = category.articles.get_published()
-    return shortcuts.render_to_response(
-        'newscenter/category_detail.html',
-        {'category': category, 'article_list': article_list, },
-        context_instance=template.RequestContext(request))
+    return render(request, 'newscenter/category_detail.html',
+        {'category': category, 'article_list': article_list,})
 
 
 def newsroom_detail(request, slug, website=None, *args, **kwargs):
@@ -214,8 +213,7 @@ def newsroom_detail(request, slug, website=None, *args, **kwargs):
         return redirect_to_login(urlquote(request.get_full_path()), 
             settings.LOGIN_URL)
     else:
-        return shortcuts.render_to_response('newscenter/newsroom.html', 
-            locals(), context_instance=template.RequestContext(request))
+        return render(request, 'newscenter/newsroom.html', locals())
 
 def dual_newsrooms(request, slug1, slug2):
     from django.core.paginator import Paginator
@@ -229,9 +227,7 @@ def dual_newsrooms(request, slug1, slug2):
     article1 = paginator1.page(page)
     article2 = paginator2.page(page)
 
-    return shortcuts.render_to_response(
-        'newscenter/dual_newsrooms.html', locals(),
-        context_instance=template.RequestContext(request))
+    return render(request, 'newscenter/dual_newsrooms.html', locals())
     
 class NewsroomLatest(RedirectView):
     permanent = False
