@@ -1,4 +1,4 @@
-{% load endless %}
+{% load el_pagination_tags %}
 
 {% paginate article_list %}
 {% for article in article_list %}
@@ -10,5 +10,5 @@
 {% get_pages %}
 <div id="news-pagination" class="pagination">
   Showing {{ pages.current_start_index }}-{{ pages.current_end_index }} of {{ pages.total_count }}
-  <nav id="news-pages" class="pages">{{ pages }}</nav>
+  <nav id="news-pages" class="pages">{{ pages.get_rendered }}</nav>
 </div>
