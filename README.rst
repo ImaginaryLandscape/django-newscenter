@@ -42,16 +42,18 @@ The following will be installed automatically if you use pip to install newscent
 
     feedparser (http://pythonhosted.org/feedparser/)
 
-    django-endless-pagination (https://github.com/frankban/django-endless-pagination)
+    django-el-pagination (https://django-el-pagination.readthedocs.io/en/latest/start.html)
 
 For easy-thumbnails, you'll also need to add it to INSTALLED_APPS and run migrate:
     'easy_thumbnails',
 
-For django-endless-pagination, you'll also need to add it to INSTALLED_APPS:
-    'endless_pagination',
+For django-el-pagination, you'll also need to add it to INSTALLED_APPS:
+    'el_pagination',
 
 You will also need to update your `context_processors` with:
-    'django.core.context_processors.request',
+    'django.template.context_processors.request',
+
+**NB:** don't forget to delete any 'endless_pagination' from   INSTALLED_APPS in the settings.py file.
 
 Template Tag
 ============
