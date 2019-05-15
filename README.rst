@@ -53,7 +53,7 @@ For django-el-pagination, you'll also need to add it to INSTALLED_APPS:
 You will also need to update your `context_processors` with:
     'django.template.context_processors.request',
 
-**NB:** don't forget to delete any 'endless_pagination' from   INSTALLED_APPS in the settings.py file.
+NB: don't forget to delete any 'endless_pagination' from   INSTALLED_APPS in the settings.py file.
 
 Template Tag
 ============
