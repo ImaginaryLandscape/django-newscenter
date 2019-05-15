@@ -74,19 +74,24 @@ The template tag can be used like this::
 
 Change Log
 ============
+2.0.14:
+
+- django-endless-pagination -> django-el-pagination
+
 Changed in 2.0.0:
- - In this version, we changed the name of the migrations directories as follows.  If you
- are using Django 1.7+ and are upgrading to newscenter 2.0.0, you can make sure to
- remove newscenter from MIGRATION_MODULES in settings.py.  If you are using Django 1.6,
- update the MIGRATION_MODULES as documented above.
-  - https://github.com/ImaginaryLandscape/django-newscenter/issues/4
 
-    Renamed Directories:
-    migrations -> south_migrations
-    migrations_django -> migrations
+- In this version, we changed the name of the migrations directories as follows. If you are using Django 1.7+ and are upgrading to newscenter 2.0.0, you can make sure to remove newscenter from MIGRATION_MODULES in settings.py. If you are using Django 1.6, update the MIGRATION_MODULES as documented above.
 
- - Fixed a depreciation warning in forms.py regarding get_model
-  - https://github.com/ImaginaryLandscape/django-newscenter/issues/3
+- https://github.com/ImaginaryLandscape/django-newscenter/issues/4
+
+
+Renamed Directories:
+migrations -> south_migrations
+migrations_django -> migrations
+
+- Fixed a depreciation warning in forms.py regarding get_model
+
+- https://github.com/ImaginaryLandscape/django-newscenter/issues/3
 
 New in 1.5.8:
 - Added support for Django 1.7
