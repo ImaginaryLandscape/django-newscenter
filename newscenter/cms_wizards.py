@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 try:
     from cms.wizards.wizard_base import Wizard
     from cms.wizards.wizard_pool import wizard_pool

@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from django.views.generic.list import ListView
 try:
     from django.conf.urls import url
