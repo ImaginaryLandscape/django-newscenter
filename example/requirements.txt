@@ -1,4 +1,4 @@
-Django==1.8.7
+Django==1.11.22
 Pillow==4.0.0
 django-cms==3.4.1
 djangocms-text-ckeditor==3.3.1
