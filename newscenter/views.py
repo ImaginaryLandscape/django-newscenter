@@ -3,7 +3,7 @@ from django.conf import settings
 from django.views.generic import YearArchiveView, MonthArchiveView, DetailView, RedirectView
 from django.views.generic.list import ListView
 from django.utils.translation import ugettext_lazy as _
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 try:
     from django.urls import reverse
 except:
@@ -132,10 +132,8 @@ class ArchiveMonth(MonthArchiveView):
 def category_detail(request, slug):
     category = get_object_or_404(models.Category, slug__exact=slug)
     article_list = category.articles.get_published()
-    return shortcuts.render_to_response(
-        'newscenter/category_detail.html',
-        {'category': category, 'article_list': article_list, },
-        context_instance=template.RequestContext(request))
+    return render(request, 'newscenter/category_detail.html',
+        {'category': category, 'article_list': article_list,})
 
 
 def newsroom_detail(request, slug, website=None, *args, **kwargs):
@@ -146,9 +144,7 @@ def newsroom_detail(request, slug, website=None, *args, **kwargs):
     newsroom = get_object_or_404(models.Newsroom, **model_kwargs)
     article_list = newsroom.articles.get_published()
 
-    return shortcuts.render_to_response(
-        'newscenter/newsroom.html', locals(),
-        context_instance=template.RequestContext(request))
+    return render(request, 'newscenter/newsroom.html', locals())
 
 
 class NewsroomLatest(RedirectView):
