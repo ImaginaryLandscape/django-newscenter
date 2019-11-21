@@ -5,6 +5,7 @@ from newscenter import managers
 import PIL
 from django.conf import settings
 from django.utils.text import slugify
+from django.urls import reverse
 
 
 class Category(models.Model):
@@ -17,11 +18,11 @@ class Category(models.Model):
         ordering = ('title',)
         verbose_name_plural = 'categories'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return ('news_category_detail', [str(self.slug)])
+        return reverse('news_category_detail', args=[str(self.slug)])
 
     def get_article_count(self):
         return Category.objects.filter(slug=self.slug).annotate(
@@ -37,7 +38,7 @@ class Contact(models.Model):
     class Meta:
         ordering = ('name',)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % (self.name)
 
 
@@ -50,7 +51,7 @@ class Newsroom(models.Model):
     class Meta:
         ordering = ('name',)
 
-    def __unicode__(self):
+    def __str__(self):
         if hasattr(self, 'website') and self.website:
             return u'%s | %s' % (self.name, self.website.name)
         else:
@@ -58,11 +59,10 @@ class Newsroom(models.Model):
 
     def get_absolute_url(self):
         if hasattr(self, 'website') and self.website:
-            return (
-                'news_newsroom_detail', [
-                    str(self.website.short_name), str(self.slug)])
+            return reverse('news_newsroom_detail', args=[
+                str(self.website.short_name), str(self.slug)])
         else:
-            return ('news_newsroom_detail', [str(self.slug)])
+            return reverse('news_newsroom_detail', args=[str(self.slug)])
 
 
 class Feed(models.Model):
@@ -72,7 +72,7 @@ class Feed(models.Model):
     class Meta:
         ordering = ('name',)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % (self.name)
 
 
@@ -83,11 +83,11 @@ class Location(models.Model):
     class Meta:
         ordering = ('name',)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % (self.name)
 
     def get_absolute_url(self):
-        return ('news_location_detail', [str(self.slug)])
+        return reverse('news_location_detail', args=[str(self.slug)])
 
 
 class Article(models.Model):
@@ -135,11 +135,10 @@ class Article(models.Model):
         if self.images.filter(thumbnail=True).count() > 0:
             return choice(self.images.filter(thumbnail=True))
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % (self.title)
 
     def get_absolute_url(self):
-
         url_kwargs = {
            'newsroom': self.newsroom.slug,
            'year': self.release_date.strftime('%Y'),
@@ -152,7 +151,7 @@ class Article(models.Model):
                 'website': self.newsroom.website.short_name,
             })
 
-        return ('news_article_detail', (), url_kwargs)
+        return reverse('news_article_detail', kwargs=url_kwargs)
 
     def get_previous_published(self):
         try:

@@ -3,7 +3,7 @@ from django.utils.safestring import mark_safe
 
 
 class SmallTextField(forms.Textarea):
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, attrs=None, renderer=None):
         self.attrs = {'rows': '3', 'cols': '50'}
-        output = [super(SmallTextField, self).render(name, value, attrs)]
+        output = [super(SmallTextField, self).render(name, value, attrs, renderer)]
         return mark_safe(u''.join(output))

@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 
+{% load static %}
+
 {% block extra_head %}
-  <script type="text/javascript">if(!window.jQuery){ document.write(unescape('%3Cscript src="{{ STATIC_URL }}newscenter/js/jquery.min.js"%3E%3C/script%3E'));}</script>
-  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}newscenter/css/newscenter.css" />
+  <script type="text/javascript">if(!window.jQuery){ document.write(unescape('%3Cscript src="{% static "newscenter/js/jquery.min.js" %}"%3E%3C/script%3E'));}</script>
+  <link rel="stylesheet" type="text/css" href="{% static "newscenter/css/newscenter.css" %}" />
 {% endblock %}
 
 {% block page_heading %}{% if newsroom %}<h1><a href="{{ newsroom.get_absolute_url }}">{{ newsroom.name }}</a></h1>{% endif %}{% endblock %}
