@@ -99,12 +99,10 @@ class ArticleAdmin(VersionAdmin, DraftAdmin, admin.ModelAdmin):
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('title',)
+    list_display = ('title','newsroom',)
+    list_filter = ('newsroom',)
     search_fields = ['title', ]
     prepopulated_fields = {'slug': ('title',)}
-    fieldsets = (
-        ('Category', {'fields': ('title', 'slug')}),
-    )
 
 admin.site.register(models.Article, ArticleAdmin)
 admin.site.register(models.Contact, ContactAdmin)

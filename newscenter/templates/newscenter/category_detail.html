@@ -2,7 +2,7 @@
 
 {% block appcontent %}
 <div id="breadcrumbs">
-  {% include "newscenter/includes/bread-home.html" %} | <a href="../">Categories</a> | {{ category }}
+	{% include "newscenter/includes/bread-home.html" %} | <a href="{% url 'news_category_list' %}">Categories</a> | {{ category }}
 </div>
 <h1>{% block title %}{{ category }} Articles{% endblock %}</h1>
 {% include "newscenter/includes/article_list.html" %}

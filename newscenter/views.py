@@ -135,6 +135,11 @@ def category_detail(request, slug):
     return render(request, 'newscenter/category_detail.html',
         {'category': category, 'article_list': article_list,})
 
+def newsroom_category_detail(request, slug, newsroom):
+    category = get_object_or_404(models.Category, slug__exact=slug, newsroom__slug=newsroom)
+    article_list = category.articles.get_published()
+    return render(request, 'newscenter/category_detail.html',
+        {'category': category, 'article_list': article_list,})
 
 def newsroom_detail(request, slug, website=None, *args, **kwargs):
     if 'site_config.backend.model_backend' in settings.INSTALLED_APPS:

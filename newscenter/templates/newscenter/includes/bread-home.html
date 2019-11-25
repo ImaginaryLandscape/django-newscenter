@@ -1,5 +1,5 @@
 {% if newsroom %}
 <a href="{{ newsroom.get_absolute_url }}">{{ newsroom.name }}</a>
 {% else %}
-<a href="../">News Rooms</a>
+<a href="{% url 'news_newsroom_index' %}">News Rooms</a>
 {% endif %}

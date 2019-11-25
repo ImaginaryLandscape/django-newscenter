@@ -7,6 +7,10 @@
 {% block appcontent %}
 <div id="article-index">
   <h1>{{ newsroom.name }} <a id="newsroom-rss-link" href="{% if newsroom.website %}{% url "newsroom_feed" newsroom.website.short_name newsroom.slug %}{% else %}{% url "newsroom_feed" newsroom.slug %}{% endif %}"><img src="{% static "newscenter/img/feed-icon-14x14.png" %}" alt="{{ newsroom.name }} rss" /></a></h1>
+  <div class="newsroom-categories">
+  {% for category in newsroom.category_set.all %}
+  <a href="{{ category.get_absolute_url }}">{{ category.title }}</a>{% if not forloop.last %} | {% endif %}
+  {% endfor %}
   {% include "newscenter/includes/article_list.html" %}
 </div>
 {% endblock %}

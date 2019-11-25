@@ -8,40 +8,6 @@ from django.utils.text import slugify
 from django.urls import reverse
 
 
-class Category(models.Model):
-    title = models.CharField(max_length=100, unique=True)
-    slug = models.SlugField(
-        help_text='Automatically generated from the title.'
-    )
-
-    class Meta:
-        ordering = ('title',)
-        verbose_name_plural = 'categories'
-
-    def __str__(self):
-        return self.title
-
-    def get_absolute_url(self):
-        return reverse('news_category_detail', args=[str(self.slug)])
-
-    def get_article_count(self):
-        return Category.objects.filter(slug=self.slug).annotate(
-            article_count=models.Count('articles'))[0].article_count
-
-
-class Contact(models.Model):
-    name = models.CharField(max_length=200)
-    title = models.CharField(max_length=200, blank=True)
-    phone = models.CharField(max_length=50, blank=True)
-    email = models.EmailField(blank=True)
-
-    class Meta:
-        ordering = ('name',)
-
-    def __str__(self):
-        return u'%s' % (self.name)
-
-
 class Newsroom(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField()
@@ -63,6 +29,49 @@ class Newsroom(models.Model):
                 str(self.website.short_name), str(self.slug)])
         else:
             return reverse('news_newsroom_detail', args=[str(self.slug)])
+
+
+class Category(models.Model):
+    title = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(
+        help_text='Automatically generated from the title.'
+    )
+    newsroom = models.ForeignKey(
+        Newsroom, blank=True, null=True, on_delete=models.SET_NULL,
+        help_text="If set, this category will be associated with the newsroom")
+    
+    class Meta:
+        ordering = ('title',)
+        verbose_name_plural = 'categories'
+
+    def __str__(self):
+        if self.newsroom:
+            return '%s - %s' % (self.newsroom, self.title)
+        else:
+            return self.title
+
+    def get_absolute_url(self):
+        if self.newsroom:
+            return reverse('news_newsroom_category_detail', args=[str(self.newsroom.slug), str(self.slug)])
+        else:
+            return reverse('news_category_detail', args=[str(self.slug)])
+
+    def get_article_count(self):
+        return Category.objects.filter(slug=self.slug).annotate(
+            article_count=models.Count('articles'))[0].article_count
+
+
+class Contact(models.Model):
+    name = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, blank=True)
+    phone = models.CharField(max_length=50, blank=True)
+    email = models.EmailField(blank=True)
+
+    class Meta:
+        ordering = ('name',)
+
+    def __str__(self):
+        return u'%s' % (self.name)
 
 
 class Feed(models.Model):
