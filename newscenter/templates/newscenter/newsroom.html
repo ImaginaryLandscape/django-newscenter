@@ -11,6 +11,7 @@
   {% for category in newsroom.category_set.all %}
   <a href="{{ category.get_absolute_url }}">{{ category.title }}</a>{% if not forloop.last %} | {% endif %}
   {% endfor %}
+  </div>
   {% include "newscenter/includes/article_list.html" %}
 </div>
 {% endblock %}

@@ -10,16 +10,12 @@ from .views import (
 from .feeds import NewsroomFeed
 from . import models
 
-# ## Object List
 urlpatterns = [
     url(r'^categories/$', ListView.as_view(
-        queryset=models.Category.objects.all(),
-        allow_empty=True,), name='news_category_list'
-    ),
-]
-
-# ## Custom
-urlpatterns += [
+        queryset=models.Category.objects.all(), allow_empty=True,), 
+        name='news_category_list'),
+    url(r'^categories/(?P<slug>[\-\d\w]+)/$', category_detail,
+        name='news_category_detail'),
     url(r'^$', NewsroomIndex.as_view(), name="news_newsroom_index"),
     url(r'^(?P<slug>[\-\d\w]+)/$', newsroom_detail,
         name='news_newsroom_detail'),
@@ -33,13 +29,7 @@ urlpatterns += [
         NewsroomLatest.as_view(), name='news_newsroom_latest'),
     url(r'^(?P<newsroom>[\-\d\w]+)/random/$',
         NewsroomRandom.as_view(), name='news_newsroom_random'),
-    url(r'^categories/(?P<slug>[\-\d\w]+)/$', category_detail,
-        name='news_category_detail'),
+    url(r'^(?P<newsroom>[\-\d\w]+)/rss/$', NewsroomFeed(), {}, name='newsroom_feed'),
     url(r'^(?P<newsroom>[\-\d\w]+)/(?P<slug>[\-\d\w]+)/$', newsroom_category_detail,
         name='news_newsroom_category_detail'),
-]
-
-# ## Feeds
-urlpatterns += [
-    url(r'^(?P<newsroom>[\-\d\w]+)/rss/$', NewsroomFeed(), {}, name='newsroom_feed'),
 ]

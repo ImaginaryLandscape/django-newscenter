@@ -1,6 +1,6 @@
 from django import template
 from django.template import Library, Node
-from newscenter.models import Category
+from newscenter.models import Category, Newsroom
 
 register = Library()
 
@@ -52,3 +52,18 @@ class CategoryNode(Node):
         return CategoryNode()
 
     show_categories = register.tag(show_categories)
+
+
+class NewsroomNode(Node):
+    def render(self, context):
+        try:
+            context['newsroom_list'] = Newsroom.objects.all()
+        except:
+            raise template.TemplateSyntaxError("")
+
+        return ''
+
+    def show_newsrooms(parser, token):
+        return NewsroomNode()
+
+    show_newsrooms = register.tag(show_newsrooms)
