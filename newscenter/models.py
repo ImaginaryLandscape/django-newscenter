@@ -11,6 +11,10 @@ from django.urls import reverse
 class Newsroom(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField()
+    featured_image = models.ImageField(blank=True, 
+        upload_to='newscenter_uploads', help_text="If configured in "
+        "templates, this image will display on the newsroom index")
+
     if 'site_config.backends.model_backend' in settings.INSTALLED_APPS:
         website = models.ForeignKey('site_config.Website', null=True, blank=True)
 
