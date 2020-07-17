@@ -13,10 +13,13 @@ class ArticleAdminModelForm(forms.ModelForm):
     if 'djangocms_text_ckeditor' in settings.INSTALLED_APPS:
         from djangocms_text_ckeditor.widgets import TextEditorWidget
         body = forms.CharField(required=False, widget=TextEditorWidget())
+        teaser = forms.CharField(required=False, widget=TextEditorWidget())
     elif 'tinymce' in settings.INSTALLED_APPS:
         from tinymce.widgets import TinyMCE
         body = forms.CharField(required=False, widget=TinyMCE())
-    teaser = forms.CharField(required=False, widget=SmallTextField())
+        teaser = forms.CharField(required=False, widget=TinyMCE())
+    else:
+        teaser = forms.CharField(required=False, widget=SmallTextField())
 
     class Meta:
         model = get_model('newscenter', 'article')
