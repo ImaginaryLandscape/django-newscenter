@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='newscenter',
-    version='2.0.18',
+    version='2.0.19',
     description='A News Release Application for Django',
     long_description=open('README.rst').read(),
 
@@ -10,7 +10,7 @@ setup(
     author_email='dbertrand@imagescape.com',
 
     install_requires=(
-        'pillow>=6.2.2',
+        'pillow>=7.1.0',
         'easy-thumbnails',
         'feedparser',
         'site_config',
