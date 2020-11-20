@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
             migrations.AddField(
                 model_name='newsroom',
                 name='website',
-                field=models.ForeignKey(blank=True, to='site_config.Website', null=True),
+                field=models.ForeignKey(blank=True, to='site_config.Website', null=True, on_delete=models.SET_NULL),
             ),
         ]
     else:

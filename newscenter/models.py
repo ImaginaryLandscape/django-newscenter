@@ -1,5 +1,6 @@
 from datetime import datetime
 from django.db import models
+from django.urls import reverse
 from random import choice
 from newscenter import managers
 import PIL
@@ -20,9 +21,8 @@ class Category(models.Model):
     def __unicode__(self):
         return self.title
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('news_category_detail', [str(self.slug)])
+        return reverse('news_category_detail', [str(self.slug)])
 
     def get_article_count(self):
         return Category.objects.filter(slug=self.slug).annotate(
@@ -46,7 +46,8 @@ class Newsroom(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField()
     if 'site_config.backends.model_backend' in settings.INSTALLED_APPS:
-        website = models.ForeignKey('site_config.Website', null=True, blank=True)
+        website = models.ForeignKey('site_config.Website', null=True, 
+            blank=True, on_delete=models.SET_NULL)
 
     class Meta:
         ordering = ('name',)
@@ -57,14 +58,13 @@ class Newsroom(models.Model):
         else:
             return u'%s' % (self.name)
 
-    @models.permalink
     def get_absolute_url(self):
         if hasattr(self, 'website') and self.website:
-            return (
+            return reverse(
                 'news_newsroom_detail', [
                     str(self.website.short_name), str(self.slug)])
         else:
-            return ('news_newsroom_detail', [str(self.slug)])
+            return reverse('news_newsroom_detail', [str(self.slug)])
 
 
 class Feed(models.Model):
@@ -88,16 +88,15 @@ class Location(models.Model):
     def __unicode__(self):
         return u'%s' % (self.name)
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('news_location_detail', [str(self.slug)])
+        return reverse('news_location_detail', [str(self.slug)])
 
 
 class Article(models.Model):
     title = models.CharField(max_length=400)
-    location = models.ForeignKey(
-        Location, blank=True, null=True,
-        help_text="Primary location, appearing on the article detail page")
+    location = models.ForeignKey(Location, blank=True, null=True,
+        help_text="Primary location, appearing on the article detail page",
+        on_delete=models.SET_NULL)
     feeds = models.ManyToManyField(
         Feed, blank=True,
         related_name='articles', help_text="Select all areas in which this "
@@ -118,7 +117,8 @@ class Article(models.Model):
     featured = models.BooleanField(default=False)
     categories = models.ManyToManyField(
         'Category', related_name='articles', blank=True)
-    newsroom = models.ForeignKey(Newsroom, related_name='articles', default=1)
+    newsroom = models.ForeignKey(Newsroom, related_name='articles', default=1,
+        on_delete=models.CASCADE)
     objects = managers.ArticleManager()
 
     class Meta:
@@ -154,8 +154,7 @@ class Article(models.Model):
                 'website': self.newsroom.website.short_name,
             })
 
-        return ('news_article_detail', (), url_kwargs)
-    get_absolute_url = models.permalink(get_absolute_url)
+        return reverse('news_article_detail', (), url_kwargs)
 
     def get_previous_published(self):
         try:
@@ -186,7 +185,8 @@ class Image(models.Model):
     image = models.ImageField(
         blank=False, upload_to='newscenter_uploads',
         help_text="Images larger than the configured dimensions will be resized")
-    article = models.ForeignKey(Article, related_name='images')
+    article = models.ForeignKey(Article, related_name='images', 
+        on_delete=models.CASCADE)
     name = models.CharField('description', max_length=255,
         help_text="This will be used for the image alt text.")
     caption = models.CharField(max_length=255, blank=True, help_text="Text "
