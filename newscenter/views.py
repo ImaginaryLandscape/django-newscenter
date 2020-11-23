@@ -5,7 +5,10 @@ from django.views.generic.list import ListView
 from django.contrib.sites.models import Site
 from django.utils.translation import ugettext_lazy as _
 from django.shortcuts import get_object_or_404, render
-from django.core.urlresolvers import reverse
+try:
+    from django.urls import reverse
+except:
+    from django.core.urlresolvers import reverse
 from newscenter import models
 
 

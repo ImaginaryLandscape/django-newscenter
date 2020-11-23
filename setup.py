@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='newscenter',
-    version='2.0.20',
+    version='2.0.21',
     description='A News Release Application for Django',
     long_description=open('README.rst').read(),
 
