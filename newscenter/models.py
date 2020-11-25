@@ -18,7 +18,7 @@ class Category(models.Model):
         ordering = ('title',)
         verbose_name_plural = 'categories'
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
     def get_absolute_url(self):
@@ -38,7 +38,7 @@ class Contact(models.Model):
     class Meta:
         ordering = ('name',)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % (self.name)
 
 
@@ -52,7 +52,7 @@ class Newsroom(models.Model):
     class Meta:
         ordering = ('name',)
 
-    def __unicode__(self):
+    def __str__(self):
         if hasattr(self, 'website') and self.website:
             return u'%s | %s' % (self.name, self.website.name)
         else:
@@ -74,7 +74,7 @@ class Feed(models.Model):
     class Meta:
         ordering = ('name',)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % (self.name)
 
 
@@ -85,7 +85,7 @@ class Location(models.Model):
     class Meta:
         ordering = ('name',)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % (self.name)
 
     def get_absolute_url(self):
@@ -137,7 +137,7 @@ class Article(models.Model):
         if self.images.filter(thumbnail=True).count() > 0:
             return choice(self.images.filter(thumbnail=True))
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s' % (self.title)
 
     def get_absolute_url(self):
