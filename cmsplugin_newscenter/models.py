@@ -5,7 +5,7 @@ from newscenter.models import Feed
 
 
 class NewsFeedPluginModel(CMSPlugin):
-    location = models.ForeignKey(Feed)
+    location = models.ForeignKey(Feed, on_delete=models.CASCADE)
     limit = models.IntegerField(
         'Article Limit', default=5,
         help_text="Maximum number of articles to display")
