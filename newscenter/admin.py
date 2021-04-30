@@ -54,7 +54,7 @@ class ArticleAdmin(VersionAdmin, DraftAdmin, admin.ModelAdmin):
         ImageInline,
     ]
     list_display = (
-        'title', 'release_date', 'expire_date', 'active',
+        'admin_thumbnail', 'title', 'release_date', 'expire_date', 'active',
         'featured', 'newsroom',)
     list_editable = ('active', 'featured', 'newsroom',)
     search_fields = ('title', 'body', 'teaser',)
@@ -85,6 +85,7 @@ class ArticleAdmin(VersionAdmin, DraftAdmin, admin.ModelAdmin):
         )}),
     )
     form = forms.ArticleAdminModelForm
+
 
     def changelist_view(self, request, extra_context=None):
         if not request.user.is_superuser and not request.user.has_perm('newscenter.can_feature'):

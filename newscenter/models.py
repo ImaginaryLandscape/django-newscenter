@@ -6,7 +6,7 @@ import PIL
 from django.conf import settings
 from django.utils.text import slugify
 from django.urls import reverse
-
+from django.utils.safestring import mark_safe
 
 class Newsroom(models.Model):
     name = models.CharField(max_length=50)
@@ -144,6 +144,15 @@ class Article(models.Model):
             self.slug = slugify(self.title)
         super(Article, self).save(*args, **kwargs)
 
+
+    def admin_thumbnail(self):
+        try:
+            return mark_safe('<img width="150" src="%s" />' % self.images.first().image.url)
+        except:
+            return ''
+    admin_thumbnail.short_description = 'Thumbnail'
+    admin_thumbnail.allow_tags = True
+
     def random_thumbnail(self):
         if self.images.filter(thumbnail=True).count() > 0:
             return choice(self.images.filter(thumbnail=True))
@@ -197,7 +206,7 @@ class Image(models.Model):
         help_text="Images larger than the configured dimensions will be resized")
     article = models.ForeignKey(Article, related_name='images', 
         on_delete=models.CASCADE)
-    name = models.CharField('description', max_length=255,
+    name = models.CharField('description', blank=True, max_length=255,
         help_text="This will be used for the image alt text.")
     caption = models.CharField(max_length=255, blank=True, help_text="Text "
         "to be displayed below the image.")
@@ -209,7 +218,7 @@ class Image(models.Model):
     sort = models.IntegerField(default=0)
 
     class Meta:
-        ordering = ('sort',)
+        ordering = ('sort','id',)
 
     def save(self):
         super(Image, self).save()
