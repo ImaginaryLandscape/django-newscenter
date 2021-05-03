@@ -6,6 +6,16 @@ from newscenter import models, forms
 class ImageInline(admin.StackedInline):
     model = models.Image
     extra = 1
+    fields = (
+        'image',
+        'admin_thumbnail',
+        'name', 
+        'caption', 
+        'thumbnail',
+        'sort',
+    )
+    readonly_fields = ('admin_thumbnail',)
+
 
 
 class ArticleInline(admin.StackedInline):
@@ -67,7 +77,7 @@ class ArticleAdmin(VersionAdmin, DraftAdmin, admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': (
-                ('active', 'featured'),
+                ('active', 'featured', 'exclude_list',),
                 'title', 
                 'slug', 
                 'newsroom', 

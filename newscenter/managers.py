@@ -10,6 +10,12 @@ class ArticleManager(models.Manager):
             models.Q(expire_date__isnull=True)).filter(
             active=True, release_date__lte=datetime.now())
 
+    def get_list_published(self):
+        return self.filter(
+            models.Q(expire_date__gte=datetime.now()) |
+            models.Q(expire_date__isnull=True)).filter(
+            active=True, exclude_list=False, release_date__lte=datetime.now())
+
     def get_featured(self):
         return self.filter(
             models.Q(expire_date__gte=datetime.now()) |

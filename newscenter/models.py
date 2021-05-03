@@ -126,6 +126,8 @@ class Article(models.Model):
     expire_date = models.DateTimeField('Expiration Date', null=True, blank=True)
     active = models.BooleanField(default=True)
     featured = models.BooleanField(default=False)
+    exclude_list = models.BooleanField(default=False, 
+        help_text="Exclude this article from list views")
     categories = models.ManyToManyField(
         'Category', related_name='articles', blank=True)
     newsroom = models.ForeignKey(Newsroom, related_name='articles', default=1,
@@ -216,6 +218,14 @@ class Image(models.Model):
                   "one is selected, the thumbnail used will be chosen at "
                   "random.")
     sort = models.IntegerField(default=0)
+
+    def admin_thumbnail(self):
+        try:
+            return mark_safe('<img width="250" src="%s" />' % self.image.url)
+        except:
+            return ''
+    admin_thumbnail.short_description = 'Thumbnail'
+    admin_thumbnail.allow_tags = True
 
     class Meta:
         ordering = ('sort','id',)

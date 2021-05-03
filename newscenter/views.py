@@ -76,11 +76,11 @@ class ArchiveYear(YearArchiveView):
 
     def get_queryset(self):
         try:
-            return models.Article.objects.get_published().filter(
+            return models.Article.objects.get_list_published().filter(
                 newsroom__slug=self.kwargs['newsroom'],
                 newsroom__website__short_name=self.kwargs.get('website', None))
         except:
-            return models.Article.objects.get_published().filter(
+            return models.Article.objects.get_list_published().filter(
                 newsroom__slug=self.kwargs['newsroom'])
 
     def get_context_data(self, *args, **kwargs):
@@ -106,11 +106,11 @@ class ArchiveMonth(MonthArchiveView):
 
     def get_queryset(self):
         try:
-            return models.Article.objects.get_published().filter(
+            return models.Article.objects.get_list_published().filter(
                 newsroom__slug=self.kwargs['newsroom'],
                 newsroom__website__short_name=self.kwargs.get('website', None))
         except:
-            return models.Article.objects.get_published().filter(
+            return models.Article.objects.get_list_published().filter(
                 newsroom__slug=self.kwargs['newsroom'])
 
     def get_context_data(self, *args, **kwargs):
@@ -131,13 +131,13 @@ class ArchiveMonth(MonthArchiveView):
 
 def category_detail(request, slug):
     category = get_object_or_404(models.Category, slug__exact=slug)
-    article_list = category.articles.get_published()
+    article_list = category.articles.get_list_published()
     return render(request, 'newscenter/category_detail.html',
         {'category': category, 'article_list': article_list,})
 
 def newsroom_category_detail(request, slug, newsroom):
     category = get_object_or_404(models.Category, slug__exact=slug, newsroom__slug=newsroom)
-    article_list = category.articles.get_published()
+    article_list = category.articles.get_list_published()
     return render(request, 'newscenter/category_detail.html',
         {'category': category, 'article_list': article_list,})
 
@@ -147,7 +147,7 @@ def newsroom_detail(request, slug, website=None, *args, **kwargs):
     else:
         model_kwargs = {'slug__exact': slug}
     newsroom = get_object_or_404(models.Newsroom, **model_kwargs)
-    article_list = newsroom.articles.get_published()
+    article_list = newsroom.articles.get_list_published()
 
     return render(request, 'newscenter/newsroom.html', locals())
 
@@ -159,7 +159,7 @@ class NewsroomLatest(RedirectView):
         newsroom = get_object_or_404(
             models.Newsroom,
             slug__exact=self.kwargs['newsroom'])
-        article = newsroom.articles.get_published()[0]
+        article = newsroom.articles.get_list_published()[0]
         return article.get_absolute_url()
 
 
@@ -171,7 +171,7 @@ class NewsroomRandom(RedirectView):
         newsroom = get_object_or_404(
             models.Newsroom,
             slug__exact=self.kwargs['newsroom'])
-        articles = newsroom.articles.get_published()
+        articles = newsroom.articles.get_list_published()
         category = self.request.GET.get('category', '')
         if category:
             articles = articles.filter(categories__slug=category)

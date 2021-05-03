@@ -20,7 +20,7 @@ class NewsroomFeed(Feed):
         return "Latest entries posted in %s" % obj.name
 
     def items(self, obj):
-        return Article.objects.get_published().filter(newsroom=obj)
+        return Article.objects.get_list_published().filter(newsroom=obj)
 
     def item_pubdate(self, item):
         return item.release_date

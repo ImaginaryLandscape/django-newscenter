@@ -9,7 +9,7 @@ class NewsroomSitemap(Sitemap):
 
 class ArticleSitemap(Sitemap):
     def items(self):
-        return Article.objects.get_published()
+        return Article.objects.get_list_published()
 
     def lastmod(self, obj):
         return obj.release_date
