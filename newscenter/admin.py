@@ -78,8 +78,7 @@ class ArticleAdmin(VersionAdmin, DraftAdmin, admin.ModelAdmin):
         (None, {
             'fields': (
                 ('active', 'featured', 'exclude_list',),
-                'title', 
-                'slug', 
+                ('title', 'slug',),
                 'newsroom', 
                 'location'
             )
