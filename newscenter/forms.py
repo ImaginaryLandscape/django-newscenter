@@ -6,6 +6,7 @@ except ImportError:
     from django.db.models import get_model
 from django.conf import settings
 from newscenter.widgets import SmallTextField
+from django.contrib.admin.widgets import AdminTextInputWidget
 
 REQUIRE_TEASER = getattr(settings, 'NEWSCENTER_REQUIRE_TEASER', False)
 TITLE_MAXLENGTH = getattr(settings, 'NEWSCENTER_TITLE_MAXLENGTH', 400)
@@ -21,7 +22,7 @@ class ArticleAdminModelForm(forms.ModelForm):
     teaser = forms.CharField(required=REQUIRE_TEASER, widget=SmallTextField())
     title = forms.CharField(max_length=TITLE_MAXLENGTH, 
         min_length=TITLE_MINLENGTH,
-        widget=forms.TextInput(attrs={'maxlength': TITLE_MAXLENGTH}))
+        widget=AdminTextInputWidget(attrs={'maxlength': TITLE_MAXLENGTH}))
 
     class Meta:
         model = get_model('newscenter', 'article')
