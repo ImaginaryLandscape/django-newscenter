@@ -15,7 +15,7 @@ setup(
         'Framework :: Django :: 1.11',
         'Framework :: Django :: 2.2',
         'Framework :: Django :: 3.2',
-    ]
+    ],
     install_requires=(
         'pillow>=7.1.0',
         'easy-thumbnails',
