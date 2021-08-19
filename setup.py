@@ -2,14 +2,13 @@ from setuptools import setup, find_packages
 
 setup(
     name='newscenter',
-    version='3.0.3',
+    version='4.0.0',
     description='A News Release Application for Django',
     long_description=open('README.rst').read(),
 
     author='Imaginary Landscape',
     author_email='dbertrand@imagescape.com',
     classifiers=[
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Framework :: Django',
         'Framework :: Django :: 1.11',
