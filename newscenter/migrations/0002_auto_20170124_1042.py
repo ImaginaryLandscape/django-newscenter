@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='article',
             name='slug',
-            field=models.SlugField(unique_for_date=b'release_date', blank=True, help_text=b'Automatically generated from the title.', unique=True, verbose_name=b'ID'),
+            field=models.SlugField(unique_for_date='release_date', blank=True, help_text='Automatically generated from the title.', unique=True, verbose_name='ID'),
         ),
         migrations.AlterField(
             model_name='contact',
