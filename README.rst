@@ -6,7 +6,6 @@ A Django application for creating news releases which can be associated with uni
 
 A Django CMS apphook is included as well as a templatetag for rendering news release headlines in non-application templates.
 
-Django 1.7 and up
 
 Installation
 ============
@@ -42,7 +41,7 @@ The following will be installed automatically if you use pip to install newscent
 
     feedparser (http://pythonhosted.org/feedparser/)
 
-    django-el-pagination (https://github.com/shtalinberg/django-el-pagination)
+    django-el-pagination (https://django-el-pagination.readthedocs.io/en/latest/start.html)
 
 For easy-thumbnails, you'll also need to add it to INSTALLED_APPS and run migrate:
     'easy_thumbnails',
@@ -51,7 +50,9 @@ For django-el-pagination, you'll also need to add it to INSTALLED_APPS:
     'el_pagination',
 
 You will also need to update your `context_processors` with:
-    'django.core.context_processors.request',
+    'django.template.context_processors.request',
+
+NB: don't forget to delete any 'endless_pagination' from   INSTALLED_APPS in the settings.py file.
 
 Template Tag
 ============
@@ -72,19 +73,28 @@ The template tag can be used like this::
 
 Change Log
 ============
+3.0.1:
+
+- Compatible with Django 3.2, Python 3.9
+
+2.0.14:
+
+- django-endless-pagination -> django-el-pagination
+
 Changed in 2.0.0:
- - In this version, we changed the name of the migrations directories as follows.  If you
- are using Django 1.7+ and are upgrading to newscenter 2.0.0, you can make sure to
- remove newscenter from MIGRATION_MODULES in settings.py.  If you are using Django 1.6,
- update the MIGRATION_MODULES as documented above.
-  - https://github.com/ImaginaryLandscape/django-newscenter/issues/4
 
-    Renamed Directories:
-    migrations -> south_migrations
-    migrations_django -> migrations
+- In this version, we changed the name of the migrations directories as follows. If you are using Django 1.7+ and are upgrading to newscenter 2.0.0, you can make sure to remove newscenter from MIGRATION_MODULES in settings.py. If you are using Django 1.6, update the MIGRATION_MODULES as documented above.
 
- - Fixed a depreciation warning in forms.py regarding get_model
-  - https://github.com/ImaginaryLandscape/django-newscenter/issues/3
+- https://github.com/ImaginaryLandscape/django-newscenter/issues/4
+
+
+Renamed Directories:
+migrations -> south_migrations
+migrations_django -> migrations
+
+- Fixed a depreciation warning in forms.py regarding get_model
+
+- https://github.com/ImaginaryLandscape/django-newscenter/issues/3
 
 New in 1.5.8:
 - Added support for Django 1.7

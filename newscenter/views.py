@@ -2,13 +2,16 @@ from __future__ import absolute_import
 from django import shortcuts, template
 from django.shortcuts import render
 from django.conf import settings
-from django.views.generic import (YearArchiveView, MonthArchiveView, 
+from django.views.generic import (YearArchiveView, MonthArchiveView,
     DetailView, RedirectView)
 from django.views.generic.list import ListView
 from django.contrib.sites.models import Site
 from django.utils.translation import ugettext_lazy as _
-from django.shortcuts import get_object_or_404
-from django.core.urlresolvers import reverse
+from django.shortcuts import get_object_or_404, render
+try:
+    from django.urls import reverse
+except:
+    from django.core.urlresolvers import reverse
 from django.contrib.auth.views import redirect_to_login
 from django.utils.http import urlquote
 from newscenter import models
@@ -69,9 +72,9 @@ class ArticleDetail(DetailView):
         self.object = self.get_object()
         context = self.get_context_data(object=self.object)
 
-        if ((self.object.private or self.object.newsroom.private) and not 
+        if ((self.object.private or self.object.newsroom.private) and not
             request.user.is_authenticated()):
-            return redirect_to_login(urlquote(request.get_full_path()), 
+            return redirect_to_login(urlquote(request.get_full_path()),
                 settings.LOGIN_URL)
         else:
             return self.render_to_response(context)
@@ -203,7 +206,7 @@ def category_detail(request, slug):
 def newsroom_detail(request, slug, website=None, *args, **kwargs):
     site = Site.objects.get_current()
     if 'site_config.backend.model_backend' in settings.INSTALLED_APPS:
-        model_kwargs = {'slug__exact': slug, 
+        model_kwargs = {'slug__exact': slug,
                         'website__short_name__exact': website}
     else:
         model_kwargs = {'slug__exact': slug}
@@ -211,7 +214,7 @@ def newsroom_detail(request, slug, website=None, *args, **kwargs):
     article_list = newsroom.articles.get_published()
 
     if newsroom.private and not request.user.is_authenticated():
-        return redirect_to_login(urlquote(request.get_full_path()), 
+        return redirect_to_login(urlquote(request.get_full_path()),
             settings.LOGIN_URL)
     else:
         return render(request, 'newscenter/newsroom.html', locals())
@@ -229,7 +232,7 @@ def dual_newsrooms(request, slug1, slug2):
     article2 = paginator2.page(page)
 
     return render(request, 'newscenter/dual_newsrooms.html', locals())
-    
+
 class NewsroomLatest(RedirectView):
     permanent = False
 

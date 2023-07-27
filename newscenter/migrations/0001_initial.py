@@ -16,11 +16,11 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('title', models.CharField(max_length=400)),
-                ('slug', models.SlugField(unique_for_date=b'release_date', help_text=b'Automatically generated from the title.', unique=True, verbose_name=b'ID')),
+                ('slug', models.SlugField(unique_for_date='release_date', help_text='Automatically generated from the title.', unique=True, verbose_name='ID')),
                 ('body', models.TextField(blank=True)),
-                ('teaser', models.TextField(help_text=b'A summary preview of the article.', blank=True)),
-                ('release_date', models.DateTimeField(default=datetime.datetime.now, verbose_name=b'Publication Date')),
-                ('expire_date', models.DateTimeField(null=True, verbose_name=b'Expiration Date', blank=True)),
+                ('teaser', models.TextField(help_text='A summary preview of the article.', blank=True)),
+                ('release_date', models.DateTimeField(default=datetime.datetime.now, verbose_name='Publication Date')),
+                ('expire_date', models.DateTimeField(null=True, verbose_name='Expiration Date', blank=True)),
                 ('active', models.BooleanField(default=True)),
                 ('featured', models.BooleanField(default=False)),
             ],
@@ -36,7 +36,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('title', models.CharField(unique=True, max_length=100)),
-                ('slug', models.SlugField(help_text=b'Automatically generated from the title.')),
+                ('slug', models.SlugField(help_text='Automatically generated from the title.')),
             ],
             options={
                 'ordering': ('title',),
@@ -74,12 +74,12 @@ class Migration(migrations.Migration):
             name='Image',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('image', models.ImageField(help_text=b'Images larger than the configured dimensions will be resized', upload_to=b'newscenter_uploads')),
+                ('image', models.ImageField(help_text='Images larger than the configured dimensions will be resized', upload_to='newscenter_uploads')),
                 ('caption', models.CharField(max_length=200, blank=True)),
-                ('name', models.CharField(help_text=b'This will be used for alt text.', max_length=100, verbose_name=b'description', blank=True)),
-                ('thumbnail', models.BooleanField(default=False, help_text=b'To be displayed on article listing pages. If more than one is selected, the thumbnail used will be chosen at random.', verbose_name=b'Use as Thumbnail')),
+                ('name', models.CharField(help_text='This will be used for alt text.', max_length=100, verbose_name='description', blank=True)),
+                ('thumbnail', models.BooleanField(default=False, help_text='To be displayed on article listing pages. If more than one is selected, the thumbnail used will be chosen at random.', verbose_name='Use as Thumbnail')),
                 ('sort', models.IntegerField(default=0)),
-                ('article', models.ForeignKey(related_name='images', to='newscenter.Article')),
+                ('article', models.ForeignKey(related_name='images', to='newscenter.Article', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ('sort',),
@@ -125,19 +125,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='article',
             name='feeds',
-            field=models.ManyToManyField(help_text=b'Select all areas in which this article should be listed', related_name='articles', to='newscenter.Feed', blank=True),
+            field=models.ManyToManyField(help_text='Select all areas in which this article should be listed', related_name='articles', to='newscenter.Feed', blank=True),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='article',
             name='location',
-            field=models.ForeignKey(blank=True, to='newscenter.Location', help_text=b'Primary location, appearing on the article detail page', null=True),
+            field=models.ForeignKey(blank=True, to='newscenter.Location', help_text='Primary location, appearing on the article detail page', null=True, on_delete=models.SET_NULL),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='article',
             name='newsroom',
-            field=models.ForeignKey(related_name='articles', default=1, to='newscenter.Newsroom'),
+            field=models.ForeignKey(related_name='articles', default=1, to='newscenter.Newsroom', on_delete=models.CASCADE),
             preserve_default=True,
         ),
     ]

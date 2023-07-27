@@ -15,11 +15,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='image',
             name='caption',
-            field=models.CharField(help_text=b'Text to be displayed below the image.', max_length=255, blank=True),
+            field=models.CharField(help_text='Text to be displayed below the image.', max_length=255, blank=True),
         ),
         migrations.AlterField(
             model_name='image',
             name='name',
-            field=models.CharField(help_text=b'This will be used for the image alt text.', max_length=255, verbose_name=b'description'),
+            field=models.CharField(help_text='This will be used for the image alt text.', max_length=255, verbose_name='description'),
         ),
     ]
