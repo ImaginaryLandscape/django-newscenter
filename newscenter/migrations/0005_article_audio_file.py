@@ -17,6 +17,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='article',
             name='audio_file',
-            field=filer.fields.file.FilerFileField(related_name='article_audio', blank=True, to='filer.File', null=True),
+            field=filer.fields.file.FilerFileField(related_name='article_audio', blank=True, to='filer.File', null=True, on_delete=models.CASCADE),
         ),
     ]
