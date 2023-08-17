@@ -240,5 +240,5 @@ class Image(models.Model):
                 imquality = getattr(settings, 'NEWSCENTER_IMAGE_QUALITY', 100)
 
             size = (width, height)
-            image.thumbnail(size, PIL.Image.ANTIALIAS)
+            image.thumbnail(size, PIL.Image.Resampling.LANCZOS)
             image.save(filename, quality=imquality)

@@ -1,11 +1,15 @@
 [tool.poetry]
 name = "newscenter"
-version = "4.0.2"
+version = "4.0.4"
 description = "A News Release Application for Django"
 homepage = "https://github.com/ImaginaryLandscape/django-newscenter"
 readme = "README.rst"
 authors = ["Imaginary Landscape <info@imagescape.com>"]
 license = "MIT"
+packages = [
+    { include = "newscenter" },
+    { include = "cmsplugin_newscenter" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.7"
