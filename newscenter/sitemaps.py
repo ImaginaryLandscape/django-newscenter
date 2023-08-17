@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 from django.contrib.sitemaps import Sitemap
 from newscenter.models import Newsroom, Article
 

@@ -5,7 +5,6 @@ unittest). These will both pass when you run "manage.py test".
 Replace these with more appropriate tests for your application.
 """
 
-from __future__ import absolute_import
 from django.test import TestCase
 
 

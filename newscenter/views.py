@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 from django import shortcuts, template
 from django.shortcuts import render
 from django.conf import settings
