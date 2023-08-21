@@ -5,14 +5,14 @@ from django.views.generic import (YearArchiveView, MonthArchiveView,
     DetailView, RedirectView)
 from django.views.generic.list import ListView
 from django.contrib.sites.models import Site
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.shortcuts import get_object_or_404, render
 try:
     from django.urls import reverse
 except:
     from django.core.urlresolvers import reverse
 from django.contrib.auth.views import redirect_to_login
-from django.utils.http import urlquote
+from urllib.parse import quote
 from newscenter import models
 import random
 
@@ -73,7 +73,7 @@ class ArticleDetail(DetailView):
 
         if ((self.object.private or self.object.newsroom.private) and not
             request.user.is_authenticated()):
-            return redirect_to_login(urlquote(request.get_full_path()),
+            return redirect_to_login(quote(request.get_full_path()),
                 settings.LOGIN_URL)
         else:
             return self.render_to_response(context)
@@ -113,7 +113,7 @@ class ArchiveYear(YearArchiveView):
         Returns a response with a template rendered with the given context.
         """
         if context['newsroom'].private  and not self.request.user.is_authenticated():
-            return redirect_to_login(urlquote(self.request.get_full_path()), 
+            return redirect_to_login(quote(self.request.get_full_path()), 
                 settings.LOGIN_URL)
         else:
             return self.response_class(
@@ -158,7 +158,7 @@ class ArchiveMonth(MonthArchiveView):
         Returns a response with a template rendered with the given context.
         """
         if context['newsroom'].private  and not self.request.user.is_authenticated():
-            return redirect_to_login(urlquote(self.request.get_full_path()),
+            return redirect_to_login(quote(self.request.get_full_path()),
                 settings.LOGIN_URL)
         else:
             return self.response_class(
@@ -213,7 +213,7 @@ def newsroom_detail(request, slug, website=None, *args, **kwargs):
     article_list = newsroom.articles.get_published()
 
     if newsroom.private and not request.user.is_authenticated():
-        return redirect_to_login(urlquote(request.get_full_path()),
+        return redirect_to_login(quote(request.get_full_path()),
             settings.LOGIN_URL)
     else:
         return render(request, 'newscenter/newsroom.html', locals())
