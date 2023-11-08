@@ -14,7 +14,7 @@ class NewsFeedPlugin(CMSPluginBase):
 
     def render(self, context, instance, placeholder):
         articles = instance.location.articles.get_published()
-        if not context['request'].user.is_authenticated():
+        if not context['request'].user.is_authenticated:
             articles = articles.filter(private=False)
         context.update({'instance': instance, 'articles': articles[:instance.limit]})
         return context

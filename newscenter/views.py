@@ -72,7 +72,7 @@ class ArticleDetail(DetailView):
         context = self.get_context_data(object=self.object)
 
         if ((self.object.private or self.object.newsroom.private) and not
-            request.user.is_authenticated()):
+            request.user.is_authenticated):
             return redirect_to_login(quote(request.get_full_path()),
                 settings.LOGIN_URL)
         else:
@@ -112,7 +112,7 @@ class ArchiveYear(YearArchiveView):
         """
         Returns a response with a template rendered with the given context.
         """
-        if context['newsroom'].private  and not self.request.user.is_authenticated():
+        if context['newsroom'].private  and not self.request.user.is_authenticated:
             return redirect_to_login(quote(self.request.get_full_path()), 
                 settings.LOGIN_URL)
         else:
@@ -157,7 +157,7 @@ class ArchiveMonth(MonthArchiveView):
         """
         Returns a response with a template rendered with the given context.
         """
-        if context['newsroom'].private  and not self.request.user.is_authenticated():
+        if context['newsroom'].private  and not self.request.user.is_authenticated:
             return redirect_to_login(quote(self.request.get_full_path()),
                 settings.LOGIN_URL)
         else:
@@ -212,7 +212,7 @@ def newsroom_detail(request, slug, website=None, *args, **kwargs):
     newsroom = get_object_or_404(models.Newsroom, **model_kwargs)
     article_list = newsroom.articles.get_published()
 
-    if newsroom.private and not request.user.is_authenticated():
+    if newsroom.private and not request.user.is_authenticated:
         return redirect_to_login(quote(request.get_full_path()),
             settings.LOGIN_URL)
     else:
