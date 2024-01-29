@@ -9,7 +9,7 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.7"
-Pillow = "^9.0.0"
+Pillow = "^10.2.0"
 easy-thumbnails = "^2.8.0"
 feedparser = "^6.0.0"
 site-config = "^2.0.0"
