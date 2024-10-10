@@ -18,8 +18,11 @@ class ArticleAdminModelForm(forms.ModelForm):
     elif 'tinymce' in settings.INSTALLED_APPS:
         from tinymce.widgets import TinyMCE
         body = forms.CharField(widget=TinyMCE())
+    elif 'ckeditor' in settings.INSTALLED_APPS:
+        from ckeditor.widgets import CKEditorWidget
+        body = forms.CharField(widget=CKEditorWidget())
     teaser = forms.CharField(required=REQUIRE_TEASER, widget=SmallTextField())
-    title = forms.CharField(max_length=TITLE_MAXLENGTH, 
+    title = forms.CharField(max_length=TITLE_MAXLENGTH,
         min_length=TITLE_MINLENGTH,
         widget=forms.TextInput(attrs={'maxlength': TITLE_MAXLENGTH}))
 

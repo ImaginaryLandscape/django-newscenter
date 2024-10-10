@@ -6,6 +6,7 @@ from newscenter import managers
 import PIL
 from django.conf import settings
 from django.utils.text import slugify
+from filer.fields.file import FilerFileField
 
 
 class Category(models.Model):
@@ -45,6 +46,7 @@ class Contact(models.Model):
 class Newsroom(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField()
+    private = models.BooleanField(default=False)
     if 'site_config.backends.model_backend' in settings.INSTALLED_APPS:
         website = models.ForeignKey('site_config.Website', null=True, 
             blank=True, on_delete=models.SET_NULL)
@@ -115,10 +117,17 @@ class Article(models.Model):
     expire_date = models.DateTimeField('Expiration Date', null=True, blank=True)
     active = models.BooleanField(default=True)
     featured = models.BooleanField(default=False)
+    private = models.BooleanField(default=False)
     categories = models.ManyToManyField(
         'Category', related_name='articles', blank=True)
     newsroom = models.ForeignKey(Newsroom, related_name='articles', default=1,
         on_delete=models.CASCADE)
+    audio_file = FilerFileField(
+        null=True,
+        blank=True,
+        related_name="article_audio",
+        on_delete=models.CASCADE
+    )
     objects = managers.ArticleManager()
 
     class Meta:
@@ -185,7 +194,7 @@ class Image(models.Model):
     image = models.ImageField(
         blank=False, upload_to='newscenter_uploads',
         help_text="Images larger than the configured dimensions will be resized")
-    article = models.ForeignKey(Article, related_name='images', 
+    article = models.ForeignKey(Article, related_name='images',
         on_delete=models.CASCADE)
     name = models.CharField('description', max_length=255,
         help_text="This will be used for the image alt text.")
@@ -230,5 +239,5 @@ class Image(models.Model):
                 imquality = getattr(settings, 'NEWSCENTER_IMAGE_QUALITY', 100)
 
             size = (width, height)
-            image.thumbnail(size, PIL.Image.ANTIALIAS)
+            image.thumbnail(size, PIL.Image.Resampling.LANCZOS)
             image.save(filename, quality=imquality)
