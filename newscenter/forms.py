@@ -1,9 +1,5 @@
 from django import forms
-try:
-    from django.apps import apps
-    get_model = apps.get_model
-except ImportError:
-    from django.db.models import get_model
+from django.apps import apps
 from django.conf import settings
 from newscenter.widgets import SmallTextField
 
@@ -27,5 +23,5 @@ class ArticleAdminModelForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'maxlength': TITLE_MAXLENGTH}))
 
     class Meta:
-        model = get_model('newscenter', 'article')
+        model = apps.get_model('newscenter', 'article')
         exclude = []
