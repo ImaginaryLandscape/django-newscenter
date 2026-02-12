@@ -3,7 +3,7 @@ from django.urls import re_path
 from .views import (
     NewsroomIndex, NewsroomLatest, NewsroomRandom, ArticleDetail,
     ArchiveYear, ArchiveMonth, newsroom_detail, category_detail,
-    dual_newsrooms, RandomFeatured, DayOfWeek)
+    newsroom_category_detail, dual_newsrooms, RandomFeatured, DayOfWeek)
 from .feeds import NewsroomFeed
 from . import models
 
@@ -26,5 +26,8 @@ urlpatterns += [
     re_path(r'^(?P<newsroom>[\-\d\w]+)/(?P<dayofweek>[a-z]{3})/$', DayOfWeek.as_view(), name='news_dayofweek',),
     re_path(r'^d/(?P<slug1>[\-\d\w]+)_(?P<slug2>[\-\d\w]+)/$', dual_newsrooms, name='news_dual_newsroons'),
     re_path(r'^(?P<newsroom>[\-\d\w]+)/latest/$', NewsroomLatest.as_view(), name='news_newsroom_latest'),
-    re_path(r'^(?P<newsroom>[\-\d\w]+)/random/$', NewsroomRandom.as_view(), name='news_newsroom_random')
+    re_path(r'^(?P<newsroom>[\-\d\w]+)/random/$', NewsroomRandom.as_view(), name='news_newsroom_random'),
+    re_path(r'^(?P<newsroom>[\-\d\w]+)/(?P<slug>[\-\d\w]+)/$', newsroom_category_detail,
+        name='news_newsroom_category_detail'),
+
 ]
