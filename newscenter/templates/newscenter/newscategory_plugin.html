@@ -1,0 +1,15 @@
+{% load thumbnail %}
+
+<ul>
+{% for article in articles %}
+<li style="list-style-type: none">
+  {% if article.images.count %}
+  {% with article.images.first as image %}
+  <img src="{% thumbnail image.image 240x300 crop %}" />
+  {% endwith %}
+  {% endif %}
+  <a href="{{ article.get_absolute_url }}">{{ article.title }}</a> {% if article.private or article.newsroom.private %}{% include "newscenter/includes/lock.svg" %}{% endif %}
+</li>
+{% endfor %}
+</ul>
+

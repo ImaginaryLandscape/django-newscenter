@@ -5,8 +5,10 @@
 
 <h1>Newsrooms</h1>
 {% for object in object_list %}
+{% if not object.private or request.user.is_authenticated %}
 {% if object.articles.count %}
-<h2 class="newsroom-list-name"><a href="{{ object.get_absolute_url }}">{{ object.name }}</a>{% if not website and object.website %} | <a href="{% url "news_newsroom_index" object.website.short_name %}">{{ object.website.name }}</a>{% endif %}</h2>
+<h2 class="newsroom-list-name"><a href="{{ object.get_absolute_url }}">{{ object.name }}</a>{% if not website and object.website %} | <a href="{% url "news_newsroom_index" object.website.short_name %}">{{ object.website.name }}</a>{% endif %} {% if object.private %}{% include "newscenter/includes/lock.svg" %}{% endif %}</h2>
+{% endif %}
 {% endif %}
 {% endfor %}
 {% endblock %}

@@ -6,7 +6,6 @@ A Django application for creating news releases which can be associated with uni
 
 A Django CMS apphook is included as well as a templatetag for rendering news release headlines in non-application templates.
 
-Django 1.7 and up
 
 Installation
 ============
@@ -74,6 +73,10 @@ The template tag can be used like this::
 
 Change Log
 ============
+3.0.1:
+
+- Compatible with Django 3.2, Python 3.9
+
 2.0.14:
 
 - django-endless-pagination -> django-el-pagination

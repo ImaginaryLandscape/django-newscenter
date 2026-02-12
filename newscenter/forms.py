@@ -1,9 +1,5 @@
 from django import forms
-try:
-    from django.apps import apps
-    get_model = apps.get_model
-except ImportError:
-    from django.db.models import get_model
+from django.apps import apps
 from django.conf import settings
 from newscenter.widgets import SmallTextField
 from django.contrib.admin.widgets import AdminTextInputWidget
@@ -19,11 +15,14 @@ class ArticleAdminModelForm(forms.ModelForm):
     elif 'tinymce' in settings.INSTALLED_APPS:
         from tinymce.widgets import TinyMCE
         body = forms.CharField(widget=TinyMCE())
+    elif 'ckeditor' in settings.INSTALLED_APPS:
+        from ckeditor.widgets import CKEditorWidget
+        body = forms.CharField(widget=CKEditorWidget())
     teaser = forms.CharField(required=REQUIRE_TEASER, widget=SmallTextField())
-    title = forms.CharField(max_length=TITLE_MAXLENGTH, 
+    title = forms.CharField(max_length=TITLE_MAXLENGTH,
         min_length=TITLE_MINLENGTH,
         widget=AdminTextInputWidget(attrs={'maxlength': TITLE_MAXLENGTH}))
 
     class Meta:
-        model = get_model('newscenter', 'article')
+        model = apps.get_model('newscenter', 'article')
         exclude = []

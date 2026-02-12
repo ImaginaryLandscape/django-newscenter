@@ -1,0 +1,33 @@
+{% extends "newscenter/base.html" %}
+
+{% block title %}Book of Days{% endblock %}
+
+{% block main %}
+<div class="pagination">
+  {% if article1.has_previous and article2.has_previous %}
+    <a style="float: left" href="?page={% firstof article1.previous_page_number article2.previous_page_number %}" class="prev-link">Day Before</a>
+  {% endif %}
+  {% if article1.has_next and article2.has_next %}
+    <a style="float: right" href="?page={% firstof article1.next_page_number article2.next_page_number %}" class="next-link">Day After</a>
+  {% endif %}
+</div>
+
+<div style="clear: both; margin: 40px 0;">
+<div style="float: left; width: 45%">
+  <h1>{{ newsroom1 }}</h1>
+
+  {% with article=article1.object_list.0 %}
+  {% include "newscenter/includes/dual_article.html" %}
+  {% endwith %}
+</div>
+
+<div style="float: right; width: 45%">  
+  <h1>{{ newsroom2 }}</h1>
+
+  {% with article=article2.object_list.0 %}
+  {% include "newscenter/includes/dual_article.html" %}
+  {% endwith %}
+</div>
+</div>
+{% endblock %}
+

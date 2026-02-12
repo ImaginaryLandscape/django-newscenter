@@ -38,10 +38,11 @@ class LocationAdmin(admin.ModelAdmin):
 
 class NewsroomAdmin(admin.ModelAdmin):
     if 'site_config.backends.model_backend' in settings.INSTALLED_APPS:
-        list_display = ('name', 'website',)
-        list_editable = ('website',)
+        list_display = ('name', 'private', 'website',)
+        list_editable = ('private', 'website',)
     else:
-        list_display = ('name',)
+        list_display = ('name', 'private',)
+        list_editable = ('private',)
 
     prepopulated_fields = {'slug': ('name',)}
 
@@ -65,33 +66,38 @@ class ArticleAdmin(VersionAdmin, DraftAdmin, admin.ModelAdmin):
     ]
     list_display = (
         'admin_thumbnail', 'title', 'release_date', 'expire_date', 'active',
-        'featured', 'newsroom',)
-    list_editable = ('active', 'featured', 'newsroom',)
+        'featured', 'private', 'newsroom',)
+    list_editable = ('title', 'active', 'featured', 'private', 'newsroom',)
     search_fields = ('title', 'body', 'teaser',)
-    list_filter = (
-        'release_date', 'expire_date', 'newsroom', 'active',
-        'featured', 'feeds', 'location', 'categories',)
+    list_filter = ('newsroom', 'release_date', 'active', 'featured', 'feeds', 
+        'location', 'categories',)
     prepopulated_fields = {'slug': ('title',)}
     date_heirarchy = 'release_date'
     filter_horizontal = ('categories', 'feeds', 'contacts')
     fieldsets = (
         (None, {
             'fields': (
-                ('active', 'featured', 'exclude_list',),
+                ('active', 'featured', 'private', 'exclude_list',),
                 ('title', 'slug',),
                 'newsroom', 
-                'location'
             )
         }),
         (None, {
             'fields': (
-                'categories',
-                'feeds',
-                'contacts', 
                 'teaser',
                 'body',
                 ('release_date', 'expire_date'),
+                'audio_file',
         )}),
+        ('Details', {
+            'classes': ('collapse',),
+            'fields': (
+                'location',
+                'categories',
+                'feeds',
+                'contacts', 
+        )}),
+
     )
     form = forms.ArticleAdminModelForm
 

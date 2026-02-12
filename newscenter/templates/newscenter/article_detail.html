@@ -26,7 +26,7 @@
 <a href="../">{{ article.release_date|date:"M" }}</a> |
 {{ article.title|truncatewords:"4" }}
 </div>
-  <h1>{{ article.title }}</h1>
+  <h1>{{ article.title }} {% if article.private or article.newsroom.private %}{% include "newscenter/includes/lock.svg" %}{% endif %}</h1>
   {% if article.teaser %}<p id="article-teaser">{{ article.teaser }}</p>{% endif %}
   <p class="date">{{ article.release_date|date:"F j, Y P" }}</p>
 

@@ -1,17 +1,19 @@
 from datetime import datetime
 from django.db import models
+from django.urls import reverse
 from random import choice
 from newscenter import managers
 import PIL
 from django.conf import settings
 from django.utils.text import slugify
-from django.urls import reverse
 from django.utils.safestring import mark_safe
+
 
 class Newsroom(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField()
-    featured_image = models.ImageField(blank=True, 
+    private = models.BooleanField(default=False)
+    featured_image = models.ImageField(blank=True,
         upload_to='newscenter_uploads', help_text="If configured in "
         "templates, this image will display on the newsroom index")
 
@@ -105,9 +107,9 @@ class Location(models.Model):
 
 class Article(models.Model):
     title = models.CharField(max_length=400)
-    location = models.ForeignKey(
-        Location, blank=True, null=True, on_delete=models.SET_NULL,
-        help_text="Primary location, appearing on the article detail page")
+    location = models.ForeignKey(Location, blank=True, null=True,
+        help_text="Primary location, appearing on the article detail page",
+        on_delete=models.SET_NULL)
     feeds = models.ManyToManyField(
         Feed, blank=True,
         related_name='articles', help_text="Select all areas in which this "
@@ -128,10 +130,12 @@ class Article(models.Model):
     featured = models.BooleanField(default=False)
     exclude_list = models.BooleanField(default=False, 
         help_text="Exclude this article from list views")
+    private = models.BooleanField(default=False)
     categories = models.ManyToManyField(
         'Category', related_name='articles', blank=True)
     newsroom = models.ForeignKey(Newsroom, related_name='articles', default=1,
-        on_delete=models.PROTECT)
+        on_delete=models.CASCADE)
+    audio_file = models.FileField(null=True, blank=True)
     objects = managers.ArticleManager()
 
     class Meta:
@@ -259,5 +263,5 @@ class Image(models.Model):
                 imquality = getattr(settings, 'NEWSCENTER_IMAGE_QUALITY', 100)
 
             size = (width, height)
-            image.thumbnail(size, PIL.Image.ANTIALIAS)
+            image.thumbnail(size, PIL.Image.Resampling.LANCZOS)
             image.save(filename, quality=imquality)

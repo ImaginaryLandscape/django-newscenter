@@ -1,0 +1,21 @@
+<h2 class="date">{{ article.release_date|date:"F j" }}</h2>
+
+{% if article.location %}
+  <div id="article-location">
+    <span class="article-list-label">Location:</span>
+    {{ article.location }}
+  </div>
+{% endif %}
+
+<div id="article-body">{{ article.body|safe }}</div>
+
+{% if article.categories.all %}
+  <div id="article-categories">
+  <span class="article-list-label">Categor{{ article.categories.count|pluralize:"y,ies" }}:</span>
+  <ul class="article-list">
+  {% for category in article.categories.all %}
+    <li><a href="{{ category.get_absolute_url }}">{{ category.title }}</a></li>
+  {% endfor %}
+  </ul>
+  </div>
+{% endif %}

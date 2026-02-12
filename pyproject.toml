@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "newscenter"
+version = "4.1.7"
+description = "A News Release Application for Django"
+homepage = "https://github.com/ImaginaryLandscape/django-newscenter"
+readme = "README.rst"
+authors = ["Imaginary Landscape <info@imagescape.com>"]
+license = "MIT"
+packages = [
+    { include = "newscenter" },
+    { include = "cmsplugin_newscenter" },
+]
+
+[tool.poetry.dependencies]
+python = "^3"
+Pillow = ">=9.0"
+easy-thumbnails = ">=2.8"
+feedparser = "^6.0"
+site-config = "^2.0"
+django-el-pagination = ">=4"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
