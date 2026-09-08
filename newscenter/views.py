@@ -7,6 +7,7 @@ from django.views.generic.list import ListView
 from django.contrib.sites.models import Site
 from django.utils.translation import gettext_lazy as _
 from django.shortcuts import get_object_or_404, render
+from django.http import Http404
 try:
     from django.urls import reverse
 except:
@@ -172,19 +173,21 @@ class DayOfWeek(ListView):
     model = models.Article
     template_name = "newscenter/day_of_week.html"
 
+    DAYS = {'sun': 'Sunday', 'mon': 'Monday', 'tue': 'Tuesday',
+            'wed': 'Wednesday', 'thu': 'Thursday', 'fri': 'Friday',
+            'sat': 'Saturday'}
+
     def get_context_data(self, *args, **kwargs):
         ctx = super(DayOfWeek, self).get_context_data(*args, **kwargs)
-        days = {'sun':'Sunday','mon':'Monday', 'tue':'Tuesday', 
-                'wed':'Wednesday', 'thu':'Thursday','fri':'Friday',
-                'sat':'Saturday'}
-        dayofweek = days[self.kwargs['dayofweek']]
         newsroom = get_object_or_404(models.Newsroom,
             slug__exact=self.kwargs['newsroom'])
-        ctx['dayofweek'] = dayofweek
+        ctx['dayofweek'] = self.DAYS[self.kwargs['dayofweek']]
         ctx['newsroom'] = newsroom
         return ctx
 
     def get_queryset(self):
+        if self.kwargs['dayofweek'] not in self.DAYS:
+            raise Http404("Unknown day of week")
         dayofweek = [0,'sun','mon','tue','wed','thu','fri','sat'].index(
             self.kwargs['dayofweek'])
         newsroom = get_object_or_404(models.Newsroom,

@@ -1,10 +1,3 @@
-"""
-This file demonstrates two different styles of tests (one doctest and one
-unittest). These will both pass when you run "manage.py test".
-
-Replace these with more appropriate tests for your application.
-"""
-
 from django.test import TestCase
 
 
@@ -13,11 +6,18 @@ class SimpleTest(TestCase):
         """
         Tests that 1 + 1 always equals 2.
         """
-        self.failUnlessEqual(1 + 1, 2)
+        self.assertEqual(1 + 1, 2)
 
-__test__ = {"doctest": """
-Another way to test that 1 + 1 is equal to 2.
 
->>> 1 + 1 == 2
-True
-"""}
+class DayOfWeekViewTests(TestCase):
+    def test_invalid_dayofweek_returns_404(self):
+        # Bots scanning for month-style archives (e.g. /news/articles/nov/)
+        # were hitting this URL, which matches the dayofweek pattern with a
+        # code that isn't a real day abbreviation and used to raise an
+        # uncaught ValueError/KeyError (500) instead of a 404.
+        response = self.client.get('/news/articles/nov/')
+        self.assertEqual(response.status_code, 404)
+
+    def test_valid_dayofweek_on_missing_newsroom_returns_404(self):
+        response = self.client.get('/news/does-not-exist/mon/')
+        self.assertEqual(response.status_code, 404)
