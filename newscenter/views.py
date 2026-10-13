@@ -242,7 +242,9 @@ class NewsroomLatest(RedirectView):
         newsroom = get_object_or_404(
             models.Newsroom,
             slug__exact=self.kwargs['newsroom'])
-        article = newsroom.articles.get_published()[0]
+        article = newsroom.articles.get_published().first()
+        if article is None:
+            raise Http404("No published articles in this newsroom")
         return article.get_absolute_url()
 
 
@@ -257,6 +259,8 @@ class NewsroomRandom(RedirectView):
         category = self.request.GET.get('category', '')
         if category:
             articles = articles.filter(categories__slug=category)
+        if not articles:
+            raise Http404("No published articles match")
         article = random.choice(articles)
         return article.get_absolute_url()
 
@@ -266,5 +270,7 @@ class RandomFeatured(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         include_newsrooms = getattr(settings, 'NEWSCENTER_INCLUDE_RANDOM_FEATURED_NEWSROOMS', [])
         featured = models.Article.objects.get_featured().filter(newsroom__slug__in=include_newsrooms)
+        if not featured:
+            raise Http404("No featured articles")
         article = random.choice(featured)
         return article.get_absolute_url()
