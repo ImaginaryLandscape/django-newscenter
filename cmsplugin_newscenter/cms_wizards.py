@@ -1,9 +1,8 @@
 try:
+    from cms import __version__ as cms_version
     from cms.wizards.wizard_base import Wizard
-    from cms.wizards.wizard_pool import wizard_pool
 
     from django import forms
-    from django.forms import widgets
 
     from django.conf import settings
 
@@ -30,7 +29,10 @@ try:
         description="Create a new article in Newscenter",
     )
 
-    wizard_pool.register(newscenter_wizard)
+    # django CMS 4+ registers wizards through cms_config.py
+    if int(cms_version.split('.')[0]) < 4:
+        from cms.wizards.wizard_pool import wizard_pool
+        wizard_pool.register(newscenter_wizard)
 
 except ImportError:
     # For django CMS version not supporting wizards just ignore this file
